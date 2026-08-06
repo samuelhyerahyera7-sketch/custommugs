@@ -1,245 +1,507 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CustomMugs – Print Your Perfect Mug | South Africa</title>
-  <meta name="description" content="Design and order custom printed mugs online. Photo mugs, corporate mugs, magic mugs & more. Fast delivery across South Africa. From R149." />
-  <meta property="og:title" content="CustomMugs – Print Your Perfect Mug" />
-  <meta property="og:description" content="Design beautiful custom mugs online. Fast SA delivery. From R149." />
-  <meta property="og:type" content="website" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='15' y='20' width='58' height='68' rx='8' fill='%23E55A1C'/><path d='M73 38 C95 38 95 70 73 70' stroke='%23C44A12' stroke-width='14' fill='none' stroke-linecap='round'/></svg>" />
-</head>
-<body>
+<title>CustomMugs – Design. Print. Deliver.</title>
+<style>
+:root {
+  --pri:#E55A1C; --pri-dk:#C44A12; --pri-lt:#FDEEE6;
+  --acc:#F5A623; --acc-lt:#FEF3DC;
+  --dark:#111827; --dark2:#1F2937;
+  --bg:#fff; --bg2:#fff; --surf:#fff;
+  --txt:#1A1A2A; --txt2:#6B6878; --txt3:#A09EAA;
+  --bdr:#EBEBEB;
+  --sh:0 2px 12px rgba(0,0,0,.06);
+  --sh-md:0 6px 28px rgba(0,0,0,.10);
+  --sh-lg:0 16px 56px rgba(0,0,0,.14);
+  --r:12px; --rp:999px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0F1623; --bg2:#161E2E; --surf:#1C2636;
+  --txt:#F0EEF8; --txt2:#8A8AA0; --txt3:#555570;
+  --bdr:#253045; --pri-lt:#2A1508;
+  --sh:0 2px 12px rgba(0,0,0,.3);
+  --sh-md:0 6px 28px rgba(0,0,0,.45);
+  --sh-lg:0 16px 56px rgba(0,0,0,.6);
+}}
+:root[data-theme=dark]{
+  --bg:#0F1623; --bg2:#161E2E; --surf:#1C2636;
+  --txt:#F0EEF8; --txt2:#8A8AA0; --txt3:#555570;
+  --bdr:#253045; --pri-lt:#2A1508;
+}
+:root[data-theme=light]{
+  --bg:#fff; --bg2:#fff; --surf:#fff;
+  --txt:#1A1A2A; --txt2:#6B6878; --txt3:#A09EAA;
+  --bdr:#EBEBEB;
+}
 
-<!-- ========== HEADER ========== -->
-<header class="header">
-  <nav class="nav">
-    <a href="#" class="logo" aria-label="CustomMugs Home">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 6h14v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
-          <path d="M18 10h2a2 2 0 110 4h-2" fill="none" stroke="white" stroke-width="1.5"/>
-        </svg>
-      </div>
-      Custom<span>Mugs</span>
-    </a>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{font-family:inherit;cursor:pointer}
 
-    <ul class="nav-links" role="list">
-      <li><a href="#products">Shop</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#gallery">Gallery</a></li>
+.wrap{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+.serif{font-family:Georgia,"Times New Roman",serif;font-weight:normal}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pri)}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:.72rem 1.5rem;border-radius:var(--rp);font-size:.9rem;font-weight:600;border:2px solid transparent;transition:transform .15s,box-shadow .15s,background .15s,color .15s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn-pri{background:var(--pri);color:#fff;border-color:var(--pri)}
+.btn-pri:hover{background:var(--pri-dk);border-color:var(--pri-dk);box-shadow:0 6px 20px rgba(229,90,28,.35)}
+.btn-out{background:transparent;color:var(--pri);border-color:var(--pri)}
+.btn-out:hover{background:var(--pri-lt)}
+.btn-dark{background:var(--dark);color:#fff;border-color:var(--dark)}
+.btn-dark:hover{background:var(--dark2);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.btn-wht{background:#fff;color:var(--pri);border-color:#fff}
+.btn-wht:hover{background:var(--pri-lt)}
+.btn-sm{padding:.48rem 1rem;font-size:.82rem}
+.btn-lg{padding:.9rem 2rem;font-size:1rem}
+.btn svg{width:17px;height:17px;flex-shrink:0}
+
+/* ── ANNOUNCE BAR ── */
+.announce{background:var(--pri);color:rgba(255,255,255,.92);text-align:center;padding:.55rem 1rem;font-size:.82rem;font-weight:500;position:relative}
+.announce strong{color:#fff;font-weight:800}
+.announce-close{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.5);font-size:1.1rem;line-height:1;transition:color .15s;padding:0}
+.announce-close:hover{color:#fff}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);transition:box-shadow .2s}
+.header.scrolled{box-shadow:var(--sh)}
+.nav{display:flex;align-items:center;gap:1.25rem;height:66px}
+.logo{font-family:Georgia,serif;font-size:1.35rem;color:var(--txt);flex-shrink:0;letter-spacing:-.01em}
+.logo-mk{width:34px;height:34px;border-radius:9px;background:var(--pri);display:flex;align-items:center;justify-content:center}
+.logo-mk svg{width:19px;height:19px}
+.logo em{color:var(--pri);font-style:normal}
+.nav-links{display:flex;gap:.1rem;margin:0 auto;flex-wrap:nowrap}
+.nav-links a{padding:.44rem .75rem;border-radius:8px;font-size:.87rem;font-weight:500;color:var(--txt2);transition:color .15s,background .15s;white-space:nowrap}
+.nav-links a:hover{color:var(--pri);background:var(--pri-lt)}
+.nav-end{display:flex;align-items:center;gap:.5rem}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:none;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:var(--txt2);transition:background .15s,color .15s;position:relative}
+.icon-btn:hover{background:var(--pri-lt);color:var(--pri)}
+.icon-btn svg{width:17px;height:17px}
+.cart-badge{position:absolute;top:-3px;right:-3px;width:17px;height:17px;border-radius:50%;background:var(--pri);color:#fff;font-size:.62rem;font-weight:700;display:none;align-items:center;justify-content:center}
+.cart-badge.on{display:flex}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--txt);border-radius:2px;transition:all .3s}
+
+/* ── MOBILE NAV ── */
+.mob-nav{display:none;position:fixed;inset:0;background:var(--surf);z-index:200;padding:5rem 2rem 2rem;flex-direction:column;gap:.4rem}
+.mob-nav.on{display:flex}
+.mob-nav a{padding:.9rem 1rem;border-radius:10px;font-weight:500;font-size:1.05rem;transition:background .15s,color .15s}
+.mob-nav a:hover{background:var(--bg2);color:var(--pri)}
+.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:var(--bg2);border:none;width:38px;height:38px;border-radius:50%;font-size:1.2rem;display:flex;align-items:center;justify-content:center;color:var(--txt)}
+
+/* ── HERO ── */
+.hero{background:#fff;overflow:hidden;position:relative;padding:80px 0 0;border-bottom:1px solid var(--bdr)}
+.hero::after{content:'';position:absolute;top:-200px;right:-200px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(229,90,28,.07) 0%,transparent 65%)}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--pri-lt);border:1px solid rgba(229,90,28,.2);border-radius:var(--rp);padding:.35rem .9rem;font-size:.78rem;font-weight:600;color:var(--pri);margin-bottom:1.5rem}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pri);flex-shrink:0}
+.hero-h{font-family:Georgia,serif;font-size:clamp(2.4rem,5vw,3.8rem);color:var(--txt);line-height:1.08;margin-bottom:1.1rem;text-wrap:balance}
+.hero-h em{color:var(--pri);font-style:italic}
+.hero-p{color:var(--txt2);font-size:1.02rem;line-height:1.75;margin-bottom:2rem;max-width:440px}
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.hero-trust{display:flex;gap:1.75rem;flex-wrap:wrap}
+.htrust{display:flex;align-items:center;gap:7px;font-size:.8rem;color:var(--txt3);font-weight:500}
+.htrust svg{width:15px;height:15px;color:var(--pri);flex-shrink:0}
+
+/* hero visual */
+.hero-vis{position:relative;padding:2rem 0 0;display:flex;justify-content:center}
+.hero-mug-wrap{position:relative;width:100%;max-width:380px}
+.mug-main{animation:float 3.8s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hero-chip{position:absolute;background:var(--surf);border-radius:var(--r);box-shadow:var(--sh-lg);padding:.6rem .9rem;display:flex;align-items:center;gap:.65rem;font-size:.78rem;font-weight:600;color:var(--txt);border:1px solid var(--bdr);white-space:nowrap}
+.chip-ico{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.chip-sub{font-size:.68rem;font-weight:400;color:var(--txt3);display:block;margin-top:1px}
+.hero-wave{display:block;width:100%;color:var(--bg2)}
+
+/* ── OCCASIONS ── */
+.occasions{background:var(--bg);padding:40px 0}
+.occ-label{text-align:center;margin-bottom:1.5rem}
+.occ-grid{display:flex;gap:.75rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.5rem;-webkit-overflow-scrolling:touch}
+.occ-grid::-webkit-scrollbar{display:none}
+.occ-card{flex-shrink:0;background:var(--surf);border:1.5px solid var(--bdr);border-radius:var(--r);padding:.9rem 1.25rem;text-align:center;cursor:pointer;transition:all .2s;min-width:110px}
+.occ-card:hover,.occ-card.on{border-color:var(--pri);background:var(--pri-lt)}
+.occ-card:hover .occ-icon,.occ-card.on .occ-icon{transform:scale(1.15)}
+.occ-icon{font-size:1.8rem;margin-bottom:.35rem;display:block;transition:transform .2s}
+.occ-name{font-size:.77rem;font-weight:700;color:var(--txt2)}
+.occ-card.on .occ-name{color:var(--pri)}
+
+/* ── PRODUCTS ── */
+.products{background:var(--bg2);padding:72px 0}
+.sec-hdr{text-align:center;margin-bottom:2.5rem}
+.sec-h{font-family:Georgia,serif;font-size:clamp(1.7rem,3vw,2.4rem);color:var(--txt);margin:.5rem 0 .6rem;text-wrap:balance}
+.sec-sub{font-size:.95rem;color:var(--txt2);max-width:500px;margin:0 auto}
+.product-tabs{display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem}
+.ptab{padding:.42rem 1.1rem;border-radius:var(--rp);border:1.5px solid var(--bdr);background:var(--surf);font-size:.82rem;font-weight:600;color:var(--txt2);transition:all .15s}
+.ptab:hover,.ptab.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:1.1rem}
+
+/* product card */
+.pc{background:var(--surf);border-radius:16px;border:1px solid var(--bdr);overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer;position:relative}
+.pc:hover{transform:translateY(-5px);box-shadow:var(--sh-md)}
+.pc-img{height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pc-badge{position:absolute;top:10px;left:10px;padding:.22rem .65rem;border-radius:var(--rp);font-size:.68rem;font-weight:700;letter-spacing:.03em}
+.b-hot{background:#fef3c7;color:#92400e}
+.b-new{background:#d1fae5;color:#065f46}
+.b-sale{background:#fee2e2;color:#991b1b}
+.b-trend{background:#ede9fe;color:#5b21b6}
+.pc-wl{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;border:none;background:var(--surf);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 5px rgba(0,0,0,.12);color:var(--txt3);font-size:.85rem;transition:color .15s}
+.pc-wl:hover,.pc-wl.on{color:#e11d48}
+.pc-body{padding:1rem}
+.pc-name{font-weight:700;font-size:.91rem;margin-bottom:.18rem;color:var(--txt)}
+.pc-desc{font-size:.78rem;color:var(--txt3);margin-bottom:.8rem;line-height:1.5}
+.pc-foot{display:flex;align-items:center;justify-content:space-between}
+.pc-price{font-family:Georgia,serif;font-size:1.12rem;color:var(--pri);font-weight:normal}
+.pc-was{font-size:.75rem;color:var(--txt3);text-decoration:line-through;margin-left:.3rem}
+.pc-atc{width:34px;height:34px;border-radius:50%;border:none;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}
+.pc-atc:hover{background:var(--pri-dk);transform:scale(1.1)}
+.pc-atc svg{width:15px;height:15px}
+.pc-sizes{display:flex;gap:.3rem;margin-bottom:.7rem}
+.sz{padding:.18rem .5rem;border-radius:4px;border:1px solid var(--bdr);font-size:.68rem;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .15s}
+.sz:hover,.sz.on{border-color:var(--pri);color:var(--pri)}
+
+/* ── DESIGN UPLOAD ── */
+.design-strip{background:var(--bg);padding:72px 0}
+.design-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.design-steps{display:flex;flex-direction:column;gap:1.5rem;margin:1.75rem 0 2rem}
+.ds{display:flex;align-items:flex-start;gap:1rem}
+.ds-num{width:34px;height:34px;border-radius:50%;background:var(--pri-lt);color:var(--pri);font-weight:800;font-size:.88rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Georgia,serif}
+.ds-title{font-weight:700;font-size:.92rem;margin-bottom:.2rem}
+.ds-body{font-size:.82rem;color:var(--txt2);line-height:1.55}
+.upload-box{background:var(--surf);border:2.5px dashed var(--bdr);border-radius:20px;padding:3rem 2rem;text-align:center;transition:border-color .2s,background .2s;cursor:pointer;position:relative;overflow:hidden}
+.upload-box:hover{border-color:var(--pri);background:var(--pri-lt)}
+.upload-ico{width:64px;height:64px;border-radius:16px;background:var(--pri-lt);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:var(--pri);transition:transform .2s}
+.upload-box:hover .upload-ico{transform:scale(1.08)}
+.upload-ico svg{width:28px;height:28px}
+.upload-title{font-weight:700;font-size:1.05rem;margin-bottom:.4rem}
+.upload-sub{font-size:.82rem;color:var(--txt2);margin-bottom:1.25rem}
+.upload-types{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap}
+.utype{padding:.2rem .6rem;border-radius:4px;background:#f0f0f0;font-size:.68rem;font-weight:600;color:var(--txt3)}
+.design-preview{background:#f5f5f5;border-radius:16px;margin-top:1.25rem;padding:1rem;display:flex;align-items:center;gap:.75rem;border:1px solid var(--bdr)}
+.dp-img{width:44px;height:44px;border-radius:8px;background:var(--pri-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem}
+.dp-name{font-weight:600;font-size:.85rem}
+.dp-size{font-size:.75rem;color:var(--txt3)}
+.dp-ok{margin-left:auto;color:#059669;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:4px}
+.dp-ok svg{width:14px;height:14px}
+
+/* ── QUALITY BAND ── */
+.quality{background:var(--bg2);padding:56px 0}
+.qual-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bdr);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden}
+.qual-item{background:var(--surf);padding:2rem 1.5rem;text-align:center;transition:background .2s}
+.qual-item:hover{background:var(--pri-lt)}
+.qual-ico{font-size:2rem;margin-bottom:.75rem;display:block}
+.qual-val{font-family:Georgia,serif;font-size:1.6rem;color:var(--pri);margin-bottom:.25rem}
+.qual-lbl{font-size:.8rem;color:var(--txt3);line-height:1.4}
+
+/* ── OCCASIONS PRODUCTS ── */
+.featured{background:var(--bg);padding:72px 0}
+
+/* ── BULK ── */
+.bulk{background:#fff;padding:72px 0;position:relative;overflow:hidden;border-top:1px solid var(--bdr)}
+.bulk-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;position:relative;z-index:1}
+.bulk-h{font-family:Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);color:var(--txt);margin:.5rem 0 1rem;text-wrap:balance;line-height:1.1}
+.bulk-p{color:var(--txt2);font-size:.95rem;line-height:1.75;margin-bottom:1.5rem}
+.bulk-perks{display:flex;flex-direction:column;gap:.6rem;margin-bottom:2rem}
+.bperk{display:flex;align-items:center;gap:.75rem;font-size:.87rem;color:var(--txt2)}
+.bperk svg{width:16px;height:16px;color:var(--pri);flex-shrink:0}
+.bulk-btns{display:flex;gap:.75rem;flex-wrap:wrap}
+.tier-card{background:var(--surf);border:1px solid var(--bdr);border-radius:16px;overflow:hidden}
+.tier-hdr{padding:.9rem 1.25rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);border-bottom:1px solid var(--bdr);display:grid;grid-template-columns:1fr auto auto;gap:1rem}
+.tier-row{display:grid;grid-template-columns:1fr auto auto;gap:1rem;padding:.85rem 1.25rem;align-items:center;border-bottom:1px solid var(--bdr);transition:background .15s;font-size:.88rem}
+.tier-row:last-child{border-bottom:none}
+.tier-row:hover{background:var(--pri-lt)}
+.tier-row.best{background:var(--pri-lt)}
+.tier-range{color:var(--txt)}
+.tier-price{font-family:Georgia,serif;font-size:1rem;color:var(--pri);text-align:right;font-variant-numeric:tabular-nums}
+.tier-save{font-size:.72rem;color:var(--txt3);text-align:right}
+.tier-save.good{color:#059669;font-weight:700}
+.tier-row.best .tier-range{color:var(--pri);font-weight:700}
+
+/* ── TESTIMONIALS ── */
+.reviews{background:var(--bg2);padding:72px 0}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.rev-card{background:var(--surf);border-radius:16px;border:1px solid var(--bdr);padding:1.6rem;transition:transform .2s}
+.rev-card:hover{transform:translateY(-4px)}
+.rev-stars{color:var(--acc);font-size:.95rem;letter-spacing:.05em;margin-bottom:.9rem}
+.rev-text{font-size:.87rem;color:var(--txt2);line-height:1.75;font-style:italic;margin-bottom:1.2rem}
+.rev-author{display:flex;align-items:center;gap:.75rem}
+.rev-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.rev-name{font-weight:700;font-size:.87rem}
+.rev-loc{font-size:.74rem;color:var(--txt3)}
+.rev-verified{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;color:#059669;font-weight:600;margin-top:.2rem}
+.rev-verified svg{width:11px;height:11px}
+
+/* ── GALLERY ── */
+.gallery{background:var(--bg);padding:72px 0}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:200px 200px;gap:1rem}
+.gi{border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;display:flex;align-items:center;justify-content:center}
+.gi:hover{transform:scale(1.02);box-shadow:var(--sh-lg)}
+.gi.big{grid-column:span 2;grid-row:span 2}
+.gi-label{position:absolute;bottom:0;left:0;right:0;padding:.55rem .85rem;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);color:#fff;font-size:.78rem;font-weight:600}
+.gi-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:1rem;gap:.4rem}
+.gi-em{font-size:2.2rem}
+.gi-ttl{font-weight:700;font-size:.82rem;text-align:center}
+
+/* ── FAQ ── */
+.faq{background:var(--bg2);padding:72px 0}
+.faq-wrap{max-width:700px;margin:0 auto}
+.fq{border:1.5px solid var(--bdr);border-radius:var(--r);margin-bottom:.6rem;overflow:hidden;transition:border-color .2s}
+.fq.on{border-color:var(--pri)}
+.fq-q{width:100%;background:none;border:none;text-align:left;padding:1.1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-size:.93rem;font-weight:600;color:var(--txt);transition:color .15s}
+.fq-q:hover{color:var(--pri)}
+.fq-icon{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;color:var(--txt3)}
+.fq.on .fq-icon{transform:rotate(45deg);background:var(--pri);border-color:var(--pri);color:#fff}
+.fq-a{overflow:hidden;max-height:0;transition:max-height .3s ease}
+.fq.on .fq-a{max-height:250px}
+.fq-ai{padding:0 1.25rem 1.1rem;font-size:.87rem;color:var(--txt2);line-height:1.75}
+
+/* ── NEWSLETTER ── */
+.nl{background:var(--pri-lt);padding:64px 0;text-align:center;border-top:1px solid rgba(229,90,28,.12);border-bottom:1px solid rgba(229,90,28,.12)}
+.nl-inner{max-width:520px;margin:0 auto}
+.nl-h{font-family:Georgia,serif;font-size:1.75rem;color:var(--txt);margin:.5rem 0 .6rem;text-wrap:balance}
+.nl-sub{color:var(--txt2);font-size:.9rem;margin-bottom:1.5rem}
+.nl-form{display:flex;gap:.6rem;max-width:420px;margin:0 auto}
+.nl-inp{flex:1;padding:.75rem 1.1rem;border:1.5px solid var(--bdr);border-radius:var(--rp);background:#fff;color:var(--txt);font-family:inherit;font-size:.9rem;outline:none;transition:border-color .15s}
+.nl-inp::placeholder{color:var(--txt3)}
+.nl-inp:focus{border-color:var(--pri)}
+.nl-note{font-size:.72rem;color:var(--txt3);margin-top:.6rem}
+
+/* ── FOOTER ── */
+.footer{background:var(--dark2);color:rgba(255,255,255,.55);padding:60px 0 0}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.ft-logo{display:flex;align-items:center;gap:9px;font-family:Georgia,serif;font-size:1.2rem;color:#fff;margin-bottom:.9rem}
+.ft-desc{font-size:.82rem;line-height:1.75;margin-bottom:1.2rem}
+.socials{display:flex;gap:.5rem}
+.soc{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);transition:background .15s,color .15s;font-size:.82rem;font-weight:700}
+.soc:hover{background:var(--pri);color:#fff}
+.ft-hdr{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-bottom:.9rem}
+.ft-links{display:flex;flex-direction:column;gap:.45rem}
+.ft-links a{font-size:.82rem;transition:color .15s}
+.ft-links a:hover{color:var(--pri)}
+.ft-contact{display:flex;flex-direction:column;gap:.65rem}
+.ft-ci{display:flex;align-items:flex-start;gap:.6rem;font-size:.82rem}
+.ft-ci svg{width:14px;height:14px;flex-shrink:0;margin-top:3px;color:var(--pri)}
+.ft-bot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:1rem 0}
+.ft-copy{font-size:.76rem}
+.ft-bot-links{display:flex;gap:1.5rem}
+.ft-bot-links a{font-size:.76rem;transition:color .15s}
+.ft-bot-links a:hover{color:var(--pri)}
+.pays{display:flex;gap:.4rem}
+.pay{background:rgba(255,255,255,.09);border-radius:4px;padding:2px 7px;font-size:.66rem;font-weight:700;color:rgba(255,255,255,.55)}
+
+/* ── CART ── */
+.cart-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;backdrop-filter:blur(2px)}
+.cart-ov.on{display:block}
+.cart{position:fixed;top:0;right:-420px;width:100%;max-width:420px;height:100vh;background:var(--surf);z-index:201;display:flex;flex-direction:column;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:var(--sh-lg)}
+.cart.on{right:0}
+.cart-hd{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.cart-hd h3{font-size:.97rem;font-weight:700}
+.cart-cl{width:30px;height:30px;border-radius:50%;border:none;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:var(--txt);transition:background .15s}
+.cart-cl:hover{background:#fee2e2;color:#e11d48}
+.cart-bd{flex:1;overflow-y:auto;padding:1.25rem}
+.cart-empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;color:var(--txt3);text-align:center}
+.cart-empty svg{width:48px;height:48px;opacity:.25}
+.cart-empty p{font-weight:600;font-size:.9rem}
+.cart-empty small{font-size:.78rem}
+.ci{display:flex;gap:.85rem;align-items:center;padding:.7rem;background:#f5f5f5;border-radius:10px;margin-bottom:.55rem}
+.ci-img{width:48px;height:48px;background:var(--surf);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.25rem}
+.ci-info{flex:1}
+.ci-name{font-weight:600;font-size:.83rem}
+.ci-price{font-size:.78rem;color:var(--pri);font-weight:600}
+.ci-rm{background:none;border:none;color:var(--txt3);transition:color .15s;padding:2px;display:flex;align-items:center;justify-content:center}
+.ci-rm:hover{color:#e11d48}
+.cart-ft{padding:1.25rem 1.5rem;border-top:1px solid var(--bdr)}
+.cart-sub{display:flex;justify-content:space-between;font-weight:700;font-size:.92rem;margin-bottom:.9rem}
+.cart-note{text-align:center;font-size:.72rem;color:var(--txt3);margin-top:.55rem}
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem}
+.wa-btn{width:52px;height:52px;border-radius:50%;background:#25D366;border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,.4);transition:transform .2s,box-shadow .2s}
+.wa-btn:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(37,211,102,.5)}
+.wa-btn svg{width:26px;height:26px}
+.wa-tip{background:var(--dark);color:#fff;border-radius:var(--rp);padding:.45rem .85rem;font-size:.78rem;font-weight:600;white-space:nowrap;pointer-events:none;opacity:0;transform:translateX(8px);transition:opacity .2s,transform .2s}
+.wa-float:hover .wa-tip{opacity:1;transform:translateX(0)}
+.scrtop{position:fixed;bottom:5.5rem;right:1.5rem;width:42px;height:42px;border-radius:50%;border:none;background:#f5f5f5;color:var(--txt2);display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);opacity:0;transform:translateY(10px);transition:all .2s;z-index:49}
+.scrtop.on{opacity:1;transform:translateY(0)}
+.scrtop:hover{background:var(--pri-lt);color:var(--pri)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:#fff;padding:.65rem 1.2rem;border-radius:var(--rp);font-size:.83rem;font-weight:600;z-index:300;display:flex;align-items:center;gap:8px;box-shadow:var(--sh-lg);transition:transform .25s cubic-bezier(.4,0,.2,1);white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0)}
+.toast-ico{color:var(--acc)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero-inner,.design-inner,.bulk-inner{grid-template-columns:1fr;gap:2.5rem}
+  .hero-vis{display:none}
+  .qual-grid{grid-template-columns:repeat(2,1fr)}
+  .rev-grid{grid-template-columns:1fr 1fr}
+  .ft-grid{grid-template-columns:1fr 1fr;gap:2rem}
+  .gal-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}
+  .gi.big{grid-column:span 1;grid-row:span 1}
+}
+@media(max-width:640px){
+  .nav-links,.nav-end .btn{display:none}
+  .hamburger{display:flex}
+  section,.hero,.bulk,.quality,.nl,.gallery,.reviews,.faq,.design-strip,.occasions,.featured,.products{padding:52px 0}
+  .hero{padding-top:52px}
+  .rev-grid,.qual-grid{grid-template-columns:1fr}
+  .ft-grid{grid-template-columns:1fr}
+  .nl-form{flex-direction:column}
+  .nl-inp,.nl-form .btn{border-radius:var(--r);width:100%;justify-content:center}
+  .ft-bot{flex-direction:column;text-align:center}
+  .gal-grid{grid-template-columns:1fr 1fr}
+  .hero-btns{flex-direction:column}
+  .hero-btns .btn{justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .mug-main{animation:none}
+  *{transition-duration:.01ms!important}
+}
+</style>
+
+
+<!-- HEADER -->
+<header class="header" id="hdr">
+  <nav class="nav wrap">
+    <a href="#home" class="logo">Custom<em>Mugs</em></a>
+    <ul class="nav-links">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#design">Design Yours</a></li>
       <li><a href="#bulk">Bulk Orders</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#faq">Help</a></li>
     </ul>
-
-    <div class="nav-actions">
-      <button class="nav-icon-btn" aria-label="Search">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-        </svg>
+    <div class="nav-end">
+      <button class="icon-btn" id="cart-btn" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><circle cx="10" cy="21" r="1"/><circle cx="21" cy="21" r="1"/></svg>
+        <span class="cart-badge" id="cbadge">0</span>
       </button>
-      <button class="nav-icon-btn cart-btn" aria-label="Cart">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 01-8 0"/>
-        </svg>
-        <span class="cart-count" style="display:none">0</span>
-      </button>
-      <a href="#products" class="btn btn-primary">Design Yours</a>
-      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+      <a href="#shop" class="btn btn-pri btn-sm">Start Designing</a>
+      <button class="hamburger" id="burger" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 </header>
 
-<!-- Mobile Nav -->
-<nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
-  <a href="#products">Shop</a>
-  <a href="#how-it-works">How It Works</a>
-  <a href="#gallery">Gallery</a>
+<!-- MOBILE NAV -->
+<nav class="mob-nav" id="mob-nav">
+  <button class="mob-close" id="mob-close" aria-label="Close">×</button>
+  <a href="#shop">Shop</a>
+  <a href="#design">Design Yours</a>
   <a href="#bulk">Bulk Orders</a>
-  <a href="#faq">FAQ</a>
-  <a href="#products" class="btn btn-primary" style="text-align:center;margin-top:.5rem">Design Yours</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#faq">Help</a>
+  <a href="#shop" class="btn btn-pri" style="text-align:center;justify-content:center;margin-top:.75rem">Start Designing</a>
 </nav>
 
-<!-- ========== HERO ========== -->
+<!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        SA's #1 Custom Mug Printer
-      </div>
-      <h1 class="hero-title">
-        Your Design.<br/>
-        Your <span class="highlight">Perfect Mug.</span>
-      </h1>
-      <p class="hero-desc">
-        Upload a photo, add your artwork, or let our designers help you create something truly unique. Premium quality mugs printed and delivered across South Africa.
-      </p>
-      <div class="hero-cta">
-        <a href="#products" class="btn btn-primary btn-lg">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-          Start Designing
-        </a>
-        <a href="#gallery" class="btn btn-outline btn-lg">View Gallery</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-num">2–4</div>
-          <div class="stat-label">Day Delivery</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">100%</div>
-          <div class="stat-label">Satisfaction</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">SA</div>
-          <div class="stat-label">Printed Locally</div>
-        </div>
+  <div class="wrap hero-inner">
+    <div>
+
+      <h1 class="hero-h serif">Design your own<br>custom mug — <span style="color:#F5A623">it's easy.</span></h1>
+      <p class="hero-p">Upload a photo, add your text, pick your mug. We print and deliver across South Africa in 2–4 business days. From R149.</p>
+      <div class="hero-btns">
+        <a href="#shop" class="btn btn-pri btn-lg">Design Your Mug</a>
+        <a href="#gallery" class="btn btn-out btn-lg">See Customer Designs</a>
       </div>
     </div>
-
-    <div class="hero-visual">
-      <div style="position:relative; width:100%; max-width:480px;">
-        <!-- Main mug display -->
-        <div style="background:linear-gradient(135deg,#fff8f4,#fdf0e8);border-radius:24px;padding:3rem 2rem;text-align:center;box-shadow:0 20px 60px rgba(232,93,4,0.15);" class="mug-float">
-          <svg width="200" height="220" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Mug body -->
-            <rect x="30" y="40" width="120" height="150" rx="14" fill="#e85d04"/>
-            <rect x="38" y="48" width="104" height="134" rx="10" fill="#f97316"/>
-            <!-- Handle -->
-            <path d="M150 80 Q185 80 185 115 Q185 150 150 150" stroke="#e85d04" stroke-width="16" fill="none" stroke-linecap="round"/>
-            <path d="M150 80 Q178 80 178 115 Q178 150 150 150" stroke="#fed7aa" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <!-- Design on mug - heart -->
-            <circle cx="90" cy="105" r="38" fill="white" opacity="0.15"/>
-            <path d="M90 130 C90 130 55 110 55 88 C55 75 65 68 75 68 C82 68 88 73 90 77 C92 73 98 68 105 68 C115 68 125 75 125 88 C125 110 90 130 90 130Z" fill="white"/>
-            <!-- Steam -->
-            <path d="M60 30 Q55 20 60 10" stroke="#fb923c" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M80 28 Q75 16 80 4" stroke="#fb923c" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M100 30 Q95 20 100 10" stroke="#fb923c" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <!-- Base shine -->
-            <ellipse cx="90" cy="190" rx="55" ry="8" fill="#e85d04" opacity="0.2"/>
+    <div class="hero-vis">
+      <div class="hero-mug-wrap">
+        <div class="mug-main" style="display:flex;justify-content:center">
+          <svg width="300" height="320" viewBox="0 0 300 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- drop shadow -->
+            <ellipse cx="148" cy="305" rx="88" ry="12" fill="#00000014"/>
+            <!-- mug body -->
+            <rect x="45" y="52" width="175" height="240" rx="22" fill="#F8F6F2" stroke="#DDD8D0" stroke-width="2.5"/>
+            <!-- right-side depth shadow -->
+            <rect x="193" y="60" width="28" height="224" rx="0 18 18 0" fill="#00000007"/>
+            <!-- handle outer -->
+            <path d="M220 108 C290 108 290 236 220 236" stroke="#D5D0C6" stroke-width="36" fill="none" stroke-linecap="round"/>
+            <!-- handle inner -->
+            <path d="M220 108 C272 108 272 236 220 236" stroke="#F2EFE9" stroke-width="18" fill="none" stroke-linecap="round"/>
+            <!-- rim highlight -->
+            <rect x="45" y="52" width="175" height="24" rx="22 22 0 0" fill="white" opacity="0.7"/>
+            <!-- bottom lip -->
+            <rect x="45" y="268" width="175" height="24" rx="0 0 22 22" fill="#E8E4DC" opacity="0.6"/>
+            <!-- print wrap area -->
+            <rect x="62" y="84" width="140" height="172" rx="10" fill="white" opacity="0.35"/>
+            <!-- large heart design printed on mug -->
+            <path d="M148 198 C148 198 96 170 96 130 C96 110 110 98 126 98 C136 98 148 106 148 116 C148 106 160 98 170 98 C186 98 200 110 200 130 C200 170 148 198 148 198Z" fill="#E55A1C" fill-opacity="0.55"/>
+            <!-- custom text below heart -->
+            <text x="148" y="220" text-anchor="middle" font-size="13" fill="#8B4513" font-weight="400" opacity="0.5" font-family="Georgia,serif" font-style="italic">made with love</text>
+            <!-- steam lines -->
+            <path d="M110 42 Q104 26 110 10" stroke="#D0C8BE" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M148 36 Q142 20 148 4" stroke="#D0C8BE" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M186 42 Q180 26 186 10" stroke="#D0C8BE" stroke-width="3" fill="none" stroke-linecap="round"/>
           </svg>
-          <p style="font-weight:700;color:#1a1a2e;margin-top:0.75rem;font-family:'Poppins',sans-serif;">Your design here</p>
-          <p style="font-size:0.82rem;color:#999;margin-top:0.25rem;">From R149</p>
         </div>
-
-        <!-- Floating badges -->
-        <div class="hero-badge-card" style="top:-16px;right:-16px;background:#fff;">
-          <div style="width:36px;height:36px;border-radius:50%;background:#d1fae5;display:flex;align-items:center;justify-content:center;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#065f46" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-          </div>
-          <div>
-            <div style="font-size:0.78rem;font-weight:700;color:#1a1a2e">Full-wrap print</div>
-            <div style="font-size:0.72rem;color:#999">360° sublimation</div>
-          </div>
+        <div class="hero-chip" style="top:10px;right:-5px">
+          <div class="chip-ico" style="background:#d1fae5"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8 L6.5 11.5 L13 5" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>Full-wrap sublimation<span class="chip-sub">360° print</span></div>
         </div>
-
-        <div class="hero-badge-card" style="bottom:20px;left:-20px;background:#fff;">
-          <div style="width:36px;height:36px;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="7" width="13" height="9" rx="2" stroke="#D97706" stroke-width="1.4" fill="none"/><path d="M14 10h3.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H14" stroke="#D97706" stroke-width="1.4"/><circle cx="5" cy="17" r="1.5" fill="#D97706"/><circle cx="11" cy="17" r="1.5" fill="#D97706"/></svg></div>
-          <div>
-            <div style="font-size:0.78rem;font-weight:700;color:#1a1a2e">Fast Delivery</div>
-            <div style="font-size:0.72rem;color:#999">2–4 days nationwide</div>
-          </div>
+        <div class="hero-chip" style="bottom:30px;left:-10px">
+          <div class="chip-ico" style="background:#fef3c7"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="6" width="11" height="7" rx="1.5" stroke="#D97706" stroke-width="1.4" fill="none"/><path d="M12 8.5h2.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H12" stroke="#D97706" stroke-width="1.4"/><circle cx="4" cy="14" r="1.2" fill="#D97706" opacity=".6"/><circle cx="10" cy="14" r="1.2" fill="#D97706" opacity=".6"/></svg></div>
+          <div>Fast delivery<span class="chip-sub">2–4 days nationwide</span></div>
+        </div>
+        <div class="hero-chip" style="top:50%;left:-20px;transform:translateY(-50%)">
+          <div class="chip-ico" style="background:#ede9fe"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#7C3AED" stroke-width="1.4" fill="none"/><path d="M2 8 H14" stroke="#7C3AED" stroke-width="1" opacity=".5"/><path d="M8 2 C6 4 5 6 5 8 C5 10 6 12 8 14" stroke="#7C3AED" stroke-width="1" fill="none"/><path d="M8 2 C10 4 11 6 11 8 C11 10 10 12 8 14" stroke="#7C3AED" stroke-width="1" fill="none"/></svg></div>
+          <div>Proudly SA<span class="chip-sub">Printed locally</span></div>
         </div>
       </div>
     </div>
   </div>
+  <svg class="hero-wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="currentColor"/></svg>
 </section>
 
-<!-- ========== HOW IT WORKS ========== -->
-<section class="how-it-works" id="how-it-works">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-label">Simple Process</span>
-      <h2 class="section-title">Create Your Mug in 3 Easy Steps</h2>
-      <p class="section-sub">From design to doorstep — it's never been easier to get a personalised mug.</p>
-    </div>
-
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">01</div>
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
-          </svg>
-        </div>
-        <div class="step-title">Choose Your Mug</div>
-        <div class="step-desc">Browse our range — classic ceramic, travel mugs, magic colour-changing, glass, and more. Pick your size and shape.</div>
-      </div>
-
-      <div class="step-card">
-        <div class="step-num">02</div>
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/>
-          </svg>
-        </div>
-        <div class="step-title">Upload Your Design</div>
-        <div class="step-desc">Upload a photo, logo, or artwork. Use our online editor to add text, stickers, and filters. No design skills needed!</div>
-      </div>
-
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M5 12h14m-7-7l7 7-7 7"/>
-          </svg>
-        </div>
-        <div class="step-title">We Print & Deliver</div>
-        <div class="step-desc">We print your mug using premium sublimation technology, then dispatch it in secure packaging. Delivery in 2–4 business days.</div>
-      </div>
-
-      <div class="step-card">
-        <div class="step-num">04</div>
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-          </svg>
-        </div>
-        <div class="step-title">Love It Guaranteed</div>
-        <div class="step-desc">Not happy with your order? We'll reprint or refund — no questions asked. Your satisfaction is our priority.</div>
-      </div>
+<!-- OCCASIONS -->
+<section class="occasions" id="occasions">
+  <div class="wrap">
+    <div class="occ-label"><span class="eyebrow">Shop by occasion</span></div>
+    <div class="occ-grid">
+      <div class="occ-card on" data-occ="all"><div class="occ-name">All</div></div>
+      <div class="occ-card" data-occ="birthday"><div class="occ-name">Birthday</div></div>
+      <div class="occ-card" data-occ="wedding"><div class="occ-name">Wedding</div></div>
+      <div class="occ-card" data-occ="valentine"><div class="occ-name">Valentine's</div></div>
+      <div class="occ-card" data-occ="mom"><div class="occ-name">Mother's Day</div></div>
+      <div class="occ-card" data-occ="dad"><div class="occ-name">Father's Day</div></div>
+      <div class="occ-card" data-occ="baby"><div class="occ-name">Baby Shower</div></div>
+      <div class="occ-card" data-occ="corporate"><div class="occ-name">Corporate</div></div>
+      <div class="occ-card" data-occ="christmas"><div class="occ-name">Christmas</div></div>
+      <div class="occ-card" data-occ="graduation"><div class="occ-name">Graduation</div></div>
+      <div class="occ-card" data-occ="pet"><div class="occ-name">Pet Lovers</div></div>
+      <div class="occ-card" data-occ="sport"><div class="occ-name">Sports Fan</div></div>
     </div>
   </div>
 </section>
 
-<!-- ========== PRODUCTS ========== -->
-<section class="products" id="products">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-label">Our Range</span>
-      <h2 class="section-title">Shop Custom Mugs</h2>
-      <p class="section-sub">Premium quality across every style. All dishwasher safe, all colour-vivid, all made with love.</p>
+<!-- SHOP -->
+<section class="products" id="shop">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Our Range</div>
+      <h2 class="sec-h serif">Premium custom mugs</h2>
+      <p class="sec-sub">Every style dishwasher-safe, every colour vivid, every print guaranteed.</p>
     </div>
-
-    <div class="product-tabs" role="tablist">
-      <button class="tab-btn active" data-filter="all" role="tab">All Mugs</button>
-      <button class="tab-btn" data-filter="ceramic" role="tab">Ceramic</button>
-      <button class="tab-btn" data-filter="travel" role="tab">Travel</button>
-      <button class="tab-btn" data-filter="magic" role="tab">Magic</button>
-      <button class="tab-btn" data-filter="glass" role="tab">Glass</button>
-      <button class="tab-btn" data-filter="corporate" role="tab">Corporate</button>
+    <div class="product-tabs">
+      <button class="ptab on" data-f="all">All</button>
+      <button class="ptab" data-f="ceramic">Ceramic</button>
+      <button class="ptab" data-f="travel">Travel</button>
+      <button class="ptab" data-f="magic">Magic</button>
+      <button class="ptab" data-f="glass">Glass</button>
+      <button class="ptab" data-f="enamel">Enamel</button>
+      <button class="ptab" data-f="corporate">Corporate</button>
     </div>
+    <div class="pgrid">
 
-    <div class="products-grid">
-
-      <!-- Classic Ceramic -->
-      <article class="product-card" data-category="ceramic">
-        <div class="product-img" style="background:linear-gradient(160deg,#F5F5F0,#ECEAE5)">
-          <span class="product-badge badge-popular">Popular</span>
-          <button class="product-wishlist" aria-label="Add to wishlist">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </button>
-          <svg width="108" height="126" viewBox="0 0 108 126" fill="none">
+      <article class="pc" data-cat="ceramic">
+        <div class="pc-img" style="background:linear-gradient(160deg,#F5F5F0,#ECEAE5)">
+          <span class="pc-badge b-hot">Best Seller</span>
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="108" height="126" viewBox="0 0 108 126" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="46" cy="118" rx="34" ry="6" fill="#00000010"/>
             <rect x="8" y="14" width="76" height="100" rx="10" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.5"/>
             <rect x="84" y="20" width="12" height="88" rx="0 8 8 0" fill="#00000006"/>
@@ -251,28 +513,22 @@
             <text x="46" y="86" text-anchor="middle" font-size="8" fill="#C44A12" font-weight="600" opacity="0.6" font-family="Georgia,serif">custom</text>
           </svg>
         </div>
-        <div class="product-info">
-          <div class="product-name">Classic Ceramic Mug</div>
-          <div class="product-desc">330ml · Dishwasher safe · Full-wrap print</div>
-          <div class="product-footer">
-            <div>
-              <span class="product-price" data-price="149">R149</span>
-            </div>
-            <button class="add-to-cart" aria-label="Add Classic Ceramic Mug to cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
+        <div class="pc-body">
+          <div class="pc-name">Classic Ceramic Mug</div>
+          <div class="pc-desc">Full-wrap sublimation · Dishwasher safe · Food grade</div>
+          <div class="pc-sizes"><div class="sz on">300ml</div><div class="sz">440ml</div><div class="sz">600ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="149">R149</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
         </div>
       </article>
 
-      <!-- Magic Mug -->
-      <article class="product-card" data-category="magic">
-        <div class="product-img" style="background:linear-gradient(160deg,#1A1A2E,#2D1B4E)">
-          <span class="product-badge badge-new">New</span>
-          <button class="product-wishlist" aria-label="Add to wishlist">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </button>
-          <svg width="108" height="126" viewBox="0 0 108 126" fill="none">
+      <article class="pc" data-cat="magic">
+        <div class="pc-img" style="background:linear-gradient(160deg,#1A1A2E,#2D1B4E)">
+          <span class="pc-badge b-new">New</span>
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="108" height="126" viewBox="0 0 108 126" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="46" cy="118" rx="34" ry="6" fill="#00000030"/>
             <rect x="8" y="14" width="76" height="100" rx="10" fill="#1C1C1C" stroke="#333" stroke-width="1.5"/>
             <rect x="84" y="20" width="12" height="88" rx="0 8 8 0" fill="#ffffff08"/>
@@ -281,95 +537,116 @@
             <rect x="8" y="14" width="76" height="12" rx="10 10 0 0" fill="white" opacity="0.06"/>
             <text x="46" y="68" text-anchor="middle" font-size="11" fill="white" opacity="0.22" font-family="Georgia,serif">add hot water</text>
             <text x="46" y="80" text-anchor="middle" font-size="8" fill="white" opacity="0.15">to reveal design</text>
+            <circle cx="46" cy="54" r="10" fill="white" opacity="0.05" stroke="white" stroke-width="0.5" stroke-opacity="0.2"/>
           </svg>
         </div>
-        <div class="product-info">
-          <div class="product-name">Magic Colour-Change Mug</div>
-          <div class="product-desc">330ml · Reveals design when hot · Black to colour</div>
-          <div class="product-footer">
-            <div>
-              <span class="product-price" data-price="199">R199</span>
-            </div>
-            <button class="add-to-cart" aria-label="Add Magic Mug to cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
+        <div class="pc-body">
+          <div class="pc-name">Magic Colour-Change Mug</div>
+          <div class="pc-desc">Black when cold · Reveals your design when hot</div>
+          <div class="pc-sizes"><div class="sz on">300ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="199">R199</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
         </div>
       </article>
 
-      <!-- Travel Mug -->
-      <article class="product-card" data-category="travel">
-        <div class="product-img" style="background:linear-gradient(160deg,#ECEFF4,#DDE3EC)">
-          <button class="product-wishlist" aria-label="Add to wishlist">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </button>
-          <svg width="80" height="134" viewBox="0 0 80 134" fill="none">
+      <article class="pc" data-cat="travel">
+        <div class="pc-img" style="background:linear-gradient(160deg,#ECEFF4,#DDE3EC)">
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="80" height="134" viewBox="0 0 80 134" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="40" cy="127" rx="26" ry="5" fill="#00000010"/>
-            <rect x="16" y="10" width="48" height="112" rx="12" fill="#F0F2F5" stroke="#C8CAD0" stroke-width="1.5"/>
+            <rect x="16" y="10" width="48" height="112" rx="12" fill="url(#steel-grad)" stroke="#C8CAD0" stroke-width="1.5"/>
             <rect x="22" y="2" width="36" height="14" rx="7" fill="#B8BBBF" stroke="#A8ABAF" stroke-width="1"/>
             <circle cx="40" cy="9" r="3.5" fill="#D8DADF"/>
             <rect x="16" y="10" width="48" height="16" rx="12 12 0 0" fill="white" opacity="0.3"/>
             <rect x="16" y="104" width="48" height="18" rx="0 0 12 12" fill="#C8CAD0" opacity="0.5"/>
             <rect x="22" y="34" width="36" height="52" rx="4" fill="white" opacity="0.15"/>
-            <text x="40" y="63" text-anchor="middle" font-size="9" fill="#4A4E58" font-weight="600" opacity="0.5" font-family="system-ui,sans-serif" letter-spacing="1">YOUR</text>
-            <text x="40" y="74" text-anchor="middle" font-size="9" fill="#4A4E58" font-weight="600" opacity="0.5" font-family="system-ui,sans-serif" letter-spacing="1">DESIGN</text>
+            <rect x="22" y="34" width="36" height="4" fill="white" opacity="0.2"/>
+            <text x="40" y="65" text-anchor="middle" font-size="9" fill="white" font-weight="600" opacity="0.55" font-family="system-ui,sans-serif" letter-spacing="1">YOUR</text>
+            <text x="40" y="76" text-anchor="middle" font-size="9" fill="white" font-weight="600" opacity="0.55" font-family="system-ui,sans-serif" letter-spacing="1">DESIGN</text>
+            <defs>
+              <linearGradient id="steel-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+                <stop offset="0%" stop-color="#D8DADF"/>
+                <stop offset="35%" stop-color="#F0F2F5"/>
+                <stop offset="65%" stop-color="#E8EAEE"/>
+                <stop offset="100%" stop-color="#C8CACC"/>
+              </linearGradient>
+            </defs>
           </svg>
         </div>
-        <div class="product-info">
-          <div class="product-name">Travel Tumbler</div>
-          <div class="product-desc">450ml · Double-wall insulated · Leak-proof lid</div>
-          <div class="product-footer">
-            <div>
-              <span class="product-price" data-price="289">R289</span>
-            </div>
-            <button class="add-to-cart" aria-label="Add Travel Tumbler to cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
+        <div class="pc-body">
+          <div class="pc-name">Travel Tumbler</div>
+          <div class="pc-desc">Double-wall insulated · Leak-proof lid · Keeps hot 6h</div>
+          <div class="pc-sizes"><div class="sz on">350ml</div><div class="sz">500ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="289">R289</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
         </div>
       </article>
 
-      <!-- Glass Mug -->
-      <article class="product-card" data-category="glass">
-        <div class="product-img" style="background:linear-gradient(160deg,#EDF6F0,#D8EDE0)">
-          <span class="product-badge badge-new">New</span>
-          <button class="product-wishlist" aria-label="Add to wishlist">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </button>
-          <svg width="108" height="122" viewBox="0 0 108 122" fill="none">
+      <article class="pc" data-cat="glass">
+        <div class="pc-img" style="background:linear-gradient(160deg,#EDF6F0,#D8EDE0)">
+          <span class="pc-badge b-sale">20% Off</span>
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="108" height="122" viewBox="0 0 108 122" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="46" cy="115" rx="30" ry="5" fill="#00000010"/>
-            <rect x="12" y="12" width="68" height="98" rx="8" fill="#E8F5EE" fill-opacity="0.5" stroke="#B8D8C4" stroke-width="2"/>
-            <rect x="14" y="14" width="64" height="94" rx="7" fill="white" fill-opacity="0.2"/>
+            <rect x="12" y="12" width="68" height="98" rx="8" fill="#E8F5EE" fill-opacity="0.4" stroke="#B8D8C4" stroke-width="2"/>
+            <rect x="14" y="14" width="64" height="94" rx="7" fill="white" fill-opacity="0.18"/>
             <path d="M80 34 C104 34 104 88 80 88" stroke="#C4DAC8" stroke-width="14" fill="none" stroke-linecap="round"/>
             <path d="M80 34 C98 34 98 88 80 88" stroke="#E8F5EE" stroke-width="7" fill="none" stroke-linecap="round" stroke-opacity="0.6"/>
             <rect x="12" y="12" width="68" height="10" rx="8 8 0 0" fill="white" opacity="0.5"/>
+            <rect x="12" y="100" width="68" height="10" rx="0 0 8 8" fill="#C8DED0" opacity="0.4"/>
+            <rect x="20" y="30" width="52" height="62" rx="5" fill="#94D4A8" fill-opacity="0.2"/>
             <circle cx="46" cy="56" r="16" fill="#4CAF72" fill-opacity="0.18" stroke="#4CAF72" stroke-width="0.8" stroke-opacity="0.35"/>
             <text x="46" y="60" text-anchor="middle" font-size="8" fill="#2D7D4A" font-weight="600" opacity="0.6" font-family="Georgia,serif">glass latte</text>
           </svg>
         </div>
-        <div class="product-info">
-          <div class="product-name">Glass Latte Mug</div>
-          <div class="product-desc">350ml · Borosilicate glass · Heat resistant</div>
-          <div class="product-footer">
-            <div>
-              <span class="product-price" data-price="229">R229</span>
-              <span class="product-price-old">R279</span>
-            </div>
-            <button class="add-to-cart" aria-label="Add Glass Mug to cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
+        <div class="pc-body">
+          <div class="pc-name">Glass Latte Mug</div>
+          <div class="pc-desc">Borosilicate glass · Heat resistant · 350ml</div>
+          <div class="pc-sizes"><div class="sz on">350ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="229">R229</span><span class="pc-was">R279</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
         </div>
       </article>
 
-      <!-- Corporate Mug -->
-      <article class="product-card" data-category="corporate">
-        <div class="product-img" style="background:linear-gradient(160deg,#EDF4F4,#DCE8E6)">
-          <span class="product-badge badge-popular">Best Value</span>
-          <button class="product-wishlist" aria-label="Add to wishlist">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </button>
-          <svg width="108" height="126" viewBox="0 0 108 126" fill="none">
+      <article class="pc" data-cat="enamel">
+        <div class="pc-img" style="background:linear-gradient(160deg,#F5F0E8,#EDE4D4)">
+          <span class="pc-badge b-trend">Trending</span>
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="116" height="118" viewBox="0 0 116 118" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="111" rx="36" ry="6" fill="#00000010"/>
+            <rect x="8" y="10" width="80" height="96" rx="10" fill="#F0EAE0" stroke="#C8B89A" stroke-width="2"/>
+            <rect x="8" y="10" width="80" height="96" rx="10" fill="none" stroke="#DDD0BC" stroke-width="4"/>
+            <path d="M88 30 C112 30 112 86 88 86" stroke="#C0AC90" stroke-width="16" fill="none" stroke-linecap="round"/>
+            <path d="M88 30 C106 30 106 86 88 86" stroke="#EAE0D2" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <rect x="8" y="10" width="80" height="12" rx="10 10 0 0" fill="white" opacity="0.4"/>
+            <rect x="18" y="28" width="60" height="64" rx="6" fill="#D4C4A8" fill-opacity="0.3"/>
+            <path d="M18 52 Q30 44 42 50 Q54 56 66 48 Q78 40 88 46" stroke="#B8A080" stroke-width="1.5" fill="none" stroke-opacity="0.5"/>
+            <path d="M18 60 Q30 52 42 58 Q54 64 66 56 Q78 48 88 54" stroke="#B8A080" stroke-width="1.5" fill="none" stroke-opacity="0.4"/>
+            <text x="50" y="80" text-anchor="middle" font-size="8" fill="#8B7355" font-weight="700" opacity="0.55" font-family="Georgia,serif">ENAMEL</text>
+          </svg>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">Enamel Camping Mug</div>
+          <div class="pc-desc">Vintage feel · Durable enamel coat · 300ml</div>
+          <div class="pc-sizes"><div class="sz on">300ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="179">R179</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="pc" data-cat="corporate">
+        <div class="pc-img" style="background:linear-gradient(160deg,#EDF4F4,#DCE8E6)">
+          <span class="pc-badge b-hot">Bulk Deals</span>
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="108" height="126" viewBox="0 0 108 126" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="46" cy="118" rx="34" ry="6" fill="#00000010"/>
             <rect x="8" y="14" width="76" height="100" rx="10" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.5"/>
             <rect x="84" y="20" width="12" height="88" rx="0 8 8 0" fill="#00000006"/>
@@ -379,546 +656,552 @@
             <rect x="22" y="38" width="48" height="52" rx="5" fill="#0F766E" fill-opacity="0.08" stroke="#0F766E" stroke-width="0.8" stroke-opacity="0.25"/>
             <rect x="30" y="52" width="32" height="2.5" rx="1" fill="#0F766E" fill-opacity="0.4"/>
             <rect x="34" y="57" width="24" height="2" rx="1" fill="#0F766E" fill-opacity="0.25"/>
+            <rect x="36" y="62" width="20" height="1.5" rx="1" fill="#0F766E" fill-opacity="0.18"/>
             <text x="46" y="48" text-anchor="middle" font-size="7.5" fill="#0F766E" font-weight="700" opacity="0.45" font-family="system-ui,sans-serif" letter-spacing="0.5">YOUR LOGO</text>
           </svg>
         </div>
-        <div class="product-info">
-          <div class="product-name">Corporate Branded Mug</div>
-          <div class="product-desc">330ml · Bulk pricing · Logo printing from 10 units</div>
-          <div class="product-footer">
-            <div>
-              <span class="product-price" data-price="129">From R129</span>
-            </div>
-            <button class="add-to-cart" aria-label="Add Corporate Mug to cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
+        <div class="pc-body">
+          <div class="pc-name">Corporate Branded Mug</div>
+          <div class="pc-desc">From 10 units · Consistent quality · Logo print</div>
+          <div class="pc-sizes"><div class="sz on">300ml</div><div class="sz">440ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="129">From R129</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
         </div>
       </article>
 
-      <!-- Panoramic Mug -->
-      <article class="product-card" data-category="ceramic">
-        <div class="product-img" style="background:linear-gradient(160deg,#F5F2EC,#EDE8DE)">
-          <span class="product-badge badge-sale">Sale</span>
-          <button class="product-wishlist" aria-label="Add to wishlist">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </button>
-          <svg width="130" height="114" viewBox="0 0 130 114" fill="none">
+      <article class="pc" data-cat="ceramic">
+        <div class="pc-img" style="background:linear-gradient(160deg,#F5F2EC,#EDE8DE)">
+          <span class="pc-badge b-sale">25% Off</span>
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="130" height="114" viewBox="0 0 130 114" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="55" cy="107" rx="42" ry="6" fill="#00000010"/>
             <rect x="6" y="12" width="96" height="90" rx="10" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.5"/>
             <rect x="102" y="18" width="14" height="78" rx="0 8 8 0" fill="#00000006"/>
             <path d="M102 30 C128 30 128 90 102 90" stroke="#D4D0C8" stroke-width="16" fill="none" stroke-linecap="round"/>
             <path d="M102 30 C122 30 122 90 102 90" stroke="#F4F2EF" stroke-width="8" fill="none" stroke-linecap="round"/>
             <rect x="6" y="12" width="96" height="12" rx="10 10 0 0" fill="white" opacity="0.8"/>
+            <rect x="16" y="30" width="76" height="64" rx="5" fill="#3B82F6" fill-opacity="0.06"/>
             <rect x="16" y="30" width="76" height="22" rx="5 5 0 0" fill="#1E3A5F" fill-opacity="0.14"/>
             <rect x="16" y="52" width="76" height="22" fill="#F59E0B" fill-opacity="0.12"/>
             <rect x="16" y="74" width="76" height="20" rx="0 0 5 5" fill="#1E3A5F" fill-opacity="0.08"/>
             <text x="55" y="44" text-anchor="middle" font-size="8" fill="#1E3A5F" font-weight="700" opacity="0.45" font-family="Georgia,serif">PANORAMIC</text>
+            <text x="55" y="65" text-anchor="middle" font-size="7.5" fill="#92400E" opacity="0.4" font-family="Georgia,serif">PHOTO PRINT</text>
           </svg>
         </div>
-        <div class="product-info">
-          <div class="product-name">Panoramic Photo Mug</div>
-          <div class="product-desc">330ml · 360° wrap print · Large format</div>
-          <div class="product-footer">
-            <div>
-              <span class="product-price" data-price="169">R169</span>
-              <span class="product-price-old">R209</span>
-            </div>
-            <button class="add-to-cart" aria-label="Add Panoramic Mug to cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
+        <div class="pc-body">
+          <div class="pc-name">Panoramic Photo Mug</div>
+          <div class="pc-desc">Full 360° landscape print · 330ml</div>
+          <div class="pc-sizes"><div class="sz on">330ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="169">R169</span><span class="pc-was">R225</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="pc" data-cat="travel">
+        <div class="pc-img" style="background:linear-gradient(160deg,#EAF3EC,#D5E8D8)">
+          <span class="pc-badge b-new">New</span>
+          <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+          <svg width="82" height="140" viewBox="0 0 82 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="41" cy="133" rx="26" ry="5" fill="#00000010"/>
+            <rect x="15" y="14" width="52" height="116" rx="11" fill="#F4F2EE" stroke="#D0CCBC" stroke-width="1.5"/>
+            <rect x="22" y="2" width="38" height="16" rx="8" fill="#C4C0B0" stroke="#B4B0A0" stroke-width="1"/>
+            <rect x="28" y="2" width="26" height="7" rx="3.5" fill="#D4D0C0"/>
+            <rect x="15" y="14" width="52" height="14" rx="11 11 0 0" fill="white" opacity="0.5"/>
+            <rect x="15" y="118" width="52" height="12" rx="0 0 11 11" fill="#C0BCA8" opacity="0.5"/>
+            <rect x="23" y="36" width="36" height="68" rx="4" fill="#4CAF72" fill-opacity="0.1"/>
+            <circle cx="41" cy="62" r="14" fill="none" stroke="#4CAF72" stroke-width="1.2" stroke-opacity="0.4"/>
+            <path d="M41 52 L44 58 L50 59 L45 64 L46 70 L41 67 L36 70 L37 64 L32 59 L38 58 Z" fill="#4CAF72" fill-opacity="0.3"/>
+            <text x="41" y="84" text-anchor="middle" font-size="7" fill="#166534" font-weight="700" opacity="0.45" font-family="system-ui,sans-serif" letter-spacing="1">ECO FLASK</text>
+          </svg>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">Eco Flask</div>
+          <div class="pc-desc">BPA-free · Keeps cold 12h · Bamboo lid · 500ml</div>
+          <div class="pc-sizes"><div class="sz on">500ml</div></div>
+          <div class="pc-foot">
+            <span><span class="pc-price" data-p="319">R319</span></span>
+            <button class="pc-atc" aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           </div>
         </div>
       </article>
 
     </div>
-
-    <div style="text-align:center;margin-top:2.5rem">
-      <a href="#products" class="btn btn-outline btn-lg">View All Products</a>
+    <div style="text-align:center;margin-top:2rem">
+      <a href="#shop" class="btn btn-out">View All Products</a>
     </div>
   </div>
 </section>
 
-<!-- ========== CUSTOMISER CTA ========== -->
-<section class="customiser" id="design">
-  <div class="container" style="position:relative;z-index:1">
-    <span class="section-label" style="color:var(--accent)">Online Design Tool</span>
-    <h2 class="customiser-title">Design Online in Minutes</h2>
-    <p class="customiser-sub">Our drag-and-drop editor makes it easy. Upload photos, add text, pick templates — then hit order.</p>
-    <div class="customiser-features">
-      <div class="customiser-feature">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        100+ Templates
+<!-- DESIGN UPLOAD -->
+<section class="design-strip" id="design">
+  <div class="wrap design-inner">
+    <div>
+      <div class="eyebrow">Design Studio</div>
+      <h2 class="sec-h serif" style="text-align:left;margin-left:0">Design your mug<br>in 3 easy steps</h2>
+      <div class="design-steps">
+        <div class="ds">
+          <div class="ds-num">1</div>
+          <div><div class="ds-title">Choose your mug & size</div><div class="ds-body">Pick from ceramic, travel, magic, glass, enamel, and more. Available in multiple sizes.</div></div>
+        </div>
+        <div class="ds">
+          <div class="ds-num">2</div>
+          <div><div class="ds-title">Upload or design online</div><div class="ds-body">Add your photo or logo, drag in text, pick fonts and colours. Our editor shows a live preview.</div></div>
+        </div>
+        <div class="ds">
+          <div class="ds-num">3</div>
+          <div><div class="ds-title">We print & deliver</div><div class="ds-body">Dispatched within 24hrs. Tracked delivery across SA in 2–4 days. Gift wrapping available.</div></div>
+        </div>
       </div>
-      <div class="customiser-feature">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Photo Upload
-      </div>
-      <div class="customiser-feature">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Custom Text & Fonts
-      </div>
-      <div class="customiser-feature">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Live 3D Preview
-      </div>
+      <a href="#shop" class="btn btn-pri btn-lg">Open Design Studio</a>
     </div>
-    <a href="#products" class="btn btn-white btn-lg">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-      Open Design Studio
-    </a>
-  </div>
-</section>
-
-<!-- ========== GALLERY ========== -->
-<section class="gallery" id="gallery">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-label">Customer Creations</span>
-      <h2 class="section-title">Loved by Thousands</h2>
-      <p class="section-sub">Real mugs made by real customers. Get inspired by what others have created.</p>
-    </div>
-
-    <div class="gallery-grid">
-      <div class="gallery-item large" style="background:linear-gradient(135deg,#fde8d8,#fcd0a0);min-height:280px;display:flex;align-items:center;justify-content:center;">
-        <div style="text-align:center;padding:2rem">
-          <div style="margin-bottom:1rem"><svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="6" y="8" width="40" height="50" rx="5" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.5"/><path d="M46 20 C60 20 60 44 46 44" stroke="#D4D0C8" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M46 20 C56 20 56 44 46 44" stroke="#F4F2EF" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="12" y="20" width="28" height="26" rx="2" fill="#FDEEE6" opacity=".8"/></svg></div>
-          <div style="font-weight:700;color:#c44f03;font-size:1.1rem">Family Photo Mugs</div>
-          <div style="color:#e85d04;font-size:0.85rem;margin-top:0.25rem">Perfect for gifting</div>
+    <div>
+      <div class="upload-box" id="upload-box">
+        <div class="upload-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
+        <div class="upload-title">Drop your image here</div>
+        <div class="upload-sub">or click to browse your files</div>
+        <div class="upload-types">
+          <div class="utype">JPG</div><div class="utype">PNG</div><div class="utype">PDF</div><div class="utype">AI</div><div class="utype">PSD</div>
+        </div>
+        <input type="file" id="file-inp" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer">
       </div>
-      <div class="gallery-item" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);min-height:140px;display:flex;align-items:center;justify-content:center;">
-        <div style="text-align:center;padding:1.5rem">
-          <div style="margin-bottom:0.5rem"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="4" y="6" width="28" height="34" rx="4" fill="#1C1C1C" stroke="#444" stroke-width="1.2"/><path d="M32 14 C42 14 42 30 32 30" stroke="#555" stroke-width="6" fill="none" stroke-linecap="round"/></svg></div>
-          <div style="font-weight:700;color:#5b21b6;font-size:0.9rem">Magic Mugs</div>
-        </div>
-      </div>
-      <div class="gallery-item" style="background:linear-gradient(135deg,#fef3c7,#fde68a);min-height:140px;display:flex;align-items:center;justify-content:center;">
-        <div style="text-align:center;padding:1.5rem">
-          <div style="margin-bottom:0.5rem"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="4" y="6" width="28" height="34" rx="4" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.2"/><path d="M32 14 C42 14 42 30 32 30" stroke="#D4D0C8" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="14" cy="18" r="3" fill="#D97706" opacity=".4"/><circle cx="22" cy="16" r="2" fill="#D97706" opacity=".3"/></svg></div>
-          <div style="font-weight:700;color:#92400e;font-size:0.9rem">Pet Portraits</div>
-        </div>
-      </div>
-      <div class="gallery-item tall" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);min-height:280px;display:flex;align-items:center;justify-content:center;">
-        <div style="text-align:center;padding:2rem">
-          <div style="margin-bottom:0.75rem"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="5" y="8" width="34" height="40" rx="5" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.4"/><path d="M39 18 C50 18 50 36 39 36" stroke="#D4D0C8" stroke-width="7" fill="none" stroke-linecap="round"/><rect x="11" y="16" width="22" height="18" rx="2" fill="#D1FAE5" opacity=".8"/></svg></div>
-          <div style="font-weight:700;color:#065f46;font-size:1rem">Corporate Gifts</div>
-          <div style="color:#047857;font-size:0.82rem;margin-top:0.25rem">Bulk from 10 units</div>
-        </div>
-      </div>
-      <div class="gallery-item" style="background:linear-gradient(135deg,#fee2e2,#fecaca);min-height:140px;display:flex;align-items:center;justify-content:center;">
-        <div style="text-align:center;padding:1.5rem">
-          <div style="margin-bottom:0.5rem"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="4" y="6" width="28" height="34" rx="4" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.2"/><path d="M32 14 C42 14 42 30 32 30" stroke="#D4D0C8" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M12 20 L16 24 L22 16" stroke="#E55A1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div style="font-weight:700;color:#991b1b;font-size:0.9rem">Couples Mugs</div>
-        </div>
-      </div>
-      <div class="gallery-item" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);min-height:140px;display:flex;align-items:center;justify-content:center;">
-        <div style="text-align:center;padding:1.5rem">
-          <div style="margin-bottom:0.5rem"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="4" y="6" width="28" height="34" rx="4" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.2"/><path d="M32 14 C42 14 42 30 32 30" stroke="#D4D0C8" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="10" y="22" width="20" height="10" rx="2" fill="#BFDBFE" opacity=".7"/></svg></div>
-          <div style="font-weight:700;color:#075985;font-size:0.9rem">Birthday Specials</div>
-        </div>
+      <div class="design-preview" id="design-preview" style="display:none">
+        <div class="dp-img" id="dp-thumb"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="5" width="22" height="18" rx="2" stroke="#A09EAA" stroke-width="1.6" fill="none"/><circle cx="10" cy="11" r="2.5" stroke="#A09EAA" stroke-width="1.4" fill="none"/><path d="M3 19 L9 14 L14 18 L19 13 L25 19" stroke="#A09EAA" stroke-width="1.4" stroke-linejoin="round" fill="none"/></svg></div>
+        <div><div class="dp-name" id="dp-name">design.jpg</div><div class="dp-size" id="dp-size">2.4 MB · High quality</div></div>
+        <div class="dp-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Ready to print</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== FEATURES ========== -->
-<section class="features" id="features">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-label">Why Choose Us</span>
-      <h2 class="section-title">Premium Quality, Every Time</h2>
-      <p class="section-sub">We're obsessed with quality — from the print to the packaging to the customer service.</p>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/>
-          </svg>
-        </div>
-        <div class="feature-title">Premium Sublimation Print</div>
-        <div class="feature-desc">We use professional dye-sublimation printing for vivid, long-lasting colours that won't crack, peel, or fade — even after hundreds of washes.</div>
+<!-- QUALITY TRUST -->
+<section class="quality">
+  <div class="wrap">
+    <div class="qual-grid">
+      <div class="qual-item">
+        <span class="qual-ico"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="6" y="10" width="20" height="14" rx="2" stroke="#E55A1C" stroke-width="1.8" fill="none"/><rect x="10" y="14" width="12" height="2.5" rx="1" fill="#E55A1C" opacity=".4"/><rect x="10" y="18" width="8" height="2" rx="1" fill="#E55A1C" opacity=".3"/><path d="M10 10V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3" stroke="#E55A1C" stroke-width="1.8"/><circle cx="23" cy="13" r="1.5" fill="#E55A1C"/></svg></span>
+        <div class="qual-val">Premium</div>
+        <div class="qual-lbl">Dye-sublimation printing<br>Vivid, won't fade or peel</div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-          </svg>
-        </div>
-        <div class="feature-title">2–4 Day SA Delivery</div>
-        <div class="feature-desc">We dispatch within 24 hours of printing. Fast, reliable delivery nationwide via courier — Johannesburg, Cape Town, Durban, and everywhere in between.</div>
+      <div class="qual-item">
+        <span class="qual-ico"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="12" width="22" height="13" rx="3" stroke="#E55A1C" stroke-width="1.8" fill="none"/><path d="M25 17h3a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-3" stroke="#E55A1C" stroke-width="1.8"/><circle cx="9" cy="28" r="2" fill="#E55A1C" opacity=".5"/><circle cx="19" cy="28" r="2" fill="#E55A1C" opacity=".5"/><path d="M8 12 L12 7 H20 L24 12" stroke="#E55A1C" stroke-width="1.5" fill="none"/></svg></span>
+        <div class="qual-val">2–4 Days</div>
+        <div class="qual-lbl">Nationwide SA delivery<br>Free over R500</div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <div class="feature-title">100% Satisfaction Guarantee</div>
-        <div class="feature-desc">If your mug doesn't meet your expectations for any reason, we'll reprint it free of charge or give you a full refund — simple as that.</div>
+      <div class="qual-item">
+        <span class="qual-ico"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4 L28 9 V17 C28 23 22 28 16 30 C10 28 4 23 4 17 V9 Z" stroke="#E55A1C" stroke-width="1.8" fill="none"/><path d="M11 16 L14.5 19.5 L21 13" stroke="#E55A1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="qual-val">100%</div>
+        <div class="qual-lbl">Satisfaction guaranteed<br>Reprint or full refund</div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-          </svg>
-        </div>
-        <div class="feature-title">Made With Love in SA</div>
-        <div class="feature-desc">Proudly South African — every mug is designed, printed, and packaged right here in South Africa. Supporting local jobs and local quality.</div>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
-          </svg>
-        </div>
-        <div class="feature-title">Bulk & Corporate Orders</div>
-        <div class="feature-desc">Need 10, 100, or 1000 mugs? We handle large orders with ease. Custom branding, consistent quality, and volume pricing that makes sense for businesses.</div>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-          </svg>
-        </div>
-        <div class="feature-title">Friendly SA Support</div>
-        <div class="feature-desc">Our local team is available Monday–Friday 8am–5pm via WhatsApp, email, or live chat. Real people, real help — no bots.</div>
+      <div class="qual-item">
+        <span class="qual-ico"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="#E55A1C" stroke-width="1.8" fill="none"/><path d="M4 16 H28" stroke="#E55A1C" stroke-width="1.5" opacity=".5"/><path d="M16 4 C12 8 10 12 10 16 C10 20 12 24 16 28" stroke="#E55A1C" stroke-width="1.5" fill="none"/><path d="M16 4 C20 8 22 12 22 16 C22 20 20 24 16 28" stroke="#E55A1C" stroke-width="1.5" fill="none"/></svg></span>
+        <div class="qual-val">SA Made</div>
+        <div class="qual-lbl">Printed locally in Joburg<br>Supporting SA jobs</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== BULK ORDERS ========== -->
+<!-- BULK ORDERS -->
 <section class="bulk" id="bulk">
-  <div class="bulk-inner">
+  <div class="wrap bulk-inner">
     <div>
-      <span class="section-label" style="color:rgba(255,255,255,0.7)">Business & Events</span>
-      <h2 class="bulk-title">Bulk Orders for Every Occasion</h2>
-      <p class="bulk-desc">From corporate gifts to event merchandise to wedding favours — we handle everything. The more you order, the more you save.</p>
+      <div class="eyebrow">Business &amp; Events</div>
+      <h2 class="bulk-h serif">Bulk orders.<br>Big savings.</h2>
+      <p class="bulk-p">Corporate gifts, event merchandise, wedding favours, school prizes — the more you order, the more you save. We handle everything from proof to doorstep.</p>
       <div class="bulk-perks">
-        <div class="bulk-perk">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Consistent quality across every unit
-        </div>
-        <div class="bulk-perk">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Free proof before production
-        </div>
-        <div class="bulk-perk">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Dedicated account manager
-        </div>
-        <div class="bulk-perk">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Invoice &amp; payment terms available
-        </div>
-        <div class="bulk-perk">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Multiple delivery addresses welcome
-        </div>
+        <div class="bperk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Free pre-production proof on every order</div>
+        <div class="bperk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Consistent quality across every unit</div>
+        <div class="bperk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Dedicated account manager for 50+ orders</div>
+        <div class="bperk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Invoice &amp; 30-day payment terms available</div>
+        <div class="bperk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Multiple delivery addresses welcome</div>
       </div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap">
-        <a href="mailto:bulk@custommugs.co.za" class="btn btn-white btn-lg">Get a Bulk Quote</a>
-        <a href="https://wa.me/27000000000" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.4);color:#fff">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp Us
-        </a>
+      <div class="bulk-btns">
+        <a href="mailto:samuelhyera.hyera7@gmail.com" class="btn btn-pri">Get a Free Quote</a>
+        <a href="#" class="btn btn-out">WhatsApp: 081 375 6494</a>
       </div>
     </div>
-
-    <div class="bulk-pricing">
-      <div class="bulk-pricing-title">Bulk Pricing Guide</div>
-      <div class="pricing-tiers">
-        <div class="pricing-tier">
-          <div>
-            <div class="tier-range">10–24 mugs</div>
-            <div class="tier-savings">Base price</div>
-          </div>
-          <div class="tier-price">R149 each</div>
-        </div>
-        <div class="pricing-tier">
-          <div>
-            <div class="tier-range">25–49 mugs</div>
-            <div class="tier-savings">Save 10%</div>
-          </div>
-          <div class="tier-price">R134 each</div>
-        </div>
-        <div class="pricing-tier">
-          <div>
-            <div class="tier-range">50–99 mugs</div>
-            <div class="tier-savings">Save 20%</div>
-          </div>
-          <div class="tier-price">R119 each</div>
-        </div>
-        <div class="pricing-tier">
-          <div>
-            <div class="tier-range">100–249 mugs</div>
-            <div class="tier-savings">Save 30%</div>
-          </div>
-          <div class="tier-price">R104 each</div>
-        </div>
-        <div class="pricing-tier" style="background:rgba(252,163,17,0.2);border-color:rgba(252,163,17,0.4)">
-          <div>
-            <div class="tier-range">250+ mugs</div>
-            <div class="tier-savings">Best deal — contact us</div>
-          </div>
-          <div class="tier-price">R89 each</div>
-        </div>
+    <div>
+      <div class="tier-card">
+        <div class="tier-hdr"><span>Quantity</span><span>Price each</span><span>Saving</span></div>
+        <div class="tier-row"><span class="tier-range">1–9 mugs</span><span class="tier-price">R149</span><span class="tier-save">—</span></div>
+        <div class="tier-row"><span class="tier-range">10–24 mugs</span><span class="tier-price">R139</span><span class="tier-save good">Save 7%</span></div>
+        <div class="tier-row"><span class="tier-range">25–49 mugs</span><span class="tier-price">R129</span><span class="tier-save good">Save 13%</span></div>
+        <div class="tier-row"><span class="tier-range">50–99 mugs</span><span class="tier-price">R115</span><span class="tier-save good">Save 23%</span></div>
+        <div class="tier-row"><span class="tier-range">100–249 mugs</span><span class="tier-price">R99</span><span class="tier-save good">Save 34%</span></div>
+        <div class="tier-row best"><span class="tier-range">250+ mugs</span><span class="tier-price">R85</span><span class="tier-save good">Save 43%</span></div>
+        <div style="padding:.7rem 1.25rem;font-size:.7rem;color:rgba(255,255,255,.4)">* Standard 330ml ceramic. Other styles vary.</div>
       </div>
-      <p style="text-align:center;font-size:0.78rem;color:rgba(255,255,255,0.5);margin-top:1rem">* Prices for standard 330ml ceramic. Other styles may vary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Customer Creations</div>
+      <h2 class="sec-h serif">Loved by thousands</h2>
+      <p class="sec-sub">Real mugs, real people. Get inspired by what others have made.</p>
+    </div>
+    <div class="gal-grid">
+      <div class="gi big" style="background:linear-gradient(150deg,#F5EFE8,#EDE4D8)">
+                        <div class="gi-inner" style="position:relative;z-index:1">
+          <div class="gi-ttl" style="color:#7C2D06;font-size:1rem;text-shadow:0 1px 3px rgba(255,255,255,.8)">Family Photo Mugs</div>
+          <div style="font-size:.75rem;color:#C44A12;margin-top:4px;text-shadow:0 1px 2px rgba(255,255,255,.8)">Most popular gift</div>
+        </div>
+        <div class="gi-label">Family Memories</div>
+      </div>
+      <div class="gi" style="background:linear-gradient(150deg,#1E1A2E,#2E1A40)">
+                <div class="gi-inner" style="position:relative;z-index:1">
+          <div class="gi-ttl" style="color:#C4B5FD">Magic Reveal Mugs</div>
+        </div>
+        <div class="gi-label">Colour-Change</div>
+      </div>
+      <div class="gi" style="background:linear-gradient(150deg,#FAF4E8,#F0E4C8)">
+                <div class="gi-inner" style="position:relative;z-index:1">
+          <div class="gi-ttl" style="color:#92400E">Pet Portrait Mugs</div>
+        </div>
+        <div class="gi-label">Pet Lovers</div>
+      </div>
+      <div class="gi" style="background:linear-gradient(150deg,#E8F4F0,#D0E8E0)">
+                <div class="gi-inner" style="position:relative;z-index:1">
+          <div class="gi-ttl" style="color:#065F46">Corporate Gifts</div>
+        </div>
+        <div class="gi-label">Business</div>
+      </div>
+      <div class="gi" style="background:linear-gradient(150deg,#FEF0F0,#FADADA)">
+                <div class="gi-inner" style="position:relative;z-index:1">
+          <div class="gi-ttl" style="color:#991B1B">Couple Mugs</div>
+        </div>
+        <div class="gi-label">Couples</div>
+      </div>
+      <div class="gi" style="background:linear-gradient(150deg,#EBF5FF,#D0E8FA)">
+                <div class="gi-inner" style="position:relative;z-index:1">
+          <div class="gi-ttl" style="color:#075985">Graduation</div>
+        </div>
+        <div class="gi-label">Celebrations</div>
+      </div>
     </div>
   </div>
 </section>
 
 
-<!-- ========== FAQ ========== -->
+<!-- FAQ -->
 <section class="faq" id="faq">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-label">FAQs</span>
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      <p class="section-sub">Got questions? We've got answers. Can't find yours? Chat to us on WhatsApp.</p>
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Help</div>
+      <h2 class="sec-h serif">Common questions</h2>
     </div>
-
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-question">
-          What file format should I upload for my design?
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">We accept JPG, PNG, PDF, AI, and PSD files. For best print quality, we recommend images of at least 300 DPI at print size. PNG files with transparent backgrounds work best for logos. If your file isn't high enough resolution, our system will warn you before you complete your order.</div>
-        </div>
+    <div class="faq-wrap">
+      <div class="fq">
+        <button class="fq-q">What file format should I upload?<span class="fq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="fq-a"><div class="fq-ai">We accept JPG, PNG, PDF, AI, and PSD. For best results, upload at least 300 DPI at print size. PNG with a transparent background is ideal for logos. Our system warns you automatically if resolution is too low before you checkout.</div></div>
       </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          How long does delivery take?
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">Orders are printed within 24 hours and shipped the next business day. Standard delivery takes 2–4 business days nationwide. Express same-day delivery is available in Johannesburg and Cape Town for orders placed before 10am. You'll receive a tracking number via email and SMS.</div>
-        </div>
+      <div class="fq">
+        <button class="fq-q">How long does delivery take?<span class="fq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="fq-a"><div class="fq-ai">Orders are printed and dispatched within 24 hours. Standard delivery is 2–4 working days nationwide. You receive a tracking number via email and SMS once shipped. Express same-day delivery available in Johannesburg for orders placed before 10am.</div></div>
       </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          Are your mugs dishwasher safe?
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">Yes! All our ceramic and glass mugs are dishwasher safe. The sublimation print is embedded into the coating of the mug, so it won't fade or peel in the dishwasher. For travel mugs and tumblers, we recommend hand washing to preserve the lid seals.</div>
-        </div>
+      <div class="fq">
+        <button class="fq-q">Are the mugs dishwasher safe?<span class="fq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="fq-a"><div class="fq-ai">Yes — all ceramic and glass mugs are dishwasher safe. The sublimation dye bonds into the coating, so it won't chip, fade, or peel. For travel mugs and tumblers, hand washing is recommended to preserve the lid seals and insulation.</div></div>
       </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          What is the minimum order for bulk / corporate mugs?
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">For bulk orders with discounted pricing, the minimum is 10 units. You can mix designs within the same order as long as the total quantity meets the minimum. For orders over 100 units, please contact us for a custom quote and dedicated account management.</div>
-        </div>
+      <div class="fq">
+        <button class="fq-q">What's the minimum for bulk orders?<span class="fq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="fq-a"><div class="fq-ai">Bulk pricing starts from 10 units and you can mix designs within the same order. For 100+ units, contact us directly for a custom quote, dedicated support, and payment terms. We've done runs of 5,000+ for major SA brands.</div></div>
       </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          What if I'm not happy with my order?
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">We stand behind every mug we print. If there's a production defect or the print quality doesn't meet your expectations, we'll reprint it at no charge. If you approved a design proof and the mug matches the proof, we'll work with you to find a solution. Contact us within 14 days of receiving your order.</div>
-        </div>
+      <div class="fq">
+        <button class="fq-q">What if I'm not happy with my order?<span class="fq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="fq-a"><div class="fq-ai">We stand behind every mug. If there's a production defect or the quality doesn't match the preview, we'll reprint free or give a full refund. No forms, no fuss — just contact us within 14 days of receiving your order.</div></div>
       </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          Do you offer design services?
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">Absolutely! If you'd like help creating your design, our in-house designers can help from R99. Send us your brief, logo, photos, and any references, and we'll create a design for your approval within 1–2 business days. Design service orders can be placed via WhatsApp or email.</div>
-        </div>
+      <div class="fq">
+        <button class="fq-q">Do you offer gift wrapping?<span class="fq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="fq-a"><div class="fq-ai">Yes! Gift wrapping with a personalised message card is available for R25. Select it at checkout. We'll also ship directly to the gift recipient with your message — perfect for surprises. Packaging is discreet with no price info included.</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== NEWSLETTER ========== -->
-<section class="newsletter">
-  <div class="newsletter-inner">
-    <h2 class="newsletter-title">Get 10% Off Your First Order</h2>
-    <p class="newsletter-sub">Subscribe to our newsletter for exclusive deals, design inspiration, and special offers.</p>
-    <form class="newsletter-form" novalidate>
-      <input type="email" class="newsletter-input" placeholder="Enter your email address" required aria-label="Email address" />
-      <button type="submit" class="btn btn-primary">Subscribe</button>
+<!-- NEWSLETTER -->
+<section class="nl">
+  <div class="wrap nl-inner">
+    <div class="eyebrow" style="margin-bottom:.5rem">Stay in the loop</div>
+    <h2 class="nl-h serif">Get 10% off your first order</h2>
+    <p class="nl-sub">Design inspiration, exclusive deals, and new product drops — straight to your inbox.</p>
+    <form class="nl-form" id="nl-form">
+      <input type="email" class="nl-inp" placeholder="your@email.com" required aria-label="Email address"/>
+      <button type="submit" class="btn btn-pri">Subscribe</button>
     </form>
-    <p style="font-size:0.78rem;color:var(--text-light);margin-top:0.75rem">No spam, ever. Unsubscribe any time.</p>
+    <p class="nl-note">No spam. Unsubscribe any time.</p>
   </div>
 </section>
 
-<!-- ========== FOOTER ========== -->
+<!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-grid">
-    <div>
-      <div class="footer-logo">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6h14v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" fill="white"/>
-            <path d="M18 10h2a2 2 0 110 4h-2" fill="none" stroke="white" stroke-width="1.5"/>
-          </svg>
+  <div class="wrap">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-logo">
+          <div class="logo-mk"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="15" height="14" rx="3" fill="white"/><path d="M18 9h2.5a2.5 2.5 0 010 5H18" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          CustomMugs
         </div>
-        CustomMugs
+        <p class="ft-desc">South Africa's favourite custom mug printer since 2019. Premium sublimation printing, fast delivery, 100% satisfaction guaranteed.</p>
+        <div class="socials">
+          <a href="#" class="soc" aria-label="Facebook">f</a>
+          <a href="#" class="soc" aria-label="Instagram">ig</a>
+          <a href="#" class="soc" aria-label="TikTok">tk</a>
+          <a href="#" class="soc" aria-label="WhatsApp">wa</a>
+        </div>
       </div>
-      <p class="footer-desc">South Africa's favourite custom mug printer. Premium quality, fast delivery, 100% satisfaction guaranteed. Proudly SA since 2019.</p>
-      <div class="social-links">
-        <!-- Facebook -->
-        <a href="#" class="social-link" aria-label="Facebook">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-        </a>
-        <!-- Instagram -->
-        <a href="#" class="social-link" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        </a>
-        <!-- TikTok -->
-        <a href="#" class="social-link" aria-label="TikTok">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.29 8.29 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
-        </a>
-        <!-- WhatsApp -->
-        <a href="https://wa.me/27000000000" class="social-link" aria-label="WhatsApp">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </a>
+      <div>
+        <div class="ft-hdr">Shop</div>
+        <ul class="ft-links">
+          <li><a href="#shop">All Mugs</a></li>
+          <li><a href="#shop">Ceramic Mugs</a></li>
+          <li><a href="#shop">Travel Mugs</a></li>
+          <li><a href="#shop">Magic Mugs</a></li>
+          <li><a href="#shop">Glass Mugs</a></li>
+          <li><a href="#shop">Enamel Mugs</a></li>
+          <li><a href="#bulk">Corporate Mugs</a></li>
+        </ul>
       </div>
-    </div>
-
-    <div>
-      <div class="footer-heading">Shop</div>
-      <ul class="footer-links">
-        <li><a href="#products">All Mugs</a></li>
-        <li><a href="#products">Ceramic Mugs</a></li>
-        <li><a href="#products">Travel Mugs</a></li>
-        <li><a href="#products">Magic Mugs</a></li>
-        <li><a href="#products">Glass Mugs</a></li>
-        <li><a href="#bulk">Corporate Mugs</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <div class="footer-heading">Help</div>
-      <ul class="footer-links">
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#">Design Guide</a></li>
-        <li><a href="#">File Requirements</a></li>
-        <li><a href="#">Returns Policy</a></li>
-        <li><a href="#">Track Your Order</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <div class="footer-heading">Contact</div>
-      <div class="footer-contact">
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-          </svg>
-          <span>+27 (0)11 000 0000</span>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-          <span>hello@custommugs.co.za</span>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-          </svg>
-          <span>Mon–Fri: 8am – 5pm<br/>Sat: 9am – 1pm</span>
-        </div>
-        <div class="footer-contact-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-          </svg>
-          <span>Johannesburg, South Africa</span>
+      <div>
+        <div class="ft-hdr">Help</div>
+        <ul class="ft-links">
+          <li><a href="#design">How It Works</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Design Guide</a></li>
+          <li><a href="#">File Requirements</a></li>
+          <li><a href="#">Track Your Order</a></li>
+          <li><a href="#">Returns Policy</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-hdr">Contact</div>
+        <div class="ft-contact">
+          <div class="ft-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.12 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><span>+27 (0)81 375 6494</span></div>
+          <div class="ft-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>samuelhyera.hyera7@gmail.com</span></div>
+          <div class="ft-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Mon–Fri 8am–5pm<br>Sat 9am–1pm</span></div>
+          <div class="ft-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Johannesburg, South Africa</span></div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="footer-bottom">
-    <div class="footer-bottom-text">© 2025 CustomMugs (Pty) Ltd. All rights reserved.</div>
-    <div class="footer-bottom-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms & Conditions</a>
-      <a href="#">Cookie Policy</a>
-    </div>
-    <div class="payment-icons">
-      <div class="payment-icon">VISA</div>
-      <div class="payment-icon">MC</div>
-      <div class="payment-icon">EFT</div>
-      <div class="payment-icon">PayFast</div>
+    <div class="ft-bot">
+      <div class="ft-copy">© 2025 CustomMugs (Pty) Ltd. All rights reserved.</div>
+      <div class="ft-bot-links"><a href="#">Privacy Policy</a><a href="#">Terms &amp; Conditions</a><a href="#">Cookie Policy</a></div>
+      <div class="pays"><div class="pay">VISA</div><div class="pay">MC</div><div class="pay">EFT</div><div class="pay">PayFast</div><div class="pay">Ozow</div></div>
     </div>
   </div>
 </footer>
 
-<!-- ========== CART SIDEBAR ========== -->
-<div class="cart-overlay" role="presentation"></div>
-<aside class="cart-sidebar" aria-label="Shopping cart">
-  <div class="cart-header">
+<!-- CART -->
+<div class="cart-ov" id="cart-ov"></div>
+<aside class="cart" id="cart" aria-label="Shopping cart">
+  <div class="cart-hd">
     <h3>Your Cart</h3>
-    <button class="cart-close" aria-label="Close cart">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    <button class="cart-cl" id="cart-cl" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <div class="cart-items">
+  <div class="cart-bd" id="cart-bd">
     <div class="cart-empty">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <path d="M16 10a4 4 0 01-8 0"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><circle cx="10" cy="21" r="1"/><circle cx="21" cy="21" r="1"/></svg>
       <p>Your cart is empty</p>
-      <small>Add some mugs to get started!</small>
+      <small>Add some mugs to get started</small>
     </div>
   </div>
-  <div class="cart-footer">
-    <div class="cart-subtotal">
-      <span>Subtotal</span>
-      <span>R0.00</span>
-    </div>
-    <a href="#" class="btn btn-primary" style="text-align:center;justify-content:center;width:100%">Checkout</a>
-    <p style="text-align:center;font-size:0.78rem;color:var(--text-light);margin-top:0.75rem">Secure checkout · Free delivery over R500</p>
+  <div class="cart-ft">
+    <div class="cart-sub"><span>Subtotal</span><span id="cart-total">R0.00</span></div>
+    <a href="#" class="btn btn-pri" style="width:100%;justify-content:center">Checkout</a>
+    <div class="cart-note">Secure checkout · Free delivery over R500</div>
   </div>
 </aside>
 
-<!-- ========== SCROLL TO TOP ========== -->
-<button class="scroll-top" aria-label="Scroll to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-    <path d="M18 15l-6-6-6 6"/>
-  </svg>
+<!-- WHATSAPP FLOAT -->
+<div class="wa-float">
+  <div class="wa-tip">Chat with us on WhatsApp</div>
+  <a href="https://wa.me/27720000000" class="wa-btn" aria-label="WhatsApp us" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<button class="scrtop" id="scrtop" aria-label="Back to top">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
-<script src="js/main.js"></script>
-</body>
-</html>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State
+const cartItems = [];
+
+// ── Header scroll
+const hdr = document.getElementById('hdr');
+window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', scrollY > 20), {passive:true});
+
+// ── Scroll top
+const st = document.getElementById('scrtop');
+window.addEventListener('scroll', () => st.classList.toggle('on', scrollY > 400), {passive:true});
+st.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+// ── Mobile nav
+const burger = document.getElementById('burger');
+const mobNav = document.getElementById('mob-nav');
+const mobClose = document.getElementById('mob-close');
+function openMob() { mobNav.classList.add('on'); document.body.style.overflow='hidden'; burger.setAttribute('aria-expanded','true'); }
+function closeMob() { mobNav.classList.remove('on'); document.body.style.overflow=''; burger.setAttribute('aria-expanded','false'); }
+burger.addEventListener('click', openMob);
+mobClose.addEventListener('click', closeMob);
+mobNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMob));
+
+// ── Cart
+const cartOv = document.getElementById('cart-ov');
+const cartEl = document.getElementById('cart');
+function openCart() { cartEl.classList.add('on'); cartOv.classList.add('on'); document.body.style.overflow='hidden'; }
+function closeCart() { cartEl.classList.remove('on'); cartOv.classList.remove('on'); document.body.style.overflow=''; }
+document.getElementById('cart-btn').addEventListener('click', openCart);
+document.getElementById('cart-cl').addEventListener('click', closeCart);
+cartOv.addEventListener('click', closeCart);
+
+function renderCart() {
+  const bd = document.getElementById('cart-bd');
+  const tot = document.getElementById('cart-total');
+  const badge = document.getElementById('cbadge');
+  badge.textContent = cartItems.length;
+  badge.classList.toggle('on', cartItems.length > 0);
+  if (!cartItems.length) {
+    bd.innerHTML = `<div class="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><circle cx="10" cy="21" r="1"/><circle cx="21" cy="21" r="1"/></svg><p>Your cart is empty</p><small>Add some mugs to get started</small></div>`;
+    tot.textContent = 'R0.00'; return;
+  }
+  const total = cartItems.reduce((s,i) => s+i.price, 0);
+  bd.innerHTML = cartItems.map(item => `
+    <div class="ci">
+      <div class="ci-img"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="14" height="16" rx="2" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.2"/><path d="M16 7 C22 7 22 15 16 15" stroke="#D4D0C8" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M16 7 C20 7 20 15 16 15" stroke="#F4F2EF" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div>
+      <div class="ci-info"><div class="ci-name">${item.name}</div><div class="ci-price">R${item.price.toFixed(2)}</div></div>
+      <button class="ci-rm" onclick="removeItem(${item.id})" aria-label="Remove">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>`).join('');
+  tot.textContent = `R${total.toFixed(2)}`;
+}
+function removeItem(id) {
+  const i = cartItems.findIndex(x => x.id === id);
+  if (i > -1) cartItems.splice(i, 1);
+  renderCart();
+}
+
+// ── Add to cart
+document.querySelectorAll('.pc-atc').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const card = btn.closest('.pc');
+    const name = card.querySelector('.pc-name').textContent;
+    const priceEl = card.querySelector('[data-p]');
+    const price = parseFloat(priceEl ? priceEl.dataset.p : '149');
+    cartItems.push({name, price, id: Date.now()});
+    renderCart();
+    showToast(name + ' added to cart');
+  });
+});
+
+// ── Wishlist
+document.querySelectorAll('.pc-wl').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const on = btn.classList.toggle('on');
+    btn.innerHTML = on ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4"/></svg>' : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
+    showToast(on ? 'Saved to wishlist' : 'Removed from wishlist');
+  });
+});
+
+// ── Product tabs
+document.querySelectorAll('.ptab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.ptab').forEach(t => t.classList.remove('on'));
+    tab.classList.add('on');
+    const f = tab.dataset.f;
+    document.querySelectorAll('.pc').forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.cat === f) ? '' : 'none';
+    });
+  });
+});
+
+// ── Occasions
+document.querySelectorAll('.occ-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.occ-card').forEach(c => c.classList.remove('on'));
+    card.classList.add('on');
+  });
+});
+
+// ── Size selectors
+document.querySelectorAll('.pc-sizes').forEach(group => {
+  group.querySelectorAll('.sz').forEach(sz => {
+    sz.addEventListener('click', e => {
+      e.stopPropagation();
+      group.querySelectorAll('.sz').forEach(s => s.classList.remove('on'));
+      sz.classList.add('on');
+    });
+  });
+});
+
+// ── FAQ
+document.querySelectorAll('.fq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.closest('.fq');
+    const open = item.classList.contains('on');
+    document.querySelectorAll('.fq').forEach(f => f.classList.remove('on'));
+    if (!open) item.classList.add('on');
+  });
+});
+
+// ── File upload
+const fileInp = document.getElementById('file-inp');
+const preview = document.getElementById('design-preview');
+fileInp.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  document.getElementById('dp-name').textContent = file.name;
+  document.getElementById('dp-size').textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB · ' + (file.size > 500000 ? 'High quality' : 'Check resolution');
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const thumb = document.getElementById('dp-thumb');
+    thumb.innerHTML = `<img src="${ev.target.result}" style="width:44px;height:44px;object-fit:cover;border-radius:8px">`;
+  };
+  reader.readAsDataURL(file);
+  preview.style.display = 'flex';
+  showToast('Image uploaded — ready to design!');
+});
+
+// ── Newsletter
+document.getElementById('nl-form').addEventListener('submit', e => {
+  e.preventDefault();
+  showToast('Subscribed! Check your email for your discount code.');
+  e.target.reset();
+});
+
+// ── Toast
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('on');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('on'), 2800);
+}
+
+// ── Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (target) { e.preventDefault(); window.scrollTo({top: target.offsetTop - 70, behavior:'smooth'}); }
+  });
+});
+</script>
