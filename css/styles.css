@@ -10,7 +10,7 @@
   --text: #2d2d2d;
   --text-light: #666;
   --bg: #fff;
-  --bg-alt: #faf7f4;
+  --bg-alt: #fff;
   --bg-dark: #1a1a2e;
   --border: #e8e0d8;
   --shadow: 0 4px 24px rgba(0,0,0,0.08);
@@ -259,7 +259,7 @@ h1, h2, h3, h4 {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #fff8f4 0%, #fff 60%, #fdf0e8 100%);
+  background: #fff;
   padding: 100px 2rem 60px;
   position: relative;
   overflow: hidden;
