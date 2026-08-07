@@ -10,7 +10,7 @@
   --pri:#C9A84C; --pri-dk:#A88930; --pri-lt:#FAF5E4;
   --acc:#F5A623; --acc-lt:#FEF3DC;
   --dark:#111827; --dark2:#1F2937;
-  --bg:#FAF7EF; --bg2:#F2EAD8; --surf:#FAF7EF;
+  --bg:#FAF7EF; --bg2:#FAF7EF; --surf:#FAF7EF;
   --txt:#1A1A2A; --txt2:#6B6878; --txt3:#A09EAA;
   --bdr:#DDD5C0;
   --sh:0 2px 12px rgba(0,0,0,.06);
@@ -32,7 +32,7 @@
   --bdr:#253045; --pri-lt:#2A1508;
 }
 :root[data-theme=light]{
-  --bg:#FAF7EF; --bg2:#F2EAD8; --surf:#FAF7EF;
+  --bg:#FAF7EF; --bg2:#FAF7EF; --surf:#FAF7EF;
   --txt:#1A1A2A; --txt2:#6B6878; --txt3:#A09EAA;
   --bdr:#DDD5C0;
 }
@@ -427,11 +427,15 @@ button{font-family:inherit;cursor:pointer}
   <svg class="hero-wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="currentColor"/></svg>
 </section>
 
-<!-- OCCASIONS -->
-<section class="occasions" id="occasions">
+<!-- SHOP -->
+<section class="products" id="shop">
   <div class="wrap">
-    <div class="occ-label"><span class="eyebrow">Shop by occasion</span></div>
-    <div class="occ-grid">
+    <div class="sec-hdr">
+      <h2 class="sec-h serif">Premium custom mugs</h2>
+      <p class="sec-sub">Every style dishwasher-safe, every colour vivid, every print guaranteed.</p>
+    </div>
+    <div class="occ-label" style="text-align:left;margin-bottom:1rem"><span class="eyebrow">Shop by occasion</span></div>
+    <div class="occ-grid" style="margin-bottom:1.75rem">
       <div class="occ-card on" data-occ="all"><div class="occ-name">All</div></div>
       <div class="occ-card" data-occ="birthday"><div class="occ-name">Birthday</div></div>
       <div class="occ-card" data-occ="mom"><div class="occ-name">Moms</div></div>
@@ -448,17 +452,6 @@ button{font-family:inherit;cursor:pointer}
       <div class="occ-card" data-occ="christmas"><div class="occ-name">Christmas</div></div>
       <div class="occ-card" data-occ="pet"><div class="occ-name">Pet Lovers</div></div>
       <div class="occ-card" data-occ="sport"><div class="occ-name">Sports Fan</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- SHOP -->
-<section class="products" id="shop">
-  <div class="wrap">
-    <div class="sec-hdr">
-      <div class="eyebrow">Our Range</div>
-      <h2 class="sec-h serif">Premium custom mugs</h2>
-      <p class="sec-sub">Every style dishwasher-safe, every colour vivid, every print guaranteed.</p>
     </div>
     <div class="product-tabs">
       <button class="ptab on" data-f="all">All</button>
