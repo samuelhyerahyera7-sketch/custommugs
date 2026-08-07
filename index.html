@@ -10,7 +10,7 @@
   --pri:#E55A1C; --pri-dk:#C44A12; --pri-lt:#FDEEE6;
   --acc:#F5A623; --acc-lt:#FEF3DC;
   --dark:#111827; --dark2:#1F2937;
-  --bg:#fff; --bg2:#fff; --surf:#fff;
+  --bg:#FAF7EF; --bg2:#FAF7EF; --surf:#fff;
   --txt:#1A1A2A; --txt2:#6B6878; --txt3:#A09EAA;
   --bdr:#EBEBEB;
   --sh:0 2px 12px rgba(0,0,0,.06);
@@ -32,7 +32,7 @@
   --bdr:#253045; --pri-lt:#2A1508;
 }
 :root[data-theme=light]{
-  --bg:#fff; --bg2:#fff; --surf:#fff;
+  --bg:#FAF7EF; --bg2:#FAF7EF; --surf:#fff;
   --txt:#1A1A2A; --txt2:#6B6878; --txt3:#A09EAA;
   --bdr:#EBEBEB;
 }
@@ -434,14 +434,18 @@ button{font-family:inherit;cursor:pointer}
     <div class="occ-grid">
       <div class="occ-card on" data-occ="all"><div class="occ-name">All</div></div>
       <div class="occ-card" data-occ="birthday"><div class="occ-name">Birthday</div></div>
-      <div class="occ-card" data-occ="wedding"><div class="occ-name">Wedding</div></div>
+      <div class="occ-card" data-occ="mom"><div class="occ-name">Moms</div></div>
+      <div class="occ-card" data-occ="dad"><div class="occ-name">Dads</div></div>
+      <div class="occ-card" data-occ="get-well"><div class="occ-name">Get Well Soon</div></div>
+      <div class="occ-card" data-occ="anniversary"><div class="occ-name">Anniversary</div></div>
       <div class="occ-card" data-occ="valentine"><div class="occ-name">Valentine's</div></div>
-      <div class="occ-card" data-occ="mom"><div class="occ-name">Mother's Day</div></div>
-      <div class="occ-card" data-occ="dad"><div class="occ-name">Father's Day</div></div>
+      <div class="occ-card" data-occ="wedding"><div class="occ-name">Wedding</div></div>
       <div class="occ-card" data-occ="baby"><div class="occ-name">Baby Shower</div></div>
+      <div class="occ-card" data-occ="thank-you"><div class="occ-name">Thank You</div></div>
+      <div class="occ-card" data-occ="retirement"><div class="occ-name">Retirement</div></div>
+      <div class="occ-card" data-occ="graduation"><div class="occ-name">Graduation</div></div>
       <div class="occ-card" data-occ="corporate"><div class="occ-name">Corporate</div></div>
       <div class="occ-card" data-occ="christmas"><div class="occ-name">Christmas</div></div>
-      <div class="occ-card" data-occ="graduation"><div class="occ-name">Graduation</div></div>
       <div class="occ-card" data-occ="pet"><div class="occ-name">Pet Lovers</div></div>
       <div class="occ-card" data-occ="sport"><div class="occ-name">Sports Fan</div></div>
     </div>
@@ -467,7 +471,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
     <div class="pgrid">
 
-      <article class="pc" data-cat="ceramic">
+      <article class="pc" data-cat="ceramic" data-occ="birthday mom dad anniversary valentine wedding baby thank-you retirement graduation get-well christmas">
         <div class="pc-img" style="background:linear-gradient(160deg,#F5F5F0,#ECEAE5)">
           <span class="pc-badge b-hot">Best Seller</span>
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
@@ -494,7 +498,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
       </article>
 
-      <article class="pc" data-cat="magic">
+      <article class="pc" data-cat="magic" data-occ="birthday mom anniversary get-well thank-you christmas">
         <div class="pc-img" style="background:linear-gradient(160deg,#1A1A2E,#2D1B4E)">
           <span class="pc-badge b-new">New</span>
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
@@ -521,7 +525,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
       </article>
 
-      <article class="pc" data-cat="travel">
+      <article class="pc" data-cat="travel" data-occ="dad birthday sport retirement graduation corporate">
         <div class="pc-img" style="background:linear-gradient(160deg,#ECEFF4,#DDE3EC)">
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
           <svg width="80" height="134" viewBox="0 0 80 134" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -556,7 +560,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
       </article>
 
-      <article class="pc" data-cat="glass">
+      <article class="pc" data-cat="glass" data-occ="birthday anniversary valentine wedding mom thank-you">
         <div class="pc-img" style="background:linear-gradient(160deg,#EDF6F0,#D8EDE0)">
           <span class="pc-badge b-sale">20% Off</span>
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
@@ -584,7 +588,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
       </article>
 
-      <article class="pc" data-cat="enamel">
+      <article class="pc" data-cat="enamel" data-occ="dad sport birthday graduation christmas retirement">
         <div class="pc-img" style="background:linear-gradient(160deg,#F5F0E8,#EDE4D4)">
           <span class="pc-badge b-trend">Trending</span>
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
@@ -612,7 +616,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
       </article>
 
-      <article class="pc" data-cat="corporate">
+      <article class="pc" data-cat="corporate" data-occ="corporate thank-you retirement graduation dad">
         <div class="pc-img" style="background:linear-gradient(160deg,#EDF4F4,#DCE8E6)">
           <span class="pc-badge b-hot">Bulk Deals</span>
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
@@ -641,7 +645,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
       </article>
 
-      <article class="pc" data-cat="ceramic">
+      <article class="pc" data-cat="ceramic" data-occ="mom dad birthday anniversary valentine wedding baby get-well thank-you christmas retirement graduation pet sport">
         <div class="pc-img" style="background:linear-gradient(160deg,#F5F2EC,#EDE8DE)">
           <span class="pc-badge b-sale">25% Off</span>
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
@@ -671,7 +675,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
       </article>
 
-      <article class="pc" data-cat="travel">
+      <article class="pc" data-cat="travel" data-occ="mom dad get-well graduation sport birthday christmas retirement">
         <div class="pc-img" style="background:linear-gradient(160deg,#EAF3EC,#D5E8D8)">
           <span class="pc-badge b-new">New</span>
           <button class="pc-wl" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
@@ -1108,6 +1112,13 @@ document.querySelectorAll('.occ-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.occ-card').forEach(c => c.classList.remove('on'));
     card.classList.add('on');
+    const occ = card.dataset.occ;
+    document.querySelectorAll('.pc').forEach(p => {
+      if (occ === 'all') { p.style.display = ''; return; }
+      const occs = (p.dataset.occ || '').split(' ');
+      p.style.display = occs.includes(occ) ? '' : 'none';
+    });
+    document.getElementById('shop').scrollIntoView({behavior:'smooth', block:'start'});
   });
 });
 
