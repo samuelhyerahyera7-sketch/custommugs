@@ -38,6 +38,8 @@
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*:focus{outline:none}
+*:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 html{scroll-behavior:smooth;font-size:16px}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
 img{max-width:100%;display:block}
@@ -419,7 +421,7 @@ button{font-family:inherit;cursor:pointer}
       <h1 class="hero-h serif">Design your own<br>custom mug — <span style="color:#C9A84C">it's easy.</span></h1>
       <p class="hero-p">Upload a photo, add your text, pick your mug. We print and deliver across South Africa in 2–4 business days. From R149.</p>
       <div class="hero-btns">
-        <a href="#shop" class="btn btn-pri btn-lg">Design Your Mug</a>
+        <a href="#design" class="btn btn-pri btn-lg">Design Your Mug</a>
         <a href="#shop" class="btn btn-out btn-lg">Shop All</a>
       </div>
     </div>
