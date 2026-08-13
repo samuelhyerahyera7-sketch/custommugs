@@ -1390,17 +1390,16 @@ document.querySelectorAll('.ptab').forEach(tab => {
 });
 
 // ── Occasions
-document.querySelectorAll('.occ-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.occ-card').forEach(c => c.classList.remove('on'));
-    card.classList.add('on');
-    const occ = card.dataset.occ;
-    document.querySelectorAll('.pc').forEach(p => {
-      if (occ === 'all') { p.style.display = ''; return; }
-      const occs = (p.dataset.occ || '').split(' ');
-      p.style.display = occs.includes(occ) ? '' : 'none';
-    });
-    document.getElementById('shop').scrollIntoView({behavior:'smooth', block:'start'});
+document.querySelector('.occ-grid').addEventListener('click', e => {
+  const card = e.target.closest('.occ-card');
+  if (!card) return;
+  document.querySelectorAll('.occ-card').forEach(c => c.classList.remove('on'));
+  card.classList.add('on');
+  const occ = card.dataset.occ;
+  document.querySelectorAll('.pc').forEach(p => {
+    if (occ === 'all') { p.style.display = ''; return; }
+    const tags = (p.dataset.occ || '').trim().split(/\s+/);
+    p.style.display = tags.includes(occ) ? '' : 'none';
   });
 });
 
