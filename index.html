@@ -391,6 +391,10 @@ button{font-family:inherit;cursor:pointer}
       <li><a href="#faq">Help</a></li>
     </ul>
     <div class="nav-end">
+      <button class="icon-btn" id="fav-btn" aria-label="Favourites">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="fav-badge" id="fbadge">0</span>
+      </button>
       <button class="icon-btn" id="cart-btn" aria-label="Cart">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><circle cx="10" cy="21" r="1"/><circle cx="21" cy="21" r="1"/></svg>
         <span class="cart-badge" id="cbadge">0</span>
@@ -1273,15 +1277,105 @@ document.querySelectorAll('.pc-atc').forEach(btn => {
   });
 });
 
-// ── Wishlist
+// ── Favourites drawer
+const HEART_EMPTY = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
+const HEART_FULL  = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4"/></svg>';
+
+let favs = JSON.parse(localStorage.getItem('cm_favs') || '[]');
+
+function saveFavs() { localStorage.setItem('cm_favs', JSON.stringify(favs)); }
+
+function updateFavBadge() {
+  const badge = document.getElementById('fbadge');
+  badge.textContent = favs.length;
+  badge.classList.toggle('on', favs.length > 0);
+}
+
+function renderFavDrawer() {
+  const body = document.getElementById('fav-body');
+  const footer = document.getElementById('fav-footer');
+  if (!favs.length) {
+    body.innerHTML = '<div class="fav-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><p>No favourites yet.<br>Tap the heart on any mug to save it here.</p></div>';
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = '';
+  body.innerHTML = favs.map(f => `
+    <div class="fav-item">
+      <img class="fav-item-img" src="${f.img}" alt="${f.name}">
+      <div class="fav-item-info">
+        <div class="fav-item-name">${f.name}</div>
+        <div class="fav-item-price">R${f.price}</div>
+      </div>
+      <button class="fav-item-rm" data-id="${f.id}" aria-label="Remove">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join('');
+
+  body.querySelectorAll('.fav-item-rm').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      favs = favs.filter(f => f.id !== id);
+      saveFavs();
+      updateFavBadge();
+      renderFavDrawer();
+      // un-heart the card
+      document.querySelectorAll('.pc-wl[data-fid="' + id + '"]').forEach(b => {
+        b.classList.remove('on'); b.innerHTML = HEART_EMPTY;
+      });
+    });
+  });
+}
+
+function openFavDrawer() {
+  renderFavDrawer();
+  document.getElementById('fav-drawer').classList.add('on');
+  document.getElementById('fav-overlay').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+function closeFavDrawer() {
+  document.getElementById('fav-drawer').classList.remove('on');
+  document.getElementById('fav-overlay').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('fav-btn').addEventListener('click', openFavDrawer);
+document.getElementById('fav-close').addEventListener('click', closeFavDrawer);
+document.getElementById('fav-overlay').addEventListener('click', closeFavDrawer);
+document.getElementById('fav-design-btn').addEventListener('click', closeFavDrawer);
+
+// Wire up heart buttons
 document.querySelectorAll('.pc-wl').forEach(btn => {
+  const card = btn.closest('.pc');
+  const img   = card.querySelector('img').getAttribute('src');
+  const name  = card.querySelector('.pc-name').textContent;
+  const price = card.querySelector('.pc-price').dataset.p;
+  const id    = img.split('/').pop().split('.')[0];
+  btn.dataset.fid = id;
+
+  // restore state from localStorage
+  if (favs.find(f => f.id === id)) {
+    btn.classList.add('on'); btn.innerHTML = HEART_FULL;
+  }
+
   btn.addEventListener('click', e => {
     e.stopPropagation();
-    const on = btn.classList.toggle('on');
-    btn.innerHTML = on ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4"/></svg>' : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5 C3 10 1 7 1 5 C1 2.5 2.5 1.5 4.5 1.5 C6 1.5 7 2.5 8 3.5 C9 2.5 10 1.5 11.5 1.5 C13.5 1.5 15 2.5 15 5 C15 7 13 10 8 13.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
-    showToast(on ? 'Saved to wishlist' : 'Removed from wishlist');
+    const already = favs.find(f => f.id === id);
+    if (already) {
+      favs = favs.filter(f => f.id !== id);
+      btn.classList.remove('on'); btn.innerHTML = HEART_EMPTY;
+      showToast('Removed from favourites');
+    } else {
+      favs.push({ id, name, img, price });
+      btn.classList.add('on'); btn.innerHTML = HEART_FULL;
+      showToast('Added to favourites ❤️');
+    }
+    saveFavs();
+    updateFavBadge();
   });
 });
+
+updateFavBadge();
 
 // ── Product tabs
 document.querySelectorAll('.ptab').forEach(tab => {
@@ -1374,5 +1468,18 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 </script>
+
+<!-- FAVOURITES DRAWER -->
+<div class="fav-overlay" id="fav-overlay"></div>
+<aside class="fav-drawer" id="fav-drawer" aria-label="Favourites">
+  <div class="fav-hdr">
+    <h3>Your Favourites</h3>
+    <button class="fav-close" id="fav-close" aria-label="Close">×</button>
+  </div>
+  <div class="fav-body" id="fav-body"></div>
+  <div class="fav-footer" id="fav-footer" style="display:none">
+    <a href="#design" class="btn btn-pri" id="fav-design-btn">Design a Mug Like This</a>
+  </div>
+</aside>
 </body>
 </html>
