@@ -1204,6 +1204,20 @@ button{font-family:inherit;cursor:pointer}
 
 <div class="toast" id="toast"></div>
 
+
+<!-- FAVOURITES DRAWER -->
+<div class="fav-overlay" id="fav-overlay"></div>
+<aside class="fav-drawer" id="fav-drawer" aria-label="Favourites">
+  <div class="fav-hdr">
+    <h3>Your Favourites</h3>
+    <button class="fav-close" id="fav-close" aria-label="Close">×</button>
+  </div>
+  <div class="fav-body" id="fav-body"></div>
+  <div class="fav-footer" id="fav-footer" style="display:none">
+    <a href="#design" class="btn btn-pri" id="fav-design-btn">Design a Mug Like This</a>
+  </div>
+</aside>
+
 <script>
 // ── Occasions filter (registered first so nothing can break it)
 document.querySelector('.occ-grid').addEventListener('click', function(e) {
@@ -1469,17 +1483,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 </script>
 
-<!-- FAVOURITES DRAWER -->
-<div class="fav-overlay" id="fav-overlay"></div>
-<aside class="fav-drawer" id="fav-drawer" aria-label="Favourites">
-  <div class="fav-hdr">
-    <h3>Your Favourites</h3>
-    <button class="fav-close" id="fav-close" aria-label="Close">×</button>
-  </div>
-  <div class="fav-body" id="fav-body"></div>
-  <div class="fav-footer" id="fav-footer" style="display:none">
-    <a href="#design" class="btn btn-pri" id="fav-design-btn">Design a Mug Like This</a>
-  </div>
-</aside>
+
 </body>
 </html>
