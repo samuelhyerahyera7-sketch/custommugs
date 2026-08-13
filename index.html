@@ -1205,6 +1205,20 @@ button{font-family:inherit;cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
+// ── Occasions filter (registered first so nothing can break it)
+document.querySelector('.occ-grid').addEventListener('click', function(e) {
+  var card = e.target.closest('.occ-card');
+  if (!card) return;
+  document.querySelectorAll('.occ-card').forEach(function(c){ c.classList.remove('on'); });
+  card.classList.add('on');
+  var occ = card.dataset.occ;
+  document.querySelectorAll('.pc').forEach(function(p) {
+    if (occ === 'all') { p.style.display = ''; return; }
+    var tags = (p.dataset.occ || '').trim().split(/\s+/);
+    p.style.display = tags.indexOf(occ) !== -1 ? '' : 'none';
+  });
+});
+
 // ── State
 const cartItems = [];
 
@@ -1389,19 +1403,6 @@ document.querySelectorAll('.ptab').forEach(tab => {
   });
 });
 
-// ── Occasions
-document.querySelector('.occ-grid').addEventListener('click', e => {
-  const card = e.target.closest('.occ-card');
-  if (!card) return;
-  document.querySelectorAll('.occ-card').forEach(c => c.classList.remove('on'));
-  card.classList.add('on');
-  const occ = card.dataset.occ;
-  document.querySelectorAll('.pc').forEach(p => {
-    if (occ === 'all') { p.style.display = ''; return; }
-    const tags = (p.dataset.occ || '').trim().split(/\s+/);
-    p.style.display = tags.includes(occ) ? '' : 'none';
-  });
-});
 
 // ── Size selectors
 document.querySelectorAll('.pc-sizes').forEach(group => {
