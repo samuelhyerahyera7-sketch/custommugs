@@ -442,17 +442,17 @@ button{font-family:inherit;cursor:pointer}
     </div>
     <div class="occ-label" style="text-align:left;margin-bottom:1rem"><span class="eyebrow">Shop by occasion</span></div>
     <div class="occ-grid" style="margin-bottom:1.75rem">
-      <div class="occ-card on" data-occ="all"><div class="occ-name">All</div></div>
-      <div class="occ-card" data-occ="birthday"><div class="occ-name">Birthday</div></div>
-      <div class="occ-card" data-occ="mom"><div class="occ-name">Moms</div></div>
-      <div class="occ-card" data-occ="dad"><div class="occ-name">Dads</div></div>
-      <div class="occ-card" data-occ="get-well"><div class="occ-name">Get Well Soon</div></div>
-      <div class="occ-card" data-occ="anniversary"><div class="occ-name">Anniversary</div></div>
-      <div class="occ-card" data-occ="valentine"><div class="occ-name">Valentine's</div></div>
-      <div class="occ-card" data-occ="baby"><div class="occ-name">Baby Shower</div></div>
-      <div class="occ-card" data-occ="retirement"><div class="occ-name">Retirement</div></div>
-      <div class="occ-card" data-occ="corporate"><div class="occ-name">Corporate</div></div>
-      <div class="occ-card" data-occ="pet"><div class="occ-name">Pet Lovers</div></div>
+      <div class="occ-card on" onclick="filterByOcc('all')" data-occ="all"><div class="occ-name">All</div></div>
+      <div class="occ-card" onclick="filterByOcc('birthday')" data-occ="birthday"><div class="occ-name">Birthday</div></div>
+      <div class="occ-card" onclick="filterByOcc('mom')" data-occ="mom"><div class="occ-name">Moms</div></div>
+      <div class="occ-card" onclick="filterByOcc('dad')" data-occ="dad"><div class="occ-name">Dads</div></div>
+      <div class="occ-card" onclick="filterByOcc('get-well')" data-occ="get-well"><div class="occ-name">Get Well Soon</div></div>
+      <div class="occ-card" onclick="filterByOcc('anniversary')" data-occ="anniversary"><div class="occ-name">Anniversary</div></div>
+      <div class="occ-card" onclick="filterByOcc('valentine')" data-occ="valentine"><div class="occ-name">Valentine's</div></div>
+      <div class="occ-card" onclick="filterByOcc('baby')" data-occ="baby"><div class="occ-name">Baby Shower</div></div>
+      <div class="occ-card" onclick="filterByOcc('retirement')" data-occ="retirement"><div class="occ-name">Retirement</div></div>
+      <div class="occ-card" onclick="filterByOcc('corporate')" data-occ="corporate"><div class="occ-name">Corporate</div></div>
+      <div class="occ-card" onclick="filterByOcc('pet')" data-occ="pet"><div class="occ-name">Pet Lovers</div></div>
     </div>
     <div class="pgrid">
 
@@ -1219,6 +1219,16 @@ button{font-family:inherit;cursor:pointer}
 </aside>
 
 <script>
+function filterByOcc(occ) {
+  document.querySelectorAll('.occ-card').forEach(function(c){ c.classList.remove('on'); });
+  var active = document.querySelector('.occ-card[data-occ="' + occ + '"]');
+  if (active) active.classList.add('on');
+  document.querySelectorAll('.pc').forEach(function(p) {
+    if (occ === 'all') { p.style.display = ''; return; }
+    var tags = (p.dataset.occ || '').trim().split(/\s+/);
+    p.style.display = (tags.indexOf(occ) !== -1) ? '' : 'none';
+  });
+}
 // ── Occasions filter (registered first so nothing can break it)
 document.querySelector('.occ-grid').addEventListener('click', function(e) {
   var card = e.target.closest('.occ-card');
