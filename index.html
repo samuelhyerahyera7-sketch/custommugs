@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Design your own custom mug. Upload a photo, add your text, pick your mug. Printed and delivered across South Africa in 2–4 days from R149.">
+<meta name="description" content="Design your own custom mug. Upload a photo, add your text, pick your mug. Printed and delivered across South Africa in 2–4 days from R90.">
 <title>CustomMugs – Design. Print. Deliver.</title>
 <style>
 :root {
@@ -350,9 +350,15 @@ button{font-family:inherit;cursor:pointer}
   .gal-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}
   .gi.big{grid-column:span 1;grid-row:span 1}
 }
+@media(max-width:1060px){
+  .nav-end .btn{display:none}
+  .nav{gap:.5rem}
+  .nav-links a{padding:.44rem .55rem}
+}
 @media(max-width:640px){
   .nav-links,.nav-end .btn{display:none}
   .hamburger{display:flex}
+  .nav{gap:.5rem}
   section,.bulk,.quality,.nl,.gallery,.reviews,.faq,.design-strip,.occasions,.featured,.products{padding:44px 0}
   .hero{padding-top:40px}
   .hero-inner{padding-bottom:32px}
@@ -399,7 +405,7 @@ button{font-family:inherit;cursor:pointer}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><circle cx="10" cy="21" r="1"/><circle cx="21" cy="21" r="1"/></svg>
         <span class="cart-badge" id="cbadge">0</span>
       </button>
-      <a href="#shop" class="btn btn-pri btn-sm">Start Designing</a>
+      <a href="#design" class="btn btn-pri btn-sm">Start Designing</a>
       <button class="hamburger" id="burger" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -415,7 +421,7 @@ button{font-family:inherit;cursor:pointer}
   <a href="#bulk">Bulk Orders</a>
   <a href="#gallery">Gallery</a>
   <a href="#faq">Help</a>
-  <a href="#shop" class="btn btn-pri" style="text-align:center;justify-content:center;margin-top:.75rem">Start Designing</a>
+  <a href="#design" class="btn btn-pri" style="text-align:center;justify-content:center;margin-top:.75rem">Start Designing</a>
 </nav>
 
 <!-- HERO -->
@@ -424,7 +430,7 @@ button{font-family:inherit;cursor:pointer}
     <div>
 
       <h1 class="hero-h serif">Design your own<br>custom mug — <span style="color:#C9A84C">it's easy.</span></h1>
-      <p class="hero-p">Upload a photo, add your text, pick your mug. We print and deliver across South Africa in 2–4 business days. From R149.</p>
+      <p class="hero-p">Upload a photo, add your text, pick your mug. We print and deliver across South Africa in 2–4 business days. From R90.</p>
       <div class="hero-btns">
         <a href="#design" class="btn btn-pri btn-lg">Design Your Mug</a>
         <a href="#shop" class="btn btn-out btn-lg">Shop All</a>
@@ -1309,7 +1315,7 @@ document.querySelectorAll('.pc-atc').forEach(btn => {
     const card = btn.closest('.pc');
     const name = card.querySelector('.pc-name').textContent;
     const priceEl = card.querySelector('[data-p]');
-    const price = parseFloat(priceEl ? priceEl.dataset.p : '149');
+    const price = parseFloat(priceEl ? priceEl.dataset.p : '90');
     cartItems.push({name, price, id: Date.now()});
     renderCart();
     showToast(name + ' added to cart');
