@@ -348,10 +348,10 @@ document.querySelector('.zoom').addEventListener('click',e=>e.stopPropagation())
 $('zi').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist-.9)});
 $('zo').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist+.9)});
 $('zr').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(8.2)});
-stage.addEventListener('wheel',e=>{e.preventDefault();zoom(dist+(e.deltaY>0?.55:-.55))},{passive:false});
+stage.addEventListener('wheel',e=>{e.preventDefault();if(artMode&&(fimg||bimg)){const sid=artSide==='left'?'fs':'bs';$(sid).value=Math.max(10,Math.min(300,parseFloat($(sid).value)+(e.deltaY>0?-6:6)));redraw()}else{zoom(dist+(e.deltaY>0?.55:-.55))}},{passive:false});
 window.__mugZoom=()=>dist;
 let ty=LEFT_SIDE_VIEW_Y,tx=-.08,drag=false,ox=0,oy=0,spinning=false;const p=new Map();let ps=0,pz=8.2;
-let artMode=false,artSide='left';
+let artMode=false,artSide='left',artScaleStart=90;
 function setArtMode(on){artMode=on;$('artModeBtn').classList.toggle('on',on);$('artSideSel').classList.toggle('hidden',!on);if(on){spinning=false;$('spin').setAttribute('aria-pressed','false')}}
 $('artModeBtn').addEventListener('click',e=>{e.stopPropagation();if(!fimg&&!bimg)return;setArtMode(!artMode);if(artMode){const ry=((mug.rotation.y%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);artSide=(ry>Math.PI/2&&ry<3*Math.PI/2)?'left':'right';$('artSideL').classList.toggle('on',artSide==='left');$('artSideR').classList.toggle('on',artSide==='right')}});
 $('artSideL').addEventListener('click',e=>{e.stopPropagation();artSide='left';$('artSideL').classList.add('on');$('artSideR').classList.remove('on')});
@@ -359,8 +359,8 @@ $('artSideR').addEventListener('click',e=>{e.stopPropagation();artSide='right';$
 document.querySelector('.hud-btm').addEventListener('pointerdown',e=>e.stopPropagation());
 document.querySelector('.hud-btm').addEventListener('pointermove',e=>e.stopPropagation());
 function pd(){const a=[...p.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
-stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false}});
-stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps)zoom(pz*(ps/d));return}if(!drag)return;const dx=e.clientX-ox,dy=e.clientY-oy;if(artMode&&(fimg||bimg)){const xId=artSide==='left'?'fx':'bx',yId=artSide==='left'?'fy':'by';$(xId).value=Math.max(-700,Math.min(700,parseFloat($(xId).value)+dx*4.2));$(yId).value=Math.max(-440,Math.min(440,parseFloat($(yId).value)+dy*3.8));redraw()}else{ty+=dx*.012;tx+=dy*.009;tx=Math.max(-.82,Math.min(.82,tx))}ox=e.clientX;oy=e.clientY});
+stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false;if(artMode&&(fimg||bimg)){artScaleStart=parseFloat($(artSide==='left'?'fs':'bs').value)}}});
+stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps){if(artMode&&(fimg||bimg)){const sid=artSide==='left'?'fs':'bs';$(sid).value=Math.max(10,Math.min(300,artScaleStart*(d/ps)));redraw()}else{zoom(pz*(ps/d))}}return}if(!drag)return;const dx=e.clientX-ox,dy=e.clientY-oy;if(artMode&&(fimg||bimg)){const xId=artSide==='left'?'fx':'bx',yId=artSide==='left'?'fy':'by';$(xId).value=Math.max(-700,Math.min(700,parseFloat($(xId).value)+dx*4.2));$(yId).value=Math.max(-440,Math.min(440,parseFloat($(yId).value)+dy*3.8));redraw()}else{ty+=dx*.012;tx+=dy*.009;tx=Math.max(-.82,Math.min(.82,tx))}ox=e.clientX;oy=e.clientY});
 function end(e){p.delete(e.pointerId);if(!p.size)drag=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
 function setPressed(btn){document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)))}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{spinning=false;$('spin').setAttribute('aria-pressed','false');setPressed(b);const v=b.dataset.view;if(v==='front'){ty=LEFT_SIDE_VIEW_Y;tx=-.08}if(v==='back'){ty=RIGHT_SIDE_VIEW_Y;tx=-.08}if(v==='handle'){ty=HANDLE_VIEW_Y;tx=-.07}if(v==='top'){ty=LEFT_SIDE_VIEW_Y;tx=.68}});
