@@ -46,23 +46,6 @@ canvas{width:100%;height:100%;display:block}
 .zoom{display:flex;gap:8px;pointer-events:auto}
 .icon-btn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-weight:700}
 
-/* ── Mug colour swatches ── */
-.ctrl-color-group{display:flex;flex-direction:column;gap:5px}
-.ctrl-color-group>label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.swatches{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.swatch{width:26px;height:26px;border-radius:50%;border:2px solid rgba(0,0,0,.08);cursor:pointer;padding:0;min-height:unset;transition:transform .12s,box-shadow .12s}
-.swatch:hover{transform:scale(1.18)}
-.swatch.active{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--green);transform:scale(1.1)}
-
-/* ── Text tool ── */
-.text-tool{grid-column:1/-1;border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
-.text-tool-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:8px}
-.text-tool input[type=text]{flex:1;min-width:120px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;min-height:38px}
-.text-tool input[type=number]{width:74px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;font:inherit;min-height:38px}
-.text-tool input[type=color]{width:38px;height:38px;border:1px solid var(--line);border-radius:8px;padding:3px;cursor:pointer}
-.text-tool select{min-height:38px;padding:7px 10px;min-width:120px}
-.text-clear{font-size:12px;color:var(--muted);margin-top:4px;cursor:pointer;text-decoration:underline;background:none;border:none;padding:0}
-
 /* ── View strip ── */
 .view-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
 .view-thumb{border:1px solid var(--line);border-radius:8px;cursor:pointer;background:#fff;transition:border-color .15s,background .15s;user-select:none;display:flex;flex-direction:column;align-items:center;overflow:hidden;font-size:12px;color:var(--ink);text-align:center;line-height:1.2}
@@ -180,19 +163,6 @@ canvas{width:100%;height:100%;display:block}
     </select>
     <div id="area"></div>
   </div>
-  <div class="ctrl-color-group">
-    <label>Mug colour</label>
-    <div class="swatches">
-      <button class="swatch active" data-mug-color="ffffff" title="White" style="background:#fff"></button>
-      <button class="swatch" data-mug-color="f5f0e8" title="Cream" style="background:#f5f0e8"></button>
-      <button class="swatch" data-mug-color="1a1a1a" title="Black" style="background:#1a1a1a"></button>
-      <button class="swatch" data-mug-color="1e3764" title="Navy" style="background:#1e3764"></button>
-      <button class="swatch" data-mug-color="1b5e20" title="Forest green" style="background:#1b5e20"></button>
-      <button class="swatch" data-mug-color="b71c1c" title="Red" style="background:#b71c1c"></button>
-      <button class="swatch" data-mug-color="ad1457" title="Pink" style="background:#ad1457"></button>
-      <button class="swatch" data-mug-color="e65100" title="Orange" style="background:#e65100"></button>
-    </div>
-  </div>
   <label class="ctrl-guide">
     <input id="guide" type="checkbox"> Show printable area
   </label>
@@ -271,26 +241,6 @@ canvas{width:100%;height:100%;display:block}
     <div class="range"><label for="bcr">Crop right <output id="bcrv">0%</output></label><input id="bcr" type="range" min="0" max="49" value="0"></div>
     <button id="dlRight" type="button" class="primary" style="width:100%;margin-top:10px;font-size:13px">&#8595; Download right artwork</button>
   </div>
-  <!-- ── Text on mug tool ── -->
-  <div class="text-tool">
-    <b style="font-size:14px">Add text to mug</b>
-    <div class="text-tool-row">
-      <input id="mugText" type="text" placeholder="Your text here&hellip;">
-      <select id="mugTextFont">
-        <option value="Arial">Arial</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Impact">Impact</option>
-        <option value="'Times New Roman'">Times New Roman</option>
-        <option value="'Courier New'">Courier New</option>
-        <option value="Verdana">Verdana</option>
-      </select>
-      <input id="mugTextColor" type="color" value="#000000" title="Text colour">
-      <input id="mugTextSize" type="number" min="20" max="300" value="90" title="Font size">
-      <button id="applyTextLeft" type="button" class="primary">Apply left</button>
-      <button id="applyTextRight" type="button">Apply right</button>
-    </div>
-    <button id="clearText" class="text-clear">Clear all text</button>
-  </div>
 </div>
 
 <!-- ── Production file ── -->
@@ -329,26 +279,19 @@ try{
   stage.innerHTML='<div style="display:grid;place-items:center;height:100%;text-align:center;padding:24px;color:#c2410c;font-size:15px;line-height:1.5">WebGL is not available on this device or browser.<br>Try Chrome or Firefox on a desktop for the best experience.</div>';
   throw err;
 }
-r.setPixelRatio(Math.min(devicePixelRatio,2));r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.08;
+r.setPixelRatio(Math.min(devicePixelRatio,2));r.shadowMap.enabled=true;r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;
 
 // ---- Context loss/restore ----
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();$('status').textContent='GPU context lost — please refresh the page'},false);
 canvas.addEventListener('webglcontextrestored',()=>{try{build();redraw();$('status').textContent='Context restored'}catch(_){}},false);
-const s=new THREE.Scene();
-
-// Studio gradient background
-(()=>{const bg=document.createElement('canvas');bg.width=512;bg.height=512;const bx=bg.getContext('2d');const g=bx.createRadialGradient(256,180,0,256,300,420);g.addColorStop(0,'#f2ede8');g.addColorStop(1,'#d8d3cc');bx.fillStyle=g;bx.fillRect(0,0,512,512);s.background=new THREE.CanvasTexture(bg)})();
-
-// Studio environment map for ceramic reflections
-(()=>{try{const ec=document.createElement('canvas');ec.width=512;ec.height=256;const ex=ec.getContext('2d');const eg=ex.createLinearGradient(0,0,0,256);eg.addColorStop(0,'#c8d6e8');eg.addColorStop(.38,'#eee9e2');eg.addColorStop(.52,'#e0dbd4');eg.addColorStop(1,'#aba6a0');ex.fillStyle=eg;ex.fillRect(0,0,512,256);const ks=ex.createRadialGradient(110,52,0,110,52,110);ks.addColorStop(0,'rgba(255,252,240,.96)');ks.addColorStop(1,'rgba(255,252,240,0)');ex.fillStyle=ks;ex.fillRect(0,0,512,256);const fs=ex.createRadialGradient(420,72,0,420,72,85);fs.addColorStop(0,'rgba(230,242,255,.75)');fs.addColorStop(1,'rgba(230,242,255,0)');ex.fillStyle=fs;ex.fillRect(0,0,512,256);const et=new THREE.CanvasTexture(ec);et.mapping=THREE.EquirectangularReflectionMapping;et.colorSpace=THREE.SRGBColorSpace;const pmrem=new THREE.PMREMGenerator(r);pmrem.compileEquirectangularShader();const env=pmrem.fromEquirectangular(et).texture;s.environment=env;s.environmentIntensity=0.55;et.dispose();pmrem.dispose()}catch(e){}})();
-
+const s=new THREE.Scene();s.background=new THREE.Color(0xf3f0e9);
 const cam=new THREE.PerspectiveCamera(30,1,.1,50);let dist=8.2;cam.position.set(0,.18,dist);
 const mug=new THREE.Group();s.add(mug);
 const ceramic=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.18,clearcoat:.86,clearcoatRoughness:.06,metalness:0});
 const innerMat=new THREE.MeshPhysicalMaterial({color:0xf6f6f4,roughness:.28,clearcoat:.62,clearcoatRoughness:.1,side:THREE.BackSide});
 const shadowMat=new THREE.MeshBasicMaterial({color:0xd5d2cc,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false});
 const R=1.06,H=2.45,IR=.995;
-const body=new THREE.Mesh(new THREE.CylinderGeometry(R,R*.974,H,224,1,true),ceramic);mug.add(body);
+const body=new THREE.Mesh(new THREE.CylinderGeometry(R,R,H,224,1,true),ceramic);mug.add(body);
 const bottom=new THREE.Mesh(new THREE.CircleGeometry(1.02,224),ceramic);bottom.rotation.x=-Math.PI/2;bottom.position.y=-H/2+.01;mug.add(bottom);
 const basePlug=new THREE.Mesh(new THREE.CylinderGeometry(R*.98,R*.965,.095,224,1,false),ceramic);basePlug.position.y=-H/2+.035;mug.add(basePlug);
 const iw=new THREE.Mesh(new THREE.CylinderGeometry(IR,IR,2.16,224,1,true),innerMat);iw.position.y=.08;mug.add(iw);
@@ -376,7 +319,7 @@ const artOpts={transparent:true,depthWrite:false,roughness:.18,metalness:0,clear
 const fm=new THREE.MeshPhysicalMaterial({...artOpts,map:ft.t});
 const bm=new THREE.MeshPhysicalMaterial({...artOpts,map:bt.t});
 const wm=new THREE.MeshPhysicalMaterial({...artOpts,map:wt.t});
-let fimg=null,bimg=null,showGuide=false,patches=[],proofUrl='',productionFile=null,ftText=[],btText=[];
+let fimg=null,bimg=null,showGuide=false,patches=[],proofUrl='',productionFile=null;
 const mmToArc=mm=>(mm/258)*Math.PI*2;
 const HANDLE_ANGLE=Math.PI/2;
 const LEFT_SIDE_ANGLE=Math.PI;
@@ -387,17 +330,11 @@ const RIGHT_SIDE_VIEW_Y=0;
 const HANDLE_VIEW_Y=-Math.PI/2;
 function clearP(){patches.forEach(m=>{m.geometry.dispose();mug.remove(m)});patches=[]}
 function patch(center,arc,mat){const m=new THREE.Mesh(new THREE.CylinderGeometry(R+.006,R+.006,2.40,220,1,true,center-arc/2,arc),mat);mug.add(m);patches.push(m)}
-
-// ── 3-D print-area guide lines ──
-const guideGroup=new THREE.Group();mug.add(guideGroup);
-function buildGuides(){while(guideGroup.children.length){const c=guideGroup.children[0];c.geometry&&c.geometry.dispose();guideGroup.remove(c)}if(!showGuide)return;const v=$('layout').value;const gm=new THREE.LineBasicMaterial({color:0x0f766e,transparent:true,opacity:.85});const PH=1.20;const seg=90;function arc3(cx,arc,y){const pts=[];for(let i=0;i<=seg;i++){const a=(cx-arc/2)+(arc/seg)*i;pts.push(new THREE.Vector3(Math.sin(a)*(R+.022),y,Math.cos(a)*(R+.022)))}return new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),gm.clone())}function vert(a,y0,y1){const x=Math.sin(a)*(R+.022),z=Math.cos(a)*(R+.022);return new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,y0,z),new THREE.Vector3(x,y1,z)]),gm.clone())}function addSide(cx,arc){guideGroup.add(arc3(cx,arc,PH),arc3(cx,arc,-PH),vert(cx-arc/2,PH,-PH),vert(cx+arc/2,PH,-PH))}if(v==='front'||v==='frontBack'){addSide(LEFT_SIDE_ANGLE,mmToArc(95));if(v==='frontBack')addSide(RIGHT_SIDE_ANGLE,mmToArc(95))}if(v==='wide')addSide(WIDE_WRAP_ANGLE,mmToArc(180));if(v==='max')addSide(WIDE_WRAP_ANGLE,mmToArc(232))}
-
 function build(){clearP();const v=$('layout').value;if(v==='front'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);$('area').textContent='Left side print area, clear of the handle'}if(v==='frontBack'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);patch(RIGHT_SIDE_ANGLE,mmToArc(95),bm);$('area').textContent='Left and right side print areas; neither crosses the handle'}if(v==='wide'){patch(WIDE_WRAP_ANGLE,mmToArc(180),wm);$('area').textContent='Wide side wrap, about 180 mm, clear of the handle'}if(v==='max'){patch(WIDE_WRAP_ANGLE,mmToArc(232),wm);$('area').textContent='Maximum side wrap, about 232 mm, stretched closer to the handle with a no-print gap'}}
 function drawOne(o,img,scale,widthPct,xo,yo,cropL,cropR){o.x.clearRect(0,0,o.c.width,o.c.height);if(showGuide){o.x.save();o.x.strokeStyle='rgba(15,118,110,.55)';o.x.setLineDash([22,16]);o.x.lineWidth=6;o.x.strokeRect(8,8,o.c.width-16,o.c.height-16);o.x.restore()}if(img){const cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(o.c.height*.96*(scale/100))/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100);o.x.drawImage(img,sx,0,sw,sh,o.c.width/2-drawW/2+xo,o.c.height/2-drawH/2+yo,drawW,drawH)}o.t.needsUpdate=true}
 function drawWrap(){wt.x.clearRect(0,0,wt.c.width,wt.c.height);if(showGuide){wt.x.save();wt.x.strokeStyle='rgba(15,118,110,.55)';wt.x.setLineDash([22,16]);wt.x.lineWidth=6;wt.x.strokeRect(8,8,wt.c.width-16,wt.c.height-16);wt.x.restore()}const draw=(img,left,scale,widthPct,xo,yo,cropL,cropR)=>{if(!img)return;const half=wt.c.width/2,cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(wt.c.height*.96*(scale/100))/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100),cx=left?half*.5:half*1.5;wt.x.drawImage(img,sx,0,sw,sh,cx-drawW/2+xo*.45,wt.c.height/2-drawH/2+yo,drawW,drawH)};draw(fimg,true,+$('fs').value,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);draw(bimg,false,+$('bs').value,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);wt.t.needsUpdate=true}
-function applyTextLayer(o,items){if(!items.length)return;items.forEach(t=>{o.x.save();o.x.font=`bold ${t.size}px ${t.font},sans-serif`;o.x.fillStyle=t.color;o.x.textAlign='center';o.x.textBaseline='middle';if(t.shadow){o.x.shadowColor='rgba(0,0,0,.22)';o.x.shadowBlur=10}o.x.fillText(t.text,t.x,t.y);o.x.restore()});o.t.needsUpdate=true}
 function updateValues(){['fs','fw','fx','fy','fcl','fcr','bs','bw','bx','by','bcl','bcr'].forEach(id=>{const o=$(id+'v');if(o)o.textContent=(id.endsWith('x')||id.endsWith('y'))?$(id).value:$(id).value+'%'})}
-function redraw(){updateValues();drawOne(ft,fimg,+$('fs').value,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);applyTextLayer(ft,ftText);drawOne(bt,bimg,+$('bs').value,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);applyTextLayer(bt,btText);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork'}
+function redraw(){updateValues();drawOne(ft,fimg,+$('fs').value,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);drawOne(bt,bimg,+$('bs').value,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork'}
 function load(input,isFront){input.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Please select an image file (JPG, PNG, WEBP, etc.)');return}const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{if(isFront){fimg=im;$('frontName').textContent=file.name}else{bimg=im;$('backName').textContent=file.name;$('backControls').classList.remove('hidden')}$('controls').classList.remove('hidden');$('previewWrap').classList.remove('hidden');redraw();shots();updateViewThumbs()};im.onerror=()=>{alert('Could not load image. The file may be corrupt or an unsupported format.')};im.src=fr.result};fr.onerror=()=>{alert('Could not read file. Please try again.')};fr.readAsDataURL(file)})}
 load($('frontFile'),true);load($('backFile'),false);
 ['fs','fw','fx','fy','fcl','fcr','bs','bw','bx','by','bcl','bcr'].forEach(id=>$(id).addEventListener('input',redraw));
@@ -406,18 +343,9 @@ $('fitLeft').onclick=()=>setSide('left','fit');$('fillLeft').onclick=()=>setSide
 $('fitRight').onclick=()=>setSide('right','fit');$('fillRight').onclick=()=>setSide('right','fill');$('centerRight').onclick=()=>setSide('right','center');
 $('dlLeft').onclick=()=>{if(!fimg)return;download(ft.c.toDataURL('image/png'),'left-artwork.png')};
 $('dlRight').onclick=()=>{if(!bimg)return;download(bt.c.toDataURL('image/png'),'right-artwork.png')};
-
-// ── Text on mug ──
-function applyMugText(side){const t=$('mugText').value.trim();if(!t)return;const items=side==='left'?ftText:btText;items.push({text:t,font:$('mugTextFont').value,color:$('mugTextColor').value,size:+$('mugTextSize').value||90,x:900,y:600,shadow:true});redraw();updateViewThumbs()}
-$('applyTextLeft').onclick=()=>applyMugText('left');
-$('applyTextRight').onclick=()=>applyMugText('right');
-$('clearText').onclick=()=>{ftText.length=0;btText.length=0;redraw();updateViewThumbs()};
-$('layout').addEventListener('change',()=>{build();buildGuides();redraw();shots()});
-$('guide').addEventListener('change',e=>{showGuide=e.target.checked;buildGuides();redraw();shots()});
-
-// ── Mug colour swatches ──
-document.querySelectorAll('.swatch[data-mug-color]').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.swatch[data-mug-color]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const c=new THREE.Color('#'+btn.dataset.mugColor);ceramic.color.set(c);innerMat.color.copy(c).multiplyScalar(.92);ceramic.needsUpdate=true;innerMat.needsUpdate=true})});
-$('resetArt').onclick=()=>{setArtMode(false);fimg=null;bimg=null;productionFile=null;['frontFile','backFile','productionFile'].forEach(id=>$(id).value='');$('frontName').textContent='No left side photo selected';$('backName').textContent='No right side photo selected';$('productionName').textContent='No production file selected';$('backControls').classList.add('hidden');$('controls').classList.add('hidden');$('previewWrap').classList.add('hidden');$('proofWrap').classList.add('hidden');['fs','bs'].forEach(id=>{const el=$(id);if(el)el.value=90});['fw','bw'].forEach(id=>{const el=$(id);if(el)el.value=100});['fx','fy','bx','by','fcl','fcr','bcl','bcr'].forEach(id=>{const el=$(id);if(el)el.value=0});ftText.length=0;btText.length=0;redraw()};
+$('layout').addEventListener('change',()=>{build();redraw();shots()});
+$('guide').addEventListener('change',e=>{showGuide=e.target.checked;redraw();shots()});
+$('resetArt').onclick=()=>{setArtMode(false);fimg=null;bimg=null;productionFile=null;['frontFile','backFile','productionFile'].forEach(id=>$(id).value='');$('frontName').textContent='No left side photo selected';$('backName').textContent='No right side photo selected';$('productionName').textContent='No production file selected';$('backControls').classList.add('hidden');$('controls').classList.add('hidden');$('previewWrap').classList.add('hidden');$('proofWrap').classList.add('hidden');['fs','bs'].forEach(id=>{const el=$(id);if(el)el.value=90});['fw','bw'].forEach(id=>{const el=$(id);if(el)el.value=100});['fx','fy','bx','by','fcl','fcr','bcl','bcr'].forEach(id=>{const el=$(id);if(el)el.value=0});redraw()};
 function setProductionFile(file){if(!file)return;productionFile=file;$('productionName').textContent=file.name+' ('+Math.round(file.size/1024)+' KB)'}
 const drop=$('productionDrop');
 drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});
@@ -425,11 +353,7 @@ drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
 drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');setProductionFile(e.dataTransfer.files?.[0])});
 $('productionFile').addEventListener('change',e=>setProductionFile(e.target.files?.[0]));
 
-s.add(new THREE.HemisphereLight(0xfff8f0,0xc8c0b4,1.85));
-const key=new THREE.DirectionalLight(0xfff8ee,5.2);key.position.set(-3.5,5.5,5.5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.near=1;key.shadow.camera.far=20;key.shadow.bias=-0.0003;s.add(key);
-const fill=new THREE.DirectionalLight(0xeef4ff,1.6);fill.position.set(4.5,2.5,4);s.add(fill);
-const rimLight=new THREE.DirectionalLight(0xfff0e8,1.1);rimLight.position.set(2.8,3.5,-4);s.add(rimLight);
-const topLight=new THREE.DirectionalLight(0xffffff,.7);topLight.position.set(0,8,0);s.add(topLight);
+s.add(new THREE.HemisphereLight(0xffffff,0xcfc8bc,2.05));const key=new THREE.DirectionalLight(0xffffff,4.4);key.position.set(-3.5,5.2,5);s.add(key);const fill=new THREE.DirectionalLight(0xffffff,1.35);fill.position.set(4,2,4);s.add(fill);const rimLight=new THREE.DirectionalLight(0xffffff,.9);rimLight.position.set(2.8,3,-4);s.add(rimLight);
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(15,15),new THREE.ShadowMaterial({opacity:.16}));floor.rotation.x=-Math.PI/2;floor.position.y=-H/2-.04;s.add(floor);
 function zoom(v){dist=Math.max(3.6,Math.min(9.4,v));cam.position.z=dist;cam.updateProjectionMatrix()}
 document.querySelector('.zoom').addEventListener('pointerdown',e=>e.stopPropagation());
@@ -460,9 +384,8 @@ async function renderView(x,y){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam)
 async function saveProof(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y;const left=await renderView(-.08,LEFT_SIDE_VIEW_Y);const right=await renderView(-.08,RIGHT_SIDE_VIEW_Y);mug.rotation.x=sx;mug.rotation.y=sy;const proof=document.createElement('canvas');proof.width=1800;proof.height=1100;const x=proof.getContext('2d');x.fillStyle='#f8fafc';x.fillRect(0,0,proof.width,proof.height);x.fillStyle='#111827';x.font='700 54px Arial';x.fillText('Custom 11oz mug proof',70,90);x.font='28px Arial';x.fillStyle='#475467';x.fillText('Left and right side views only',70,132);x.fillText('Production file: '+(productionFile?.name||'not selected'),70,172);const li=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=left});const ri=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=right});x.fillStyle='#fff';x.strokeStyle='#d0d5dd';x.lineWidth=3;[[70,230],[930,230]].forEach(([px,py])=>{x.fillRect(px,py,800,720);x.strokeRect(px,py,800,720)});x.drawImage(li,100,260,740,560);x.drawImage(ri,960,260,740,560);x.fillStyle='#111827';x.font='700 34px Arial';x.fillText('Left side',100,900);x.fillText('Right side',960,900);x.font='24px Arial';x.fillStyle='#667085';x.fillText('Artwork can be scaled and moved inside the printable side area before saving.',100,970);proofUrl=proof.toDataURL('image/png');$('proofImg').src=proofUrl;$('proofWrap').classList.remove('hidden');download(proofUrl,'custom-mug-2d-proof.png')}
 $('saveProof').onclick=saveProof;
 $('downloadProof').onclick=()=>{if(proofUrl)download(proofUrl,'custom-mug-2d-proof.png')};
-function shots(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y;const oa=cam.aspect,of=cam.fov;cam.aspect=4/3;cam.fov=31;cam.updateProjectionMatrix();r.setSize(800,600,false);const views=[['Left side',-.06,LEFT_SIDE_VIEW_Y+.18],['Right side',-.06,RIGHT_SIDE_VIEW_Y-.18],['Handle side',-.05,HANDLE_VIEW_Y-.18],['Top',.44,LEFT_SIDE_VIEW_Y+.18]];$('shots').innerHTML='';for(const [n,x,y] of views){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam);const box=document.createElement('div');box.className='shot';const im=document.createElement('img');const url=canvas.toDataURL('image/jpeg',.92);im.src=url;const d=document.createElement('div');const span=document.createElement('span');span.textContent=n;const btn=document.createElement('button');btn.textContent='Save';btn.onclick=()=>download(url,'custom-mug-'+n.toLowerCase().replaceAll(' ','-')+'.jpg');d.append(span,btn);box.append(im,d);$('shots').append(box)}mug.rotation.x=sx;mug.rotation.y=sy;cam.aspect=oa;cam.fov=of;cam.updateProjectionMatrix();resize()}
-let thumbsRunning=false;
-function updateViewThumbs(){if(thumbsRunning)return;thumbsRunning=true;const sx=mug.rotation.x,sy=mug.rotation.y,st=spinning;spinning=false;const oa=cam.aspect,of=cam.fov;cam.aspect=4/3;cam.fov=33;cam.updateProjectionMatrix();r.setSize(480,360,false);const vt=[['vt-front',-.06,LEFT_SIDE_VIEW_Y+.22],['vt-back',-.06,RIGHT_SIDE_VIEW_Y-.22],['vt-handle',-.05,HANDLE_VIEW_Y-.22],['vt-top',.44,LEFT_SIDE_VIEW_Y+.22]];for(const[id,rx,ry]of vt){mug.rotation.x=rx;mug.rotation.y=ry;r.render(s,cam);const img=$(id);if(img)img.src=canvas.toDataURL('image/jpeg',.88)}mug.rotation.x=sx;mug.rotation.y=sy;spinning=st;cam.aspect=oa;cam.fov=of;cam.updateProjectionMatrix();resize();thumbsRunning=false}
+function shots(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y,views=[['Left side',-.08,LEFT_SIDE_VIEW_Y],['Right side',-.08,RIGHT_SIDE_VIEW_Y],['Handle side',-.07,HANDLE_VIEW_Y],['Top',.68,LEFT_SIDE_VIEW_Y]];$('shots').innerHTML='';for(const [n,x,y] of views){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam);const box=document.createElement('div');box.className='shot';const im=document.createElement('img');const url=canvas.toDataURL('image/jpeg',.92);im.src=url;const d=document.createElement('div');const span=document.createElement('span');span.textContent=n;const btn=document.createElement('button');btn.textContent='Save';btn.onclick=()=>download(url,'custom-mug-'+n.toLowerCase().replaceAll(' ','-')+'.jpg');d.append(span,btn);box.append(im,d);$('shots').append(box)}mug.rotation.x=sx;mug.rotation.y=sy}
+function updateViewThumbs(){const sx=mug.rotation.x,sy=mug.rotation.y,st=spinning;spinning=false;const vt=[['vt-front',-.08,LEFT_SIDE_VIEW_Y+.28],['vt-back',-.08,RIGHT_SIDE_VIEW_Y-.28],['vt-handle',-.07,HANDLE_VIEW_Y-.28],['vt-top',.68,LEFT_SIDE_VIEW_Y+.28]];for(const[id,rx,ry]of vt){mug.rotation.x=rx;mug.rotation.y=ry;r.render(s,cam);const img=$(id);if(img)img.src=canvas.toDataURL('image/jpeg',.78)}mug.rotation.x=sx;mug.rotation.y=sy;spinning=st}
 $('refresh').onclick=()=>{shots();updateViewThumbs()};
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
 new ResizeObserver(resize).observe(stage);resize();
