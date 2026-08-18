@@ -78,6 +78,13 @@ canvas{width:100%;height:100%;display:block}
 .shot button{min-height:30px;padding:4px 8px}
 .proof img{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
 .status-dot{width:8px;height:8px;border-radius:99px;background:var(--gold);display:inline-block}
+.hud-btm{position:absolute;bottom:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.art-toggle{pointer-events:auto;min-height:34px;padding:6px 13px;font-size:13px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid rgba(24,33,47,.14);border-radius:8px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:#344054;transition:background .15s,border-color .15s,color .15s}
+.art-toggle:hover{border-color:#8da0b8}
+.art-toggle.on{background:var(--green);border-color:var(--green);color:#fff}
+.side-sel{display:inline-flex;gap:5px;pointer-events:auto}
+.side-sel button{min-height:32px;padding:5px 13px;font-size:13px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-color:rgba(24,33,47,.14);color:#344054}
+.side-sel button.on{background:var(--green);border-color:var(--green);color:#fff}
 .hidden{display:none!important}
 
 /* ── Responsive ── */
@@ -168,6 +175,16 @@ canvas{width:100%;height:100%;display:block}
         <button id="zi" class="icon-btn" title="Zoom in" aria-label="Zoom in">+</button>
         <button id="zo" class="icon-btn" title="Zoom out" aria-label="Zoom out">-</button>
         <button id="zr" class="icon-btn" title="Reset zoom" aria-label="Reset zoom">1:1</button>
+      </div>
+    </div>
+    <div class="hud-btm">
+      <button id="artModeBtn" class="art-toggle" title="Drag artwork to reposition instead of rotating">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
+        Move artwork
+      </button>
+      <div class="side-sel hidden" id="artSideSel">
+        <button id="artSideL" class="on">Left side</button>
+        <button id="artSideR">Right side</button>
       </div>
     </div>
   </div>
@@ -314,7 +331,7 @@ $('fitLeft').onclick=()=>setSide('left','fit');$('fillLeft').onclick=()=>setSide
 $('fitRight').onclick=()=>setSide('right','fit');$('fillRight').onclick=()=>setSide('right','fill');$('centerRight').onclick=()=>setSide('right','center');
 $('layout').addEventListener('change',()=>{build();redraw();shots()});
 $('guide').addEventListener('change',e=>{showGuide=e.target.checked;redraw();shots()});
-$('resetArt').onclick=()=>{fimg=null;bimg=null;productionFile=null;['frontFile','backFile','productionFile'].forEach(id=>$(id).value='');$('frontName').textContent='No left side photo selected';$('backName').textContent='No right side photo selected';$('productionName').textContent='No production file selected';$('backControls').classList.add('hidden');$('controls').classList.add('hidden');$('previewWrap').classList.add('hidden');$('proofWrap').classList.add('hidden');redraw()};
+$('resetArt').onclick=()=>{setArtMode(false);fimg=null;bimg=null;productionFile=null;['frontFile','backFile','productionFile'].forEach(id=>$(id).value='');$('frontName').textContent='No left side photo selected';$('backName').textContent='No right side photo selected';$('productionName').textContent='No production file selected';$('backControls').classList.add('hidden');$('controls').classList.add('hidden');$('previewWrap').classList.add('hidden');$('proofWrap').classList.add('hidden');redraw()};
 function setProductionFile(file){if(!file)return;productionFile=file;$('productionName').textContent=file.name+' ('+Math.round(file.size/1024)+' KB)'}
 const drop=$('productionDrop');
 drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});
@@ -334,9 +351,16 @@ $('zr').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom
 stage.addEventListener('wheel',e=>{e.preventDefault();zoom(dist+(e.deltaY>0?.55:-.55))},{passive:false});
 window.__mugZoom=()=>dist;
 let ty=LEFT_SIDE_VIEW_Y,tx=-.08,drag=false,ox=0,oy=0,spinning=false;const p=new Map();let ps=0,pz=8.2;
+let artMode=false,artSide='left';
+function setArtMode(on){artMode=on;$('artModeBtn').classList.toggle('on',on);$('artSideSel').classList.toggle('hidden',!on);if(on){spinning=false;$('spin').setAttribute('aria-pressed','false')}}
+$('artModeBtn').addEventListener('click',e=>{e.stopPropagation();if(!fimg&&!bimg)return;setArtMode(!artMode);if(artMode){const ry=((mug.rotation.y%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);artSide=(ry>Math.PI/2&&ry<3*Math.PI/2)?'left':'right';$('artSideL').classList.toggle('on',artSide==='left');$('artSideR').classList.toggle('on',artSide==='right')}});
+$('artSideL').addEventListener('click',e=>{e.stopPropagation();artSide='left';$('artSideL').classList.add('on');$('artSideR').classList.remove('on')});
+$('artSideR').addEventListener('click',e=>{e.stopPropagation();artSide='right';$('artSideR').classList.add('on');$('artSideL').classList.remove('on')});
+document.querySelector('.hud-btm').addEventListener('pointerdown',e=>e.stopPropagation());
+document.querySelector('.hud-btm').addEventListener('pointermove',e=>e.stopPropagation());
 function pd(){const a=[...p.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
 stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false}});
-stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps)zoom(pz*(ps/d));return}if(!drag)return;ty+=(e.clientX-ox)*.012;tx+=(e.clientY-oy)*.009;tx=Math.max(-.82,Math.min(.82,tx));ox=e.clientX;oy=e.clientY});
+stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps)zoom(pz*(ps/d));return}if(!drag)return;const dx=e.clientX-ox,dy=e.clientY-oy;if(artMode&&(fimg||bimg)){const xId=artSide==='left'?'fx':'bx',yId=artSide==='left'?'fy':'by';$(xId).value=Math.max(-700,Math.min(700,parseFloat($(xId).value)+dx*4.2));$(yId).value=Math.max(-440,Math.min(440,parseFloat($(yId).value)+dy*3.8));redraw()}else{ty+=dx*.012;tx+=dy*.009;tx=Math.max(-.82,Math.min(.82,tx))}ox=e.clientX;oy=e.clientY});
 function end(e){p.delete(e.pointerId);if(!p.size)drag=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
 function setPressed(btn){document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)))}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{spinning=false;$('spin').setAttribute('aria-pressed','false');setPressed(b);const v=b.dataset.view;if(v==='front'){ty=LEFT_SIDE_VIEW_Y;tx=-.08}if(v==='back'){ty=RIGHT_SIDE_VIEW_Y;tx=-.08}if(v==='handle'){ty=HANDLE_VIEW_Y;tx=-.07}if(v==='top'){ty=LEFT_SIDE_VIEW_Y;tx=.68}});
