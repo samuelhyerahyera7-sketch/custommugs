@@ -16,35 +16,58 @@ button:hover,label.upload:hover{border-color:#8da0b8;transform:translateY(-1px)}
 button:active{transform:translateY(0)}
 button.primary,label.upload.primary{background:var(--green);border-color:var(--green);color:#fff}
 button.accent{background:var(--coral);border-color:var(--coral);color:#fff}
-select{width:100%;min-height:42px;padding:8px 10px}
-.shell{width:min(1240px,calc(100vw - 32px));margin:0 auto;padding:20px 0 26px}
-.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:14px}
-h1{margin:0;font-size:clamp(28px,4vw,44px);line-height:1.02;font-weight:780}
-.sub{margin:7px 0 0;color:var(--muted);max-width:720px;line-height:1.45}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
-.stage-wrap{min-width:0}
-.stage{height:min(62vh,620px);min-height:460px;border:1px solid var(--line);border-radius:8px;overflow:hidden;position:relative;background:var(--paper);touch-action:none;box-shadow:var(--shadow)}
+select{min-height:38px;padding:7px 10px;width:100%}
+.shell{width:min(1300px,calc(100vw - 24px));margin:0 auto;padding:14px 0 32px}
+
+/* ── Top bar ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.back-link{display:inline-flex;align-items:center;gap:5px;text-decoration:none;color:var(--muted);font-size:13px;white-space:nowrap}
+.back-link:hover{color:var(--ink)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ── Controls bar above stage ── */
+.ctrl-bar{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;box-shadow:0 4px 14px rgba(24,33,47,.06)}
+.ctrl-upload-group{display:flex;flex-direction:column;gap:4px}
+.ctrl-upload-btn{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:7px 12px;cursor:pointer;white-space:nowrap;border-radius:8px}
+.fname{font-size:12px;color:var(--muted);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctrl-layout-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px;max-width:260px}
+.ctrl-layout-group label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.ctrl-guide{display:flex;align-items:center;gap:7px;font-size:14px;color:#344054;white-space:nowrap;padding-bottom:6px}
+.ctrl-guide input{width:16px;height:16px;accent-color:var(--green)}
+#area{font-size:12px;color:var(--muted);line-height:1.3;min-height:16px}
+
+/* ── Stage ── */
+.stage-wrap{position:relative}
+.stage{height:min(68dvh,640px);min-height:400px;border:1px solid var(--line);border-radius:10px;overflow:hidden;position:relative;background:var(--paper);touch-action:none;box-shadow:var(--shadow)}
 canvas{width:100%;height:100%;display:block}
 .hud{position:absolute;left:12px;right:12px;top:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;pointer-events:none}
 .chip{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:7px 10px;border:1px solid rgba(24,33,47,.12);border-radius:8px;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);font-size:13px;color:#344054}
 .zoom{display:flex;gap:8px;pointer-events:auto}
 .icon-btn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-weight:700}
-.toolbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
+
+/* ── View toolbar ── */
+.toolbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
 .toolbar button[aria-pressed="true"]{border-color:var(--green);background:#e7f3f1;color:#0b5f59}
-.side{display:flex;flex-direction:column;gap:12px}
-.card{border:1px solid var(--line);border-radius:8px;padding:14px;background:rgba(255,255,255,.88);box-shadow:0 8px 22px rgba(24,33,47,.06)}
-.card h2{font-size:15px;line-height:1.2;margin:0 0 10px;font-weight:760}
-.muted{color:var(--muted);font-size:13px;line-height:1.35}
-.upload{display:flex;align-items:center;justify-content:center;min-height:42px;margin-top:8px;padding:9px 11px;cursor:pointer;text-align:center}
-.file-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.range{margin:12px 0}
-.range label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;font-size:13px;color:#344054}
+
+/* ── Positioning strip ── */
+.pos-strip{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:8px;box-shadow:0 4px 14px rgba(24,33,47,.06)}
+.pos-col-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pos-col-head b{font-size:14px}
+.pos-quick{display:flex;gap:6px}
+.pos-quick button{min-height:32px;padding:5px 10px;font-size:13px}
+.range{margin:6px 0}
+.range label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;font-size:13px;color:#344054}
 .range output{font-variant-numeric:tabular-nums;color:var(--muted)}
-.range input{width:100%;accent-color:var(--green)}
-.tog{display:flex;align-items:center;gap:9px;color:#344054;font-size:14px}
-.tog input{width:17px;height:17px;accent-color:var(--green)}
-.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.hidden{display:none!important}
+.range input[type=range]{width:100%;accent-color:var(--green)}
+
+/* ── Production file ── */
+.prod-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:8px}
+.dropzone{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border:1px dashed #9aa8ba;border-radius:8px;background:#fafafa;color:#344054;padding:10px 14px;cursor:pointer;font-size:13px}
+.dropzone.drag{border-color:var(--green);background:#e7f3f1}
+.muted{color:var(--muted);font-size:13px;line-height:1.35}
+
+/* ── Shots & proof ── */
 .shots-panel{margin-top:14px}
 .shots-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
 .shots-head b{font-size:15px}
@@ -53,114 +76,167 @@ canvas{width:100%;height:100%;display:block}
 .shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#f4f4f4}
 .shot div{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 8px;font-size:13px}
 .shot button{min-height:30px;padding:4px 8px}
-.dropzone{display:grid;place-items:center;min-height:92px;border:1px dashed #9aa8ba;border-radius:8px;background:#fafafa;color:#344054;text-align:center;padding:12px;cursor:pointer}
-.dropzone.drag{border-color:var(--green);background:#e7f3f1}
 .proof img{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
-hr{border:0;border-top:1px solid var(--line);margin:14px 0}
 .status-dot{width:8px;height:8px;border-radius:99px;background:var(--gold);display:inline-block}
-@media(max-width:920px){.grid{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.stage{height:560px}.topbar{align-items:flex-start;flex-direction:column}.actions{grid-template-columns:1fr 1fr}}
-@media(max-width:680px){.shell{width:min(100% - 20px,1240px);padding-top:12px}.topbar{gap:14px}.sub{font-size:16px;line-height:1.42}.stage{height:min(62dvh,520px);min-height:390px}.toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}.toolbar button{min-height:48px;padding:8px 7px;line-height:1.2}.side{display:flex}.shots{grid-template-columns:repeat(2,minmax(0,1fr))}.hud{align-items:flex-start}.chip{max-width:calc(100% - 148px)}}
-@media(max-width:420px){h1{font-size:clamp(32px,10vw,42px)}.actions{grid-template-columns:1fr 1fr}.actions #resetArt{grid-column:1/-1}.card{padding:12px}.file-row{grid-template-columns:1fr}.file-row .upload{width:100%;margin-top:4px}.dropzone{min-height:112px}.stage{height:min(58dvh,500px);min-height:360px}.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar button{min-height:46px}.hud{left:10px;right:10px;top:10px}.chip{font-size:12px;max-width:calc(100% - 132px)}.icon-btn{width:38px;height:38px}.zoom{gap:6px}}
-@media(max-width:360px){.shell{width:min(100% - 16px,1240px)}.sub{font-size:15px}.stage{height:min(56dvh,470px);min-height:330px}.actions{gap:7px}.actions button{padding-left:8px;padding-right:8px}.toolbar button{font-size:15px}.shots{grid-template-columns:1fr}}
-@media(max-height:560px) and (orientation:landscape){.shell{padding-top:8px}.topbar{margin-bottom:10px}.stage{height:72dvh;min-height:300px}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.sub{display:none}}
+.hidden{display:none!important}
+
+/* ── Responsive ── */
+@media(max-width:860px){
+  .ctrl-bar{gap:8px}
+  .ctrl-layout-group{max-width:none;flex:1 1 100%;order:3}
+  .ctrl-guide{order:4}
+  .pos-strip{grid-template-columns:1fr}
+  .toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .toolbar button{min-height:46px;padding:8px 7px;line-height:1.2}
+  .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .prod-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .shell{width:min(100% - 16px,1300px);padding-top:10px}
+  .stage{height:min(60dvh,520px);min-height:340px}
+  .topbar{gap:8px}
+  .actions button{padding:8px 10px;font-size:14px}
+  .toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hud{left:10px;right:10px;top:10px}
+  .chip{font-size:12px}
+  .icon-btn{width:38px;height:38px}
+  .zoom{gap:6px}
+  .fname{max-width:110px}
+  .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:400px){
+  .actions{width:100%}
+  .actions button{flex:1}
+  .ctrl-upload-group{flex:1}
+  .ctrl-upload-btn{width:100%;justify-content:center}
+}
+@media(max-height:560px) and (orientation:landscape){
+  .stage{height:72dvh;min-height:280px}
+  .shell{padding-top:6px}
+}
 </style>
 </head>
 <body>
 <main class="shell">
+
 <header class="topbar">
-<div>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);font-size:13px">&#8592; Back to site</a>
-</div>
-<div class="actions">
-<button id="downloadView" class="primary">Download view</button>
-<button id="saveProof" class="accent">Save 2D proof</button>
-<button id="resetArt">Reset art</button>
-</div>
+  <div class="topbar-left">
+    <a href="index.html" class="back-link">&#8592; Back to site</a>
+  </div>
+  <div class="actions">
+    <button id="downloadView" class="primary">Download view</button>
+    <button id="saveProof" class="accent">Save 2D proof</button>
+    <button id="resetArt">Reset art</button>
+  </div>
 </header>
 
-<div class="grid">
+<!-- ── Upload + layout controls ── -->
+<div class="ctrl-bar">
+  <div class="ctrl-upload-group">
+    <label class="upload primary ctrl-upload-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Left side photo
+      <input id="frontFile" type="file" accept="image/*" hidden>
+    </label>
+    <div id="frontName" class="fname">No left side photo selected</div>
+  </div>
+  <div class="ctrl-upload-group">
+    <label class="upload ctrl-upload-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Right side photo
+      <input id="backFile" type="file" accept="image/*" hidden>
+    </label>
+    <div id="backName" class="fname">No right side photo selected</div>
+  </div>
+  <div class="ctrl-layout-group">
+    <label for="layout">Print layout</label>
+    <select id="layout">
+      <option value="front">Left side only</option>
+      <option value="frontBack" selected>Left and right sides</option>
+      <option value="wide">Wide wrap</option>
+      <option value="max">Maximum wrap, clear of handle</option>
+    </select>
+    <div id="area"></div>
+  </div>
+  <label class="ctrl-guide">
+    <input id="guide" type="checkbox"> Show printable area
+  </label>
+</div>
+
+<!-- ── 3D Stage ── -->
 <section class="stage-wrap" aria-label="3D mug preview">
-<div id="stage" class="stage">
-<canvas id="c"></canvas>
-<div class="hud">
-<div class="chip"><span class="status-dot"></span><span id="status">Ready for artwork</span></div>
-<div class="zoom" aria-label="Zoom controls">
-<button id="zi" class="icon-btn" title="Zoom in" aria-label="Zoom in">+</button>
-<button id="zo" class="icon-btn" title="Zoom out" aria-label="Zoom out">-</button>
-<button id="zr" class="icon-btn" title="Reset zoom" aria-label="Reset zoom">1:1</button>
-</div>
-</div>
-</div>
-<div class="toolbar" aria-label="View controls">
-<button data-view="front" aria-pressed="true">Left side</button>
-<button data-view="back" aria-pressed="false">Right side</button>
-<button data-view="handle" aria-pressed="false">Handle side</button>
-<button data-view="top" aria-pressed="false">Top</button>
-<button id="spin" aria-pressed="false">360 view</button>
-</div>
-<div id="previewWrap" class="shots-panel hidden">
-<div class="shots-head"><b>2D preview angles</b><button id="refresh">Refresh angles</button></div>
-<div id="shots" class="shots"></div>
-</div>
-<div id="proofWrap" class="shots-panel proof hidden">
-<div class="shots-head"><b>Customer 2D proof</b><button id="downloadProof">Download proof</button></div>
-<img id="proofImg" alt="Left and right side mug proof">
-</div>
+  <div id="stage" class="stage">
+    <canvas id="c"></canvas>
+    <div class="hud">
+      <div class="chip"><span class="status-dot"></span><span id="status">Ready for artwork</span></div>
+      <div class="zoom" aria-label="Zoom controls">
+        <button id="zi" class="icon-btn" title="Zoom in" aria-label="Zoom in">+</button>
+        <button id="zo" class="icon-btn" title="Zoom out" aria-label="Zoom out">-</button>
+        <button id="zr" class="icon-btn" title="Reset zoom" aria-label="Reset zoom">1:1</button>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar" aria-label="View controls">
+    <button data-view="front" aria-pressed="true">Left side</button>
+    <button data-view="back" aria-pressed="false">Right side</button>
+    <button data-view="handle" aria-pressed="false">Handle side</button>
+    <button data-view="top" aria-pressed="false">Top</button>
+    <button id="spin" aria-pressed="false">360 view</button>
+  </div>
 </section>
 
-<aside class="side" aria-label="Artwork controls">
-<div class="card">
-<h2>Artwork</h2>
-<div class="file-row">
-<div>
-<b>Left side photo</b>
-<div id="frontName" class="muted">No left side photo selected</div>
-</div>
-<label class="upload primary">Upload<input id="frontFile" type="file" accept="image/*" hidden></label>
-</div>
-<hr>
-<div class="file-row">
-<div>
-<b>Right side photo</b>
-<div id="backName" class="muted">No right side photo selected</div>
-</div>
-<label class="upload">Upload<input id="backFile" type="file" accept="image/*" hidden></label>
-</div>
-</div>
-
-<div class="card">
-<h2>Print layout</h2>
-<select id="layout">
-<option value="front">Left side only</option>
-<option value="frontBack" selected>Left and right sides</option>
-<option value="wide">Wide wrap</option>
-<option value="max">Maximum wrap, clear of handle</option>
-</select>
-<div id="area" class="muted" style="margin-top:8px"></div>
-<label class="tog" style="margin-top:12px"><input id="guide" type="checkbox"> Show printable area</label>
+<!-- ── Positioning sliders (shown after upload) ── -->
+<div id="controls" class="pos-strip hidden">
+  <div class="pos-col">
+    <div class="pos-col-head">
+      <b>Left side positioning</b>
+      <div class="pos-quick">
+        <button id="fitLeft" type="button">Fit</button>
+        <button id="fillLeft" type="button">Fill</button>
+        <button id="centerLeft" type="button">Center</button>
+      </div>
+    </div>
+    <div class="range"><label for="fs">Scale <output id="fsv">90%</output></label><input id="fs" type="range" min="10" max="300" value="90"></div>
+    <div class="range"><label for="fx">Left / right <output id="fxv">0</output></label><input id="fx" type="range" min="-700" max="700" value="0"></div>
+    <div class="range"><label for="fy">Up / down <output id="fyv">0</output></label><input id="fy" type="range" min="-440" max="440" value="0"></div>
+  </div>
+  <div id="backControls" class="pos-col hidden">
+    <div class="pos-col-head">
+      <b>Right side positioning</b>
+      <div class="pos-quick">
+        <button id="fitRight" type="button">Fit</button>
+        <button id="fillRight" type="button">Fill</button>
+        <button id="centerRight" type="button">Center</button>
+      </div>
+    </div>
+    <div class="range"><label for="bs">Scale <output id="bsv">90%</output></label><input id="bs" type="range" min="10" max="300" value="90"></div>
+    <div class="range"><label for="bx">Left / right <output id="bxv">0</output></label><input id="bx" type="range" min="-700" max="700" value="0"></div>
+    <div class="range"><label for="by">Up / down <output id="byv">0</output></label><input id="by" type="range" min="-440" max="440" value="0"></div>
+  </div>
 </div>
 
-<div id="controls" class="card hidden">
-<h2>Positioning</h2>
-<div class="actions" style="grid-template-columns:1fr 1fr 1fr"><button id="fitLeft" type="button">Fit</button><button id="fillLeft" type="button">Fill</button><button id="centerLeft" type="button">Center</button></div>
-<div class="range"><label for="fs">Left side scale <output id="fsv">90%</output></label><input id="fs" type="range" min="10" max="300" value="90"></div>
-<div class="range"><label for="fx">Left side left/right <output id="fxv">0</output></label><input id="fx" type="range" min="-700" max="700" value="0"></div>
-<div class="range"><label for="fy">Left side up/down <output id="fyv">0</output></label><input id="fy" type="range" min="-440" max="440" value="0"></div>
-<div id="backControls" class="hidden">
-<hr>
-<div class="actions" style="grid-template-columns:1fr 1fr 1fr"><button id="fitRight" type="button">Fit</button><button id="fillRight" type="button">Fill</button><button id="centerRight" type="button">Center</button></div>
-<div class="range"><label for="bs">Right side scale <output id="bsv">90%</output></label><input id="bs" type="range" min="10" max="300" value="90"></div>
-<div class="range"><label for="bx">Right side left/right <output id="bxv">0</output></label><input id="bx" type="range" min="-700" max="700" value="0"></div>
-<div class="range"><label for="by">Right side up/down <output id="byv">0</output></label><input id="by" type="range" min="-440" max="440" value="0"></div>
+<!-- ── Production file ── -->
+<div class="prod-row">
+  <label id="productionDrop" class="dropzone">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    Drop high-resolution production file here (or click)
+    <input id="productionFile" type="file" accept="image/*,.pdf,.ai,.psd,.tif,.tiff,.svg" hidden>
+  </label>
+  <div id="productionName" class="muted">No production file selected</div>
 </div>
+
+<!-- ── 2D preview angles ── -->
+<div id="previewWrap" class="shots-panel hidden">
+  <div class="shots-head"><b>2D preview angles</b><button id="refresh">Refresh angles</button></div>
+  <div id="shots" class="shots"></div>
 </div>
-<div class="card">
-<h2>Production file</h2>
-<label id="productionDrop" class="dropzone">Drop high-resolution file here<input id="productionFile" type="file" accept="image/*,.pdf,.ai,.psd,.tif,.tiff,.svg" hidden></label>
-<div id="productionName" class="muted" style="margin-top:8px">No production file selected</div>
+
+<!-- ── Customer proof ── -->
+<div id="proofWrap" class="shots-panel proof hidden">
+  <div class="shots-head"><b>Customer 2D proof</b><button id="downloadProof">Download proof</button></div>
+  <img id="proofImg" alt="Left and right side mug proof">
 </div>
-</aside>
-</div>
+
 </main>
 
 <script type="module">
