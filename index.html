@@ -351,6 +351,7 @@ button{font-family:inherit;cursor:pointer}
   .ft-grid{grid-template-columns:1fr 1fr;gap:2rem}
   .gal-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}
   .gi.big{grid-column:span 1;grid-row:span 1}
+  #occasions [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr 1fr!important}
 }
 @media(max-width:1060px){
   .nav-end .btn{display:none}
@@ -371,6 +372,7 @@ button{font-family:inherit;cursor:pointer}
   .gal-grid{grid-template-columns:1fr 1fr}
   .pgrid{grid-template-columns:repeat(2,1fr)}
   .pc-desc{display:none}
+  #occasions [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important}
   .wrap{padding:0 16px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -1933,6 +1935,129 @@ button{font-family:inherit;cursor:pointer}
         <button class="fq-q">Do you offer gift wrapping?<span class="fq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
         <div class="fq-a"><div class="fq-ai">Yes! Gift wrapping with a personalised message card is available for R25. Select it at checkout. We'll also ship directly to the gift recipient with your message — perfect for surprises. Packaging is discreet with no price info included.</div></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUALITY STATS -->
+<section class="quality" id="quality">
+  <div class="wrap">
+    <div class="qual-grid">
+      <div class="qual-item">
+        <span class="qual-ico">🏆</span>
+        <div class="qual-val">50 000+</div>
+        <div class="qual-lbl">Mugs printed &amp; delivered</div>
+      </div>
+      <div class="qual-item">
+        <span class="qual-ico">⭐</span>
+        <div class="qual-val">4.9 / 5</div>
+        <div class="qual-lbl">Average customer rating</div>
+      </div>
+      <div class="qual-item">
+        <span class="qual-ico">🚚</span>
+        <div class="qual-val">2–4 days</div>
+        <div class="qual-lbl">Nationwide delivery</div>
+      </div>
+      <div class="qual-item">
+        <span class="qual-ico">♻️</span>
+        <div class="qual-val">100%</div>
+        <div class="qual-lbl">Satisfaction guaranteed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Customer love</div>
+      <h2 class="sec-h serif">What people are saying</h2>
+      <p class="sec-sub">Thousands of happy customers across South Africa.</p>
+    </div>
+    <div class="rev-grid">
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">"Ordered 20 mugs for our office Christmas party. They arrived in 3 days, packaging was perfect, and the print quality blew everyone away. Will absolutely order again for our next event!"</p>
+        <div class="rev-author">
+          <div class="rev-av" style="background:#C9A84C">N</div>
+          <div>
+            <div class="rev-name">Naledi K.</div>
+            <div class="rev-loc">Johannesburg</div>
+            <div class="rev-verified">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Verified purchase
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">"Got my mum a personalised photo mug for her birthday and she cried happy tears. The colours are so vivid and the mug feels really premium. The whole process from upload to checkout took under 5 minutes."</p>
+        <div class="rev-author">
+          <div class="rev-av" style="background:#7C3AED">S</div>
+          <div>
+            <div class="rev-name">Siyanda M.</div>
+            <div class="rev-loc">Durban</div>
+            <div class="rev-verified">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Verified purchase
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">"Ordered a zodiac mug for my sister and the detail is incredible. It arrived beautifully wrapped with a handwritten note option. CustomMugs is now my go-to for every birthday and special occasion."</p>
+        <div class="rev-author">
+          <div class="rev-av" style="background:#059669">A</div>
+          <div>
+            <div class="rev-name">Aisha van der Berg</div>
+            <div class="rev-loc">Cape Town</div>
+            <div class="rev-verified">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Verified purchase
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OCCASIONS -->
+<section class="occasions" id="occasions" style="background:var(--bg);padding:72px 0">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Perfect for every moment</div>
+      <h2 class="sec-h serif">A mug for every occasion</h2>
+      <p class="sec-sub">From birthdays to boardrooms — we've got a mug for it.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+      <a href="#shop" style="display:flex;align-items:center;gap:1rem;background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.4rem;text-decoration:none;transition:border-color .2s,box-shadow .2s;color:var(--txt)" onmouseover="this.style.borderColor='var(--pri)';this.style.boxShadow='var(--sh-md)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.boxShadow='none'">
+        <span style="font-size:2rem;flex-shrink:0">🎂</span>
+        <div><div style="font-weight:700;font-size:.92rem">Birthdays</div><div style="font-size:.78rem;color:var(--txt2);margin-top:2px">Make it personal</div></div>
+      </a>
+      <a href="#shop" style="display:flex;align-items:center;gap:1rem;background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.4rem;text-decoration:none;transition:border-color .2s,box-shadow .2s;color:var(--txt)" onmouseover="this.style.borderColor='var(--pri)';this.style.boxShadow='var(--sh-md)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.boxShadow='none'">
+        <span style="font-size:2rem;flex-shrink:0">💍</span>
+        <div><div style="font-weight:700;font-size:.92rem">Weddings</div><div style="font-size:.78rem;color:var(--txt2);margin-top:2px">Couples &amp; wedding favours</div></div>
+      </a>
+      <a href="#bulk" style="display:flex;align-items:center;gap:1rem;background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.4rem;text-decoration:none;transition:border-color .2s,box-shadow .2s;color:var(--txt)" onmouseover="this.style.borderColor='var(--pri)';this.style.boxShadow='var(--sh-md)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.boxShadow='none'">
+        <span style="font-size:2rem;flex-shrink:0">💼</span>
+        <div><div style="font-weight:700;font-size:.92rem">Corporate Gifts</div><div style="font-size:.78rem;color:var(--txt2);margin-top:2px">Branded &amp; bulk orders</div></div>
+      </a>
+      <a href="#shop" style="display:flex;align-items:center;gap:1rem;background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.4rem;text-decoration:none;transition:border-color .2s,box-shadow .2s;color:var(--txt)" onmouseover="this.style.borderColor='var(--pri)';this.style.boxShadow='var(--sh-md)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.boxShadow='none'">
+        <span style="font-size:2rem;flex-shrink:0">🎓</span>
+        <div><div style="font-weight:700;font-size:.92rem">Graduation</div><div style="font-size:.78rem;color:var(--txt2);margin-top:2px">Celebrate the achievement</div></div>
+      </a>
+      <a href="#shop" style="display:flex;align-items:center;gap:1rem;background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.4rem;text-decoration:none;transition:border-color .2s,box-shadow .2s;color:var(--txt)" onmouseover="this.style.borderColor='var(--pri)';this.style.boxShadow='var(--sh-md)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.boxShadow='none'">
+        <span style="font-size:2rem;flex-shrink:0">❤️</span>
+        <div><div style="font-weight:700;font-size:.92rem">Valentine's Day</div><div style="font-size:.78rem;color:var(--txt2);margin-top:2px">For someone special</div></div>
+      </a>
+      <a href="#shop" style="display:flex;align-items:center;gap:1rem;background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.4rem;text-decoration:none;transition:border-color .2s,box-shadow .2s;color:var(--txt)" onmouseover="this.style.borderColor='var(--pri)';this.style.boxShadow='var(--sh-md)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.boxShadow='none'">
+        <span style="font-size:2rem;flex-shrink:0">🐣</span>
+        <div><div style="font-weight:700;font-size:.92rem">New Baby</div><div style="font-size:.78rem;color:var(--txt2);margin-top:2px">Welcome the little one</div></div>
+      </a>
     </div>
   </div>
 </section>
