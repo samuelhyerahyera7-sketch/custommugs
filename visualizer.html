@@ -69,6 +69,7 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
 <main class="shell">
 <header class="topbar">
 <div>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);font-size:13px;margin-bottom:6px">&#8592; Back to site</a>
 <h1>Custom Mugs 11oz Visualiser</h1>
 <p class="sub">Upload left and right side artwork, position it on the mug, then export angled previews for approval or product listings.</p>
 </div>
@@ -167,8 +168,20 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
 <script type="module">
 import * as THREE from './vendor/three.module.js';
 const $=id=>document.getElementById(id),stage=$('stage'),canvas=$('c');
-const r=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+
+// ---- WebGL capability check ----
+let r;
+try{
+  r=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+}catch(err){
+  stage.innerHTML='<div style="display:grid;place-items:center;height:100%;text-align:center;padding:24px;color:#c2410c;font-size:15px;line-height:1.5">WebGL is not available on this device or browser.<br>Try Chrome or Firefox on a desktop for the best experience.</div>';
+  throw err;
+}
 r.setPixelRatio(Math.min(devicePixelRatio,2));r.shadowMap.enabled=true;r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;
+
+// ---- Context loss/restore ----
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();$('status').textContent='GPU context lost — please refresh the page'},false);
+canvas.addEventListener('webglcontextrestored',()=>{try{build();redraw();$('status').textContent='Context restored'}catch(_){}},false);
 const s=new THREE.Scene();s.background=new THREE.Color(0xf3f0e9);
 const cam=new THREE.PerspectiveCamera(30,1,.1,50);let dist=6.55;cam.position.set(0,.18,dist);
 const mug=new THREE.Group();s.add(mug);
@@ -212,14 +225,14 @@ const WIDE_WRAP_ANGLE=HANDLE_ANGLE+Math.PI;
 const LEFT_SIDE_VIEW_Y=Math.PI;
 const RIGHT_SIDE_VIEW_Y=0;
 const HANDLE_VIEW_Y=-Math.PI/2;
-function clearP(){patches.forEach(m=>mug.remove(m));patches=[]}
+function clearP(){patches.forEach(m=>{m.geometry.dispose();mug.remove(m)});patches=[]}
 function patch(center,arc,mat){const m=new THREE.Mesh(new THREE.CylinderGeometry(R+.006,R+.006,2.40,220,1,true,center-arc/2,arc),mat);mug.add(m);patches.push(m)}
 function build(){clearP();const v=$('layout').value;if(v==='front'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);$('area').textContent='Left side print area, clear of the handle'}if(v==='frontBack'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);patch(RIGHT_SIDE_ANGLE,mmToArc(95),bm);$('area').textContent='Left and right side print areas; neither crosses the handle'}if(v==='wide'){patch(WIDE_WRAP_ANGLE,mmToArc(180),wm);$('area').textContent='Wide side wrap, about 180 mm, clear of the handle'}if(v==='max'){patch(WIDE_WRAP_ANGLE,mmToArc(232),wm);$('area').textContent='Maximum side wrap, about 232 mm, stretched closer to the handle with a no-print gap'}}
 function drawOne(o,img,size,xo,yo){o.x.clearRect(0,0,o.c.width,o.c.height);if(showGuide){o.x.save();o.x.strokeStyle='rgba(15,118,110,.55)';o.x.setLineDash([22,16]);o.x.lineWidth=6;o.x.strokeRect(8,8,o.c.width-16,o.c.height-16);o.x.restore()}if(img){const sc=size/100,fit=Math.min((1500*sc)/img.width,(1150*sc)/img.height),w=img.width*fit,h=img.height*fit;o.x.drawImage(img,o.c.width/2-w/2+xo,o.c.height/2-h/2+yo,w,h)}o.t.needsUpdate=true}
 function drawWrap(){wt.x.clearRect(0,0,wt.c.width,wt.c.height);if(showGuide){wt.x.save();wt.x.strokeStyle='rgba(15,118,110,.55)';wt.x.setLineDash([22,16]);wt.x.lineWidth=6;wt.x.strokeRect(8,8,wt.c.width-16,wt.c.height-16);wt.x.restore()}const draw=(img,left,size,xo,yo)=>{if(!img)return;const half=wt.c.width/2,sc=size/100,fit=Math.min((half*.92*sc)/img.width,(wt.c.height*.96*sc)/img.height),w=img.width*fit,h=img.height*fit,cx=left?half*.5:half*1.5;wt.x.drawImage(img,cx-w/2+xo*.45,wt.c.height/2-h/2+yo,w,h)};draw(fimg,true,+$('fs').value,+$('fx').value,+$('fy').value);draw(bimg,false,+$('bs').value,+$('bx').value,+$('by').value);wt.t.needsUpdate=true}
 function updateValues(){['fs','fx','fy','bs','bx','by'].forEach(id=>{const o=$(id+'v');if(o)o.textContent=id.endsWith('s')?$(id).value+'%':$(id).value})}
 function redraw(){updateValues();drawOne(ft,fimg,+$('fs').value,+$('fx').value,+$('fy').value);drawOne(bt,bimg,+$('bs').value,+$('bx').value,+$('by').value);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork'}
-function load(input,isFront){input.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{if(isFront){fimg=im;$('frontName').textContent=file.name}else{bimg=im;$('backName').textContent=file.name;$('backControls').classList.remove('hidden')}$('controls').classList.remove('hidden');$('previewWrap').classList.remove('hidden');redraw();shots()};im.src=fr.result};fr.readAsDataURL(file)})}
+function load(input,isFront){input.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Please select an image file (JPG, PNG, WEBP, etc.)');return}const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{if(isFront){fimg=im;$('frontName').textContent=file.name}else{bimg=im;$('backName').textContent=file.name;$('backControls').classList.remove('hidden')}$('controls').classList.remove('hidden');$('previewWrap').classList.remove('hidden');redraw();shots()};im.onerror=()=>{alert('Could not load image. The file may be corrupt or an unsupported format.')};im.src=fr.result};fr.onerror=()=>{alert('Could not read file. Please try again.')};fr.readAsDataURL(file)})}
 load($('frontFile'),true);load($('backFile'),false);
 ['fs','fx','fy','bs','bx','by'].forEach(id=>$(id).addEventListener('input',redraw));
 function setSide(side,mode){const ids=side==='left'?['fs','fx','fy']:['bs','bx','by'];if(mode==='fit')$(ids[0]).value=100;if(mode==='fill')$(ids[0]).value=132;if(mode==='center'){$(ids[1]).value=0;$(ids[2]).value=0}redraw();shots()}
@@ -248,7 +261,7 @@ stage.addEventListener('wheel',e=>{e.preventDefault();zoom(dist+(e.deltaY>0?.55:
 window.__mugZoom=()=>dist;
 let ty=LEFT_SIDE_VIEW_Y,tx=-.08,drag=false,ox=0,oy=0,spinning=false;const p=new Map();let ps=0,pz=6.55;
 function pd(){const a=[...p.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
-stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});stage.setPointerCapture(e.pointerId);spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false}});
+stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false}});
 stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps)zoom(pz*(ps/d));return}if(!drag)return;ty+=(e.clientX-ox)*.012;tx+=(e.clientY-oy)*.009;tx=Math.max(-.82,Math.min(.82,tx));ox=e.clientX;oy=e.clientY});
 function end(e){p.delete(e.pointerId);if(!p.size)drag=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
 function setPressed(btn){document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)))}
@@ -264,7 +277,7 @@ function shots(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.
 $('refresh').onclick=shots;
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
 new ResizeObserver(resize).observe(stage);resize();
-function loop(){if(spinning)ty+=.011;mug.rotation.y+=(ty-mug.rotation.y)*.14;mug.rotation.x+=(tx-mug.rotation.x)*.14;r.render(s,cam);requestAnimationFrame(loop)}
+function loop(){requestAnimationFrame(loop);if(document.hidden)return;if(spinning)ty+=.011;mug.rotation.y+=(ty-mug.rotation.y)*.14;mug.rotation.x+=(tx-mug.rotation.x)*.14;try{r.render(s,cam)}catch(_){}}
 build();redraw();loop();
 </script>
 </body>
