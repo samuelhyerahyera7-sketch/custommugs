@@ -121,7 +121,7 @@ button{font-family:inherit;cursor:pointer}
 .hero-sub{font-size:.88rem;color:rgba(255,255,255,.8);letter-spacing:.02em;text-shadow:0 1px 8px rgba(0,0,0,.3)}
 
 /* hero CTA strip below photo */
-.hero-strip{display:flex;justify-content:center;gap:.75rem;padding:1.25rem 1.5rem;background:var(--bg)}
+.hero-strip{display:flex;justify-content:center;gap:.75rem;padding:1.1rem 1.5rem;background:var(--bg);position:relative;z-index:6;flex-shrink:0}
 .hero-cta{display:inline-flex;align-items:center;padding:.75rem 1.75rem;border-radius:999px;font-size:.9rem;font-weight:600;letter-spacing:.02em;text-decoration:none;transition:transform .15s,box-shadow .15s,background .15s;white-space:nowrap}
 .hero-cta:hover{transform:translateY(-2px)}
 .hero-cta-pri{background:var(--pri);color:#fff;box-shadow:0 4px 20px rgba(201,168,76,.45)}
@@ -439,13 +439,11 @@ button{font-family:inherit;cursor:pointer}
       <p class="hero-sub">From R90 · Full-wrap sublimation · Delivered in 2–4 days</p>
     </div>
   </div>
+  <div class="hero-strip">
+    <a href="#design" class="hero-cta hero-cta-pri">Design Your Mug</a>
+    <a href="#shop" class="hero-cta hero-cta-sec">Shop All</a>
+  </div>
 </section>
-
-<!-- HERO CTA STRIP -->
-<div class="hero-strip">
-  <a href="#design" class="hero-cta hero-cta-pri">Design Your Mug</a>
-  <a href="#shop" class="hero-cta hero-cta-sec">Shop All</a>
-</div>
 
 <!-- SHOP -->
 <section class="products" id="shop">
