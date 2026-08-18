@@ -100,22 +100,14 @@ button{font-family:inherit;cursor:pointer}
 .mob-nav a:hover{background:var(--bg2);color:var(--pri)}
 .mob-close{position:absolute;top:1.2rem;right:1.5rem;background:var(--bg2);border:none;width:38px;height:38px;border-radius:50%;font-size:1.2rem;display:flex;align-items:center;justify-content:center;color:var(--txt)}
 
-/* ── HERO (split dark / espresso) ── */
+/* ── HERO ── */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap');
 .hero{position:relative;height:100svh;min-height:520px;display:flex;flex-direction:column;overflow:hidden;border-bottom:none}
 .hero-bg{position:absolute;inset:0;display:flex;pointer-events:none}
-.hero-bg-l{flex:1;background:#0C0C0C}
-.hero-bg-r{flex:1;background:#3B1F08}
-.hero-stage{position:relative;z-index:5;flex:1;display:flex;align-items:flex-end;justify-content:center}
-.hero-glow{position:absolute;bottom:110px;left:50%;transform:translateX(-50%);width:320px;height:70px;background:radial-gradient(ellipse,rgba(201,168,76,.13) 0%,transparent 70%);pointer-events:none}
-.hero-pedestal-wrap{display:flex;flex-direction:column;align-items:center;transform:translateY(4px)}
-.hero-mug-scene{width:200px;margin-bottom:-2px}
-@media(min-width:600px){.hero-mug-scene{width:240px}}
-.hero-mug-svg{width:100%;filter:drop-shadow(0 28px 36px rgba(0,0,0,.55)) drop-shadow(0 8px 12px rgba(0,0,0,.3))}
-.hero-pedestal{width:300px;height:100px;background:linear-gradient(160deg,#e8e2d8 0%,#d4cdc2 40%,#bfb8ad 100%);border-radius:3px 3px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 30px 60px rgba(0,0,0,.6);position:relative}
-@media(min-width:600px){.hero-pedestal{width:360px;height:120px}}
-.hero-pedestal::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,#d0c9be 0%,#e4ddd4 30%,#d8d1c6 70%,#ccc5bb 100%);border-radius:3px 3px 0 0}
-.hero-pedestal::after{content:'';position:absolute;bottom:0;right:-16px;width:16px;height:100%;background:linear-gradient(90deg,#b0a99e 0%,#9e9891 100%);clip-path:polygon(0 0,100% 10%,100% 100%,0 100%)}
+.hero-bg-l{flex:1;background:#E5D5BC}
+.hero-bg-r{flex:1;background:#B8841A}
+.hero-stage{position:relative;z-index:5;flex:1;display:flex;align-items:stretch;justify-content:center}
+.hero-photo{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 /* ticker */
 .hero-ticker{position:relative;z-index:10;background:#C9A84C;padding:.6rem 0;overflow:hidden;white-space:nowrap;flex-shrink:0}
 .hero-ticker-track{display:inline-flex;animation:hticker 20s linear infinite}
@@ -424,57 +416,9 @@ button{font-family:inherit;cursor:pointer}
   <!-- split background -->
   <div class="hero-bg"><div class="hero-bg-l"></div><div class="hero-bg-r"></div></div>
 
-  <!-- stage: mug on pedestal -->
+  <!-- stage: real mug photo -->
   <div class="hero-stage">
-    <div class="hero-glow"></div>
-    <div class="hero-pedestal-wrap">
-      <div class="hero-mug-scene">
-        <svg class="hero-mug-svg" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="hMugBody" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#d8d3cc"/>
-              <stop offset="18%"  stop-color="#f5f0e8"/>
-              <stop offset="75%"  stop-color="#ede8e0"/>
-              <stop offset="100%" stop-color="#c8c2ba"/>
-            </linearGradient>
-            <linearGradient id="hMugTop" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#e8e3db"/>
-              <stop offset="100%" stop-color="#c5bfb7"/>
-            </linearGradient>
-            <linearGradient id="hMugInner" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#5a4535"/>
-              <stop offset="100%" stop-color="#3a2820"/>
-            </linearGradient>
-            <linearGradient id="hHandleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#c0bab2"/>
-              <stop offset="60%"  stop-color="#ddd8d0"/>
-              <stop offset="100%" stop-color="#b8b2aa"/>
-            </linearGradient>
-          </defs>
-          <!-- body -->
-          <rect x="28" y="62" width="164" height="176" rx="6" fill="url(#hMugBody)"/>
-          <!-- rim -->
-          <ellipse cx="110" cy="62" rx="82" ry="14" fill="url(#hMugTop)"/>
-          <ellipse cx="110" cy="62" rx="70" ry="11" fill="url(#hMugInner)"/>
-          <ellipse cx="110" cy="64" rx="60" ry="8" fill="#2A1810" opacity=".9"/>
-          <!-- bottom -->
-          <ellipse cx="110" cy="238" rx="82" ry="10" fill="#b8b2aa"/>
-          <ellipse cx="110" cy="238" rx="74" ry="7" fill="#c4beb6"/>
-          <!-- handle -->
-          <path d="M192 105 Q245 105 245 155 Q245 205 192 205" fill="none" stroke="url(#hHandleGrad)" stroke-width="18" stroke-linecap="round"/>
-          <path d="M192 105 Q238 105 238 155 Q238 205 192 205" fill="none" stroke="#e8e3db" stroke-width="6" stroke-linecap="round" opacity=".45"/>
-          <!-- label band -->
-          <rect x="40" y="110" width="140" height="80" rx="3" fill="rgba(255,255,255,.08)"/>
-          <rect x="40" y="110" width="140" height="1.5" fill="rgba(255,255,255,.15)"/>
-          <rect x="40" y="189" width="140" height="1.5" fill="rgba(255,255,255,.15)"/>
-          <!-- text -->
-          <text x="110" y="145" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-size="14" font-weight="300" letter-spacing="4" fill="#1a1410" opacity=".6">DESIGN</text>
-          <text x="110" y="163" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-size="14" font-weight="300" letter-spacing="4" fill="#1a1410" opacity=".6">HERE</text>
-          <line x1="82" y1="170" x2="138" y2="170" stroke="#1a1410" stroke-width=".5" opacity=".25"/>
-        </svg>
-      </div>
-      <div class="hero-pedestal"></div>
-    </div>
+    <img class="hero-photo" src="/homepage.png.png" alt="Custom mug with Design Here on a cardboard box">
   </div>
 
   <!-- gold ticker -->
