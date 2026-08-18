@@ -212,30 +212,34 @@ canvas{width:100%;height:100%;display:block}
       <b>Left side positioning</b>
       <div class="pos-quick">
         <button id="fitLeft" type="button">Fit</button>
-        <button id="fillLeft" type="button">Fill</button>
+        <button id="fillLeft" type="button">Fill width</button>
         <button id="centerLeft" type="button">Center</button>
       </div>
     </div>
-    <div class="range"><label for="fw">Width stretch <output id="fwv">100%</output></label><input id="fw" type="range" min="20" max="300" value="100"></div>
+    <div class="range"><label for="fs">Scale <output id="fsv">90%</output></label><input id="fs" type="range" min="10" max="300" value="90"></div>
+    <div class="range"><label for="fw">Width stretch <output id="fwv">100%</output></label><input id="fw" type="range" min="20" max="400" value="100"></div>
     <div class="range"><label for="fx">Left / right <output id="fxv">0</output></label><input id="fx" type="range" min="-700" max="700" value="0"></div>
     <div class="range"><label for="fy">Up / down <output id="fyv">0</output></label><input id="fy" type="range" min="-440" max="440" value="0"></div>
     <div class="range"><label for="fcl">Crop left <output id="fclv">0%</output></label><input id="fcl" type="range" min="0" max="49" value="0"></div>
     <div class="range"><label for="fcr">Crop right <output id="fcrv">0%</output></label><input id="fcr" type="range" min="0" max="49" value="0"></div>
+    <button id="dlLeft" type="button" class="primary" style="width:100%;margin-top:10px;font-size:13px">&#8595; Download left artwork</button>
   </div>
   <div id="backControls" class="pos-col hidden">
     <div class="pos-col-head">
       <b>Right side positioning</b>
       <div class="pos-quick">
         <button id="fitRight" type="button">Fit</button>
-        <button id="fillRight" type="button">Fill</button>
+        <button id="fillRight" type="button">Fill width</button>
         <button id="centerRight" type="button">Center</button>
       </div>
     </div>
-    <div class="range"><label for="bw">Width stretch <output id="bwv">100%</output></label><input id="bw" type="range" min="20" max="300" value="100"></div>
+    <div class="range"><label for="bs">Scale <output id="bsv">90%</output></label><input id="bs" type="range" min="10" max="300" value="90"></div>
+    <div class="range"><label for="bw">Width stretch <output id="bwv">100%</output></label><input id="bw" type="range" min="20" max="400" value="100"></div>
     <div class="range"><label for="bx">Left / right <output id="bxv">0</output></label><input id="bx" type="range" min="-700" max="700" value="0"></div>
     <div class="range"><label for="by">Up / down <output id="byv">0</output></label><input id="by" type="range" min="-440" max="440" value="0"></div>
     <div class="range"><label for="bcl">Crop left <output id="bclv">0%</output></label><input id="bcl" type="range" min="0" max="49" value="0"></div>
     <div class="range"><label for="bcr">Crop right <output id="bcrv">0%</output></label><input id="bcr" type="range" min="0" max="49" value="0"></div>
+    <button id="dlRight" type="button" class="primary" style="width:100%;margin-top:10px;font-size:13px">&#8595; Download right artwork</button>
   </div>
 </div>
 
@@ -311,9 +315,10 @@ handleFillet(.74);handleFillet(-.73);
 
 function tex(){const c=document.createElement('canvas');c.width=1800;c.height=1200;const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return{c,x:c.getContext('2d'),t}}
 const ft=tex(),bt=tex(),wt=tex();
-const fm=new THREE.MeshBasicMaterial({map:ft.t,transparent:true,depthWrite:false});
-const bm=new THREE.MeshBasicMaterial({map:bt.t,transparent:true,depthWrite:false});
-const wm=new THREE.MeshBasicMaterial({map:wt.t,transparent:true,depthWrite:false});
+const artOpts={transparent:true,depthWrite:false,roughness:.18,metalness:0,clearcoat:.7,clearcoatRoughness:.06};
+const fm=new THREE.MeshPhysicalMaterial({...artOpts,map:ft.t});
+const bm=new THREE.MeshPhysicalMaterial({...artOpts,map:bt.t});
+const wm=new THREE.MeshPhysicalMaterial({...artOpts,map:wt.t});
 let fimg=null,bimg=null,showGuide=false,patches=[],proofUrl='',productionFile=null;
 const mmToArc=mm=>(mm/258)*Math.PI*2;
 const HANDLE_ANGLE=Math.PI/2;
@@ -326,19 +331,21 @@ const HANDLE_VIEW_Y=-Math.PI/2;
 function clearP(){patches.forEach(m=>{m.geometry.dispose();mug.remove(m)});patches=[]}
 function patch(center,arc,mat){const m=new THREE.Mesh(new THREE.CylinderGeometry(R+.006,R+.006,2.40,220,1,true,center-arc/2,arc),mat);mug.add(m);patches.push(m)}
 function build(){clearP();const v=$('layout').value;if(v==='front'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);$('area').textContent='Left side print area, clear of the handle'}if(v==='frontBack'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);patch(RIGHT_SIDE_ANGLE,mmToArc(95),bm);$('area').textContent='Left and right side print areas; neither crosses the handle'}if(v==='wide'){patch(WIDE_WRAP_ANGLE,mmToArc(180),wm);$('area').textContent='Wide side wrap, about 180 mm, clear of the handle'}if(v==='max'){patch(WIDE_WRAP_ANGLE,mmToArc(232),wm);$('area').textContent='Maximum side wrap, about 232 mm, stretched closer to the handle with a no-print gap'}}
-function drawOne(o,img,widthPct,xo,yo,cropL,cropR){o.x.clearRect(0,0,o.c.width,o.c.height);if(showGuide){o.x.save();o.x.strokeStyle='rgba(15,118,110,.55)';o.x.setLineDash([22,16]);o.x.lineWidth=6;o.x.strokeRect(8,8,o.c.width-16,o.c.height-16);o.x.restore()}if(img){const cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(o.c.height*.96)/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100);o.x.drawImage(img,sx,0,sw,sh,o.c.width/2-drawW/2+xo,o.c.height/2-drawH/2+yo,drawW,drawH)}o.t.needsUpdate=true}
-function drawWrap(){wt.x.clearRect(0,0,wt.c.width,wt.c.height);if(showGuide){wt.x.save();wt.x.strokeStyle='rgba(15,118,110,.55)';wt.x.setLineDash([22,16]);wt.x.lineWidth=6;wt.x.strokeRect(8,8,wt.c.width-16,wt.c.height-16);wt.x.restore()}const draw=(img,left,widthPct,xo,yo,cropL,cropR)=>{if(!img)return;const half=wt.c.width/2,cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(wt.c.height*.96)/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100),cx=left?half*.5:half*1.5;wt.x.drawImage(img,sx,0,sw,sh,cx-drawW/2+xo*.45,wt.c.height/2-drawH/2+yo,drawW,drawH)};draw(fimg,true,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);draw(bimg,false,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);wt.t.needsUpdate=true}
-function updateValues(){['fw','fx','fy','fcl','fcr','bw','bx','by','bcl','bcr'].forEach(id=>{const o=$(id+'v');if(o)o.textContent=(id.endsWith('x')||id.endsWith('y'))?$(id).value:$(id).value+'%'})}
-function redraw(){updateValues();drawOne(ft,fimg,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);drawOne(bt,bimg,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork'}
+function drawOne(o,img,scale,widthPct,xo,yo,cropL,cropR){o.x.clearRect(0,0,o.c.width,o.c.height);if(showGuide){o.x.save();o.x.strokeStyle='rgba(15,118,110,.55)';o.x.setLineDash([22,16]);o.x.lineWidth=6;o.x.strokeRect(8,8,o.c.width-16,o.c.height-16);o.x.restore()}if(img){const cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(o.c.height*.96*(scale/100))/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100);o.x.drawImage(img,sx,0,sw,sh,o.c.width/2-drawW/2+xo,o.c.height/2-drawH/2+yo,drawW,drawH)}o.t.needsUpdate=true}
+function drawWrap(){wt.x.clearRect(0,0,wt.c.width,wt.c.height);if(showGuide){wt.x.save();wt.x.strokeStyle='rgba(15,118,110,.55)';wt.x.setLineDash([22,16]);wt.x.lineWidth=6;wt.x.strokeRect(8,8,wt.c.width-16,wt.c.height-16);wt.x.restore()}const draw=(img,left,scale,widthPct,xo,yo,cropL,cropR)=>{if(!img)return;const half=wt.c.width/2,cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(wt.c.height*.96*(scale/100))/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100),cx=left?half*.5:half*1.5;wt.x.drawImage(img,sx,0,sw,sh,cx-drawW/2+xo*.45,wt.c.height/2-drawH/2+yo,drawW,drawH)};draw(fimg,true,+$('fs').value,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);draw(bimg,false,+$('bs').value,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);wt.t.needsUpdate=true}
+function updateValues(){['fs','fw','fx','fy','fcl','fcr','bs','bw','bx','by','bcl','bcr'].forEach(id=>{const o=$(id+'v');if(o)o.textContent=(id.endsWith('x')||id.endsWith('y'))?$(id).value:$(id).value+'%'})}
+function redraw(){updateValues();drawOne(ft,fimg,+$('fs').value,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);drawOne(bt,bimg,+$('bs').value,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork'}
 function load(input,isFront){input.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Please select an image file (JPG, PNG, WEBP, etc.)');return}const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{if(isFront){fimg=im;$('frontName').textContent=file.name}else{bimg=im;$('backName').textContent=file.name;$('backControls').classList.remove('hidden')}$('controls').classList.remove('hidden');$('previewWrap').classList.remove('hidden');redraw();shots();updateViewThumbs()};im.onerror=()=>{alert('Could not load image. The file may be corrupt or an unsupported format.')};im.src=fr.result};fr.onerror=()=>{alert('Could not read file. Please try again.')};fr.readAsDataURL(file)})}
 load($('frontFile'),true);load($('backFile'),false);
-['fw','fx','fy','fcl','fcr','bw','bx','by','bcl','bcr'].forEach(id=>$(id).addEventListener('input',redraw));
-function setSide(side,mode){const wId=side==='left'?'fw':'bw',xId=side==='left'?'fx':'bx',yId=side==='left'?'fy':'by',clId=side==='left'?'fcl':'bcl',crId=side==='left'?'fcr':'bcr';if(mode==='fit'){$(wId).value=100}if(mode==='fill'){$(wId).value=145}if(mode==='center'){$(xId).value=0;$(yId).value=0;$(clId).value=0;$(crId).value=0}redraw();shots()}
+['fs','fw','fx','fy','fcl','fcr','bs','bw','bx','by','bcl','bcr'].forEach(id=>$(id).addEventListener('input',redraw));
+function setSide(side,mode){const sId=side==='left'?'fs':'bs',wId=side==='left'?'fw':'bw',xId=side==='left'?'fx':'bx',yId=side==='left'?'fy':'by',clId=side==='left'?'fcl':'bcl',crId=side==='left'?'fcr':'bcr',img=side==='left'?fimg:bimg;if(mode==='fit'){$(sId).value=90;$(wId).value=100}if(mode==='fill'&&img){const sc=parseFloat($(sId).value)/100,cl=parseFloat($(clId).value)/100,cr=parseFloat($(crId).value)/100,sw=img.width*(1-cl-cr),sh=img.height,hFit=(ft.c.height*.96*sc)/sh,fillW=Math.round((ft.c.width/(sw*hFit))*100);$(wId).value=Math.max(20,Math.min(400,fillW))}else if(mode==='fill'){$(wId).value=150}if(mode==='center'){$(xId).value=0;$(yId).value=0;$(clId).value=0;$(crId).value=0}redraw();shots()}
 $('fitLeft').onclick=()=>setSide('left','fit');$('fillLeft').onclick=()=>setSide('left','fill');$('centerLeft').onclick=()=>setSide('left','center');
 $('fitRight').onclick=()=>setSide('right','fit');$('fillRight').onclick=()=>setSide('right','fill');$('centerRight').onclick=()=>setSide('right','center');
+$('dlLeft').onclick=()=>{if(!fimg)return;download(ft.c.toDataURL('image/png'),'left-artwork.png')};
+$('dlRight').onclick=()=>{if(!bimg)return;download(bt.c.toDataURL('image/png'),'right-artwork.png')};
 $('layout').addEventListener('change',()=>{build();redraw();shots()});
 $('guide').addEventListener('change',e=>{showGuide=e.target.checked;redraw();shots()});
-$('resetArt').onclick=()=>{setArtMode(false);fimg=null;bimg=null;productionFile=null;['frontFile','backFile','productionFile'].forEach(id=>$(id).value='');$('frontName').textContent='No left side photo selected';$('backName').textContent='No right side photo selected';$('productionName').textContent='No production file selected';$('backControls').classList.add('hidden');$('controls').classList.add('hidden');$('previewWrap').classList.add('hidden');$('proofWrap').classList.add('hidden');['fw','bw'].forEach(id=>{const el=$(id);if(el)el.value=100});['fx','fy','bx','by','fcl','fcr','bcl','bcr'].forEach(id=>{const el=$(id);if(el)el.value=0});redraw()};
+$('resetArt').onclick=()=>{setArtMode(false);fimg=null;bimg=null;productionFile=null;['frontFile','backFile','productionFile'].forEach(id=>$(id).value='');$('frontName').textContent='No left side photo selected';$('backName').textContent='No right side photo selected';$('productionName').textContent='No production file selected';$('backControls').classList.add('hidden');$('controls').classList.add('hidden');$('previewWrap').classList.add('hidden');$('proofWrap').classList.add('hidden');['fs','bs'].forEach(id=>{const el=$(id);if(el)el.value=90});['fw','bw'].forEach(id=>{const el=$(id);if(el)el.value=100});['fx','fy','bx','by','fcl','fcr','bcl','bcr'].forEach(id=>{const el=$(id);if(el)el.value=0});redraw()};
 function setProductionFile(file){if(!file)return;productionFile=file;$('productionName').textContent=file.name+' ('+Math.round(file.size/1024)+' KB)'}
 const drop=$('productionDrop');
 drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});
@@ -355,10 +362,10 @@ document.querySelector('.zoom').addEventListener('click',e=>e.stopPropagation())
 $('zi').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist-.9)});
 $('zo').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist+.9)});
 $('zr').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(8.2)});
-stage.addEventListener('wheel',e=>{e.preventDefault();zoom(dist+(e.deltaY>0?.55:-.55))},{passive:false});
+stage.addEventListener('wheel',e=>{e.preventDefault();if(artMode&&(fimg||bimg)){const sid=artSide==='left'?'fs':'bs';$(sid).value=Math.max(10,Math.min(300,parseFloat($(sid).value)+(e.deltaY>0?-5:5)));redraw()}else{zoom(dist+(e.deltaY>0?.55:-.55))}},{passive:false});
 window.__mugZoom=()=>dist;
 let ty=LEFT_SIDE_VIEW_Y,tx=-.08,drag=false,ox=0,oy=0,spinning=false;const p=new Map();let ps=0,pz=8.2;
-let artMode=false,artSide='left';
+let artMode=false,artSide='left',artScaleStart=90;
 function setArtMode(on){artMode=on;$('artModeBtn').classList.toggle('on',on);$('artSideSel').classList.toggle('hidden',!on);if(on){spinning=false;$('spin').setAttribute('aria-pressed','false')}}
 $('artModeBtn').addEventListener('click',e=>{e.stopPropagation();if(!fimg&&!bimg)return;setArtMode(!artMode);if(artMode){const ry=((mug.rotation.y%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);artSide=(ry>Math.PI/2&&ry<3*Math.PI/2)?'left':'right';$('artSideL').classList.toggle('on',artSide==='left');$('artSideR').classList.toggle('on',artSide==='right')}});
 $('artSideL').addEventListener('click',e=>{e.stopPropagation();artSide='left';$('artSideL').classList.add('on');$('artSideR').classList.remove('on')});
@@ -366,8 +373,8 @@ $('artSideR').addEventListener('click',e=>{e.stopPropagation();artSide='right';$
 document.querySelector('.hud-btm').addEventListener('pointerdown',e=>e.stopPropagation());
 document.querySelector('.hud-btm').addEventListener('pointermove',e=>e.stopPropagation());
 function pd(){const a=[...p.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
-stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false}});
-stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps)zoom(pz*(ps/d));return}if(!drag)return;const dx=e.clientX-ox,dy=e.clientY-oy;if(artMode&&(fimg||bimg)){const xId=artSide==='left'?'fx':'bx',yId=artSide==='left'?'fy':'by';$(xId).value=Math.max(-700,Math.min(700,parseFloat($(xId).value)+dx*4.2));$(yId).value=Math.max(-440,Math.min(440,parseFloat($(yId).value)+dy*3.8));redraw()}else{ty+=dx*.012;tx+=dy*.009;tx=Math.max(-.82,Math.min(.82,tx))}ox=e.clientX;oy=e.clientY});
+stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false;if(artMode&&(fimg||bimg))artScaleStart=parseFloat($(artSide==='left'?'fs':'bs').value)}});
+stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps){if(artMode&&(fimg||bimg)){const sid=artSide==='left'?'fs':'bs';$(sid).value=Math.max(10,Math.min(300,artScaleStart*(d/ps)));redraw()}else{zoom(pz*(ps/d))}}return}if(!drag)return;const dx=e.clientX-ox,dy=e.clientY-oy;if(artMode&&(fimg||bimg)){const xId=artSide==='left'?'fx':'bx',yId=artSide==='left'?'fy':'by';$(xId).value=Math.max(-700,Math.min(700,parseFloat($(xId).value)+dx*4.2));$(yId).value=Math.max(-440,Math.min(440,parseFloat($(yId).value)+dy*3.8));redraw()}else{ty+=dx*.012;tx+=dy*.009;tx=Math.max(-.82,Math.min(.82,tx))}ox=e.clientX;oy=e.clientY});
 function end(e){p.delete(e.pointerId);if(!p.size)drag=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
 function setActiveThumb(el){document.querySelectorAll('.view-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.view;if(v==='spin360'){spinning=!spinning;$('spin').setAttribute('aria-pressed',String(spinning));if(spinning)setActiveThumb(b);return}spinning=false;$('spin').setAttribute('aria-pressed','false');setActiveThumb(b);if(v==='front'){ty=LEFT_SIDE_VIEW_Y;tx=-.08}if(v==='back'){ty=RIGHT_SIDE_VIEW_Y;tx=-.08}if(v==='handle'){ty=HANDLE_VIEW_Y;tx=-.07}if(v==='top'){ty=LEFT_SIDE_VIEW_Y;tx=.68}}));
