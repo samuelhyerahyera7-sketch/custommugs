@@ -114,11 +114,13 @@ button{font-family:inherit;cursor:pointer}
 .hero{position:relative;height:100svh;min-height:520px;display:flex;flex-direction:column;overflow:hidden;border-bottom:none;margin-top:-66px}
 .hero-stage{position:relative;z-index:5;flex:1;display:flex;align-items:stretch;justify-content:center;overflow:hidden}
 .hero-photo{width:100%;height:100%;object-fit:cover;object-position:center center;display:block}
-.hero-h{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:300;line-height:1.1;color:var(--txt);text-align:center}
+/* hero text overlay */
+.hero-text{position:absolute;top:0;left:0;right:0;padding:calc(66px + .4rem) 2rem 0;z-index:6;text-align:center}
+.hero-h{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.4rem,6vw,4rem);font-weight:300;line-height:1.1;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.35);margin-bottom:.75rem}
 
-/* hero CTA strip below photo */
 /* strip below photo */
-.hero-strip{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.25rem 1.5rem 1.4rem;background:var(--bg)}
+.hero-strip{display:flex;flex-direction:column;align-items:center;gap:.65rem;padding:1.1rem 1.5rem 1.25rem;background:var(--bg)}
+.hero-strip-h{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:300;color:var(--txt);text-align:center;line-height:1.1}
 .hero-strip-btns{display:flex;gap:.75rem;justify-content:center}
 /* mobile: pills on photo */
 .hero-ctas{display:none;position:absolute;bottom:1.25rem;left:50%;transform:translateX(-50%);gap:.65rem;z-index:10}
@@ -132,6 +134,7 @@ button{font-family:inherit;cursor:pointer}
   .hero-strip-btns{display:none}
   .hero-ctas{display:flex}
   .hero-cta-sec{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.55)}
+  .hero-strip-h{font-size:1.5rem}
 }
 
 /* ── OCCASIONS ── */
@@ -438,6 +441,9 @@ button{font-family:inherit;cursor:pointer}
   <div class="hero-bg"><div class="hero-bg-l"></div><div class="hero-bg-r"></div></div>
   <div class="hero-stage">
     <img class="hero-photo" src="/homepage.png.png" alt="Custom mug with Design Here on a cardboard box">
+    <div class="hero-text">
+      <h1 class="hero-h">Design Your<br>Custom Mug</h1>
+    </div>
     <!-- pills on photo — mobile only -->
     <div class="hero-ctas">
       <a href="#design" class="hero-cta hero-cta-pri">Design Your Mug</a>
@@ -446,9 +452,9 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </section>
 
-<!-- heading + buttons below photo -->
+<!-- "Premium custom mugs" + buttons below photo -->
 <div class="hero-strip">
-  <h1 class="hero-h">Design Your Custom Mug</h1>
+  <h2 class="hero-strip-h">Premium custom mugs</h2>
   <div class="hero-strip-btns">
     <a href="#design" class="hero-cta hero-cta-pri">Design Your Mug</a>
     <a href="#shop" class="hero-cta hero-cta-sec">Shop All</a>
@@ -458,9 +464,6 @@ button{font-family:inherit;cursor:pointer}
 <!-- SHOP -->
 <section class="products" id="shop">
   <div class="wrap">
-    <div class="sec-hdr">
-      <h2 class="sec-h serif">Premium custom mugs</h2>
-    </div>
     <div class="occ-label" style="text-align:left;margin-bottom:1rem"><span class="eyebrow">Shop by occasion</span></div>
     <div class="occ-grid" style="margin-bottom:1.75rem">
       <div class="occ-card on" onclick="filterByOcc('all')" data-occ="all"><div class="occ-name">All</div></div>
