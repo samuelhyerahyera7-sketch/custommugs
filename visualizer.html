@@ -183,7 +183,7 @@ r.setPixelRatio(Math.min(devicePixelRatio,2));r.shadowMap.enabled=true;r.outputC
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();$('status').textContent='GPU context lost — please refresh the page'},false);
 canvas.addEventListener('webglcontextrestored',()=>{try{build();redraw();$('status').textContent='Context restored'}catch(_){}},false);
 const s=new THREE.Scene();s.background=new THREE.Color(0xf3f0e9);
-const cam=new THREE.PerspectiveCamera(30,1,.1,50);let dist=6.55;cam.position.set(0,.18,dist);
+const cam=new THREE.PerspectiveCamera(30,1,.1,50);let dist=8.2;cam.position.set(0,.18,dist);
 const mug=new THREE.Group();s.add(mug);
 const ceramic=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.18,clearcoat:.86,clearcoatRoughness:.06,metalness:0});
 const innerMat=new THREE.MeshPhysicalMaterial({color:0xf6f6f4,roughness:.28,clearcoat:.62,clearcoatRoughness:.1,side:THREE.BackSide});
@@ -256,10 +256,10 @@ document.querySelector('.zoom').addEventListener('pointermove',e=>e.stopPropagat
 document.querySelector('.zoom').addEventListener('click',e=>e.stopPropagation());
 $('zi').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist-.9)});
 $('zo').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist+.9)});
-$('zr').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(6.55)});
+$('zr').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(8.2)});
 stage.addEventListener('wheel',e=>{e.preventDefault();zoom(dist+(e.deltaY>0?.55:-.55))},{passive:false});
 window.__mugZoom=()=>dist;
-let ty=LEFT_SIDE_VIEW_Y,tx=-.08,drag=false,ox=0,oy=0,spinning=false;const p=new Map();let ps=0,pz=6.55;
+let ty=LEFT_SIDE_VIEW_Y,tx=-.08,drag=false,ox=0,oy=0,spinning=false;const p=new Map();let ps=0,pz=8.2;
 function pd(){const a=[...p.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
 stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false}});
 stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps)zoom(pz*(ps/d));return}if(!drag)return;ty+=(e.clientX-ox)*.012;tx+=(e.clientY-oy)*.009;tx=Math.max(-.82,Math.min(.82,tx));ox=e.clientX;oy=e.clientY});
@@ -277,7 +277,8 @@ function shots(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.
 $('refresh').onclick=shots;
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
 new ResizeObserver(resize).observe(stage);resize();
-function loop(){requestAnimationFrame(loop);if(document.hidden)return;if(spinning)ty+=.011;mug.rotation.y+=(ty-mug.rotation.y)*.14;mug.rotation.x+=(tx-mug.rotation.x)*.14;try{r.render(s,cam)}catch(_){}}
+function loop(){requestAnimationFrame(loop);if(document.hidden)return;if(spinning)ty+=.011;mug.rotation.y+=(ty-mug.rotation.y)*.14;mug.rotation.x+=(tx-mug.rotation.x)*.14;// Shift lookAt so the handle (at local x=2.06) stays in frame at all rotations
+const hx=Math.cos(mug.rotation.y)*0.42;cam.lookAt(hx,.05,0);try{r.render(s,cam)}catch(_){}}
 build();redraw();loop();
 </script>
 </body>
