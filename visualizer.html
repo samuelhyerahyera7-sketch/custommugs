@@ -46,14 +46,11 @@ canvas{width:100%;height:100%;display:block}
 .zoom{display:flex;gap:8px;pointer-events:auto}
 .icon-btn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-weight:700}
 
-/* ── View thumbnail strip ── */
-.view-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:8px}
-.view-thumb{border:2px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;background:var(--paper);transition:border-color .15s;user-select:none}
-.view-thumb:hover{border-color:#8da0b8}
-.view-thumb.active{border-color:var(--green);box-shadow:0 0 0 2px rgba(15,118,110,.18)}
-.view-thumb img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--paper)}
-.view-thumb span{display:block;text-align:center;font-size:11px;font-weight:600;padding:5px 4px;color:#344054;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.view-thumb.active span{color:var(--green)}
+/* ── View strip ── */
+.view-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.view-thumb{border:1px solid var(--line);border-radius:8px;cursor:pointer;background:#fff;transition:border-color .15s,background .15s;user-select:none;min-height:40px;display:grid;place-items:center;padding:9px 7px;font-size:13px;color:var(--ink);text-align:center;line-height:1.2}
+.view-thumb:hover{border-color:#8da0b8;transform:translateY(-1px)}
+.view-thumb.active{border-color:var(--green);background:#e7f3f1;color:#0b5f59;font-weight:600}
 
 /* ── Positioning strip ── */
 .pos-strip{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:8px;box-shadow:0 4px 14px rgba(24,33,47,.06)}
@@ -113,7 +110,6 @@ canvas{width:100%;height:100%;display:block}
   .icon-btn{width:38px;height:38px}
   .zoom{gap:6px}
   .fname{max-width:110px}
-  .view-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
   .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:400px){
@@ -194,21 +190,11 @@ canvas{width:100%;height:100%;display:block}
     </div>
   </div>
   <div class="view-strip" aria-label="View controls">
-    <div class="view-thumb active" data-view="front" role="button" tabindex="0" aria-label="Left side view">
-      <img id="thumb-front" alt="Left side"><span>Left side</span>
-    </div>
-    <div class="view-thumb" data-view="back" role="button" tabindex="0" aria-label="Right side view">
-      <img id="thumb-back" alt="Right side"><span>Right side</span>
-    </div>
-    <div class="view-thumb" data-view="handle" role="button" tabindex="0" aria-label="Handle side view">
-      <img id="thumb-handle" alt="Handle side"><span>Handle side</span>
-    </div>
-    <div class="view-thumb" data-view="top" role="button" tabindex="0" aria-label="Top view">
-      <img id="thumb-top" alt="Top"><span>Top</span>
-    </div>
-    <div class="view-thumb" id="spin" data-view="spin360" role="button" tabindex="0" aria-pressed="false" aria-label="360 spin view">
-      <img id="thumb-spin360" alt="360 view"><span>360 ↻</span>
-    </div>
+    <div class="view-thumb active" data-view="front" role="button" tabindex="0">Left side</div>
+    <div class="view-thumb" data-view="back" role="button" tabindex="0">Right side</div>
+    <div class="view-thumb" data-view="handle" role="button" tabindex="0">Handle side</div>
+    <div class="view-thumb" data-view="top" role="button" tabindex="0">Top</div>
+    <div class="view-thumb" id="spin" data-view="spin360" role="button" tabindex="0" aria-pressed="false">360 ↻</div>
   </div>
   <div class="actions" style="margin-top:8px">
     <button id="downloadView" class="primary">Download view</button>
@@ -337,7 +323,7 @@ function build(){clearP();const v=$('layout').value;if(v==='front'){patch(LEFT_S
 function drawOne(o,img,size,xo,yo){o.x.clearRect(0,0,o.c.width,o.c.height);if(showGuide){o.x.save();o.x.strokeStyle='rgba(15,118,110,.55)';o.x.setLineDash([22,16]);o.x.lineWidth=6;o.x.strokeRect(8,8,o.c.width-16,o.c.height-16);o.x.restore()}if(img){const sc=size/100,fit=Math.min((1500*sc)/img.width,(1150*sc)/img.height),w=img.width*fit,h=img.height*fit;o.x.drawImage(img,o.c.width/2-w/2+xo,o.c.height/2-h/2+yo,w,h)}o.t.needsUpdate=true}
 function drawWrap(){wt.x.clearRect(0,0,wt.c.width,wt.c.height);if(showGuide){wt.x.save();wt.x.strokeStyle='rgba(15,118,110,.55)';wt.x.setLineDash([22,16]);wt.x.lineWidth=6;wt.x.strokeRect(8,8,wt.c.width-16,wt.c.height-16);wt.x.restore()}const draw=(img,left,size,xo,yo)=>{if(!img)return;const half=wt.c.width/2,sc=size/100,fit=Math.min((half*.92*sc)/img.width,(wt.c.height*.96*sc)/img.height),w=img.width*fit,h=img.height*fit,cx=left?half*.5:half*1.5;wt.x.drawImage(img,cx-w/2+xo*.45,wt.c.height/2-h/2+yo,w,h)};draw(fimg,true,+$('fs').value,+$('fx').value,+$('fy').value);draw(bimg,false,+$('bs').value,+$('bx').value,+$('by').value);wt.t.needsUpdate=true}
 function updateValues(){['fs','fx','fy','bs','bx','by'].forEach(id=>{const o=$(id+'v');if(o)o.textContent=id.endsWith('s')?$(id).value+'%':$(id).value})}
-function redraw(){updateValues();drawOne(ft,fimg,+$('fs').value,+$('fx').value,+$('fy').value);drawOne(bt,bimg,+$('bs').value,+$('bx').value,+$('by').value);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork';scheduleThumbRefresh()}
+function redraw(){updateValues();drawOne(ft,fimg,+$('fs').value,+$('fx').value,+$('fy').value);drawOne(bt,bimg,+$('bs').value,+$('bx').value,+$('by').value);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork'}
 function load(input,isFront){input.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Please select an image file (JPG, PNG, WEBP, etc.)');return}const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{if(isFront){fimg=im;$('frontName').textContent=file.name}else{bimg=im;$('backName').textContent=file.name;$('backControls').classList.remove('hidden')}$('controls').classList.remove('hidden');$('previewWrap').classList.remove('hidden');redraw();shots()};im.onerror=()=>{alert('Could not load image. The file may be corrupt or an unsupported format.')};im.src=fr.result};fr.onerror=()=>{alert('Could not read file. Please try again.')};fr.readAsDataURL(file)})}
 load($('frontFile'),true);load($('backFile'),false);
 ['fs','fx','fy','bs','bx','by'].forEach(id=>$(id).addEventListener('input',redraw));
@@ -377,9 +363,6 @@ function pd(){const a=[...p.values()];return a.length<2?0:Math.hypot(a[0].x-a[1]
 stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false;if(artMode&&(fimg||bimg)){artScaleStart=parseFloat($(artSide==='left'?'fs':'bs').value)}}});
 stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps){if(artMode&&(fimg||bimg)){const sid=artSide==='left'?'fs':'bs';$(sid).value=Math.max(10,Math.min(300,artScaleStart*(d/ps)));redraw()}else{zoom(pz*(ps/d))}}return}if(!drag)return;const dx=e.clientX-ox,dy=e.clientY-oy;if(artMode&&(fimg||bimg)){const xId=artSide==='left'?'fx':'bx',yId=artSide==='left'?'fy':'by';$(xId).value=Math.max(-700,Math.min(700,parseFloat($(xId).value)+dx*4.2));$(yId).value=Math.max(-440,Math.min(440,parseFloat($(yId).value)+dy*3.8));redraw()}else{ty+=dx*.012;tx+=dy*.009;tx=Math.max(-.82,Math.min(.82,tx))}ox=e.clientX;oy=e.clientY});
 function end(e){p.delete(e.pointerId);if(!p.size)drag=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
-const THUMB_VIEWS=[['front',-.08,LEFT_SIDE_VIEW_Y],['back',-.08,RIGHT_SIDE_VIEW_Y],['handle',-.07,HANDLE_VIEW_Y],['top',.68,LEFT_SIDE_VIEW_Y],['spin360',-.06,LEFT_SIDE_VIEW_Y*1.25]];
-function refreshThumbs(){const sx=mug.rotation.x,sy=mug.rotation.y;for(const[id,x,y]of THUMB_VIEWS){mug.rotation.x=x;mug.rotation.y=y;try{r.render(s,cam)}catch(_){}const img=$(('thumb-'+id));if(img)img.src=canvas.toDataURL('image/jpeg',.78)}mug.rotation.x=sx;mug.rotation.y=sy}
-let thumbTimer=null;function scheduleThumbRefresh(){clearTimeout(thumbTimer);thumbTimer=setTimeout(refreshThumbs,380)}
 function setActiveThumb(el){document.querySelectorAll('.view-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.view;if(v==='spin360'){spinning=!spinning;$('spin').setAttribute('aria-pressed',String(spinning));if(spinning)setActiveThumb(b);return}spinning=false;$('spin').setAttribute('aria-pressed','false');setActiveThumb(b);if(v==='front'){ty=LEFT_SIDE_VIEW_Y;tx=-.08}if(v==='back'){ty=RIGHT_SIDE_VIEW_Y;tx=-.08}if(v==='handle'){ty=HANDLE_VIEW_Y;tx=-.07}if(v==='top'){ty=LEFT_SIDE_VIEW_Y;tx=.68}}));
 function download(url,name){const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove()}
@@ -394,7 +377,7 @@ function resize(){const w=stage.clientWidth,h=stage.clientHeight;r.setSize(w,h,f
 new ResizeObserver(resize).observe(stage);resize();
 function loop(){requestAnimationFrame(loop);if(document.hidden)return;if(spinning)ty+=.011;mug.rotation.y+=(ty-mug.rotation.y)*.14;mug.rotation.x+=(tx-mug.rotation.x)*.14;// Shift lookAt so the handle (at local x=2.06) stays in frame at all rotations
 const hx=Math.cos(mug.rotation.y)*0.42;cam.lookAt(hx,.05,0);try{r.render(s,cam)}catch(_){}}
-build();redraw();loop();setTimeout(refreshThumbs,600);
+build();redraw();loop();
 </script>
 </body>
 </html>
