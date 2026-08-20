@@ -395,7 +395,7 @@ function switchMugType(type){
   $('mugType11oz').classList.toggle('primary',is11);
   $('mugTypeEnamel').classList.toggle('primary',!is11);
   $('pageTitle').textContent=is11?'Custom Mugs 11oz Visualiser':'Custom Mugs Enamel Mug Visualiser';
-  setupMug(type);redraw();if(fimg||bimg)shots();
+  setupMug(type);redraw();if(fimg||bimg)shots();updateViewThumbs();
 }
 $('mugType11oz').addEventListener('click',()=>switchMugType('11oz'));
 $('mugTypeEnamel').addEventListener('click',()=>switchMugType('enamel'));
