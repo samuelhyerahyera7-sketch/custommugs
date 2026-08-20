@@ -70,8 +70,12 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
 <header class="topbar">
 <div>
 <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);font-size:13px;margin-bottom:6px">&#8592; Back to site</a>
-<h1>Custom Mugs 11oz Visualiser</h1>
+<h1 id="pageTitle">Custom Mugs Visualiser</h1>
 <p class="sub">Upload left and right side artwork, position it on the mug, then export angled previews for approval or product listings.</p>
+<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+<button id="mugType11oz" class="primary" style="min-height:36px;padding:7px 16px;font-size:14px">11oz Sublimation</button>
+<button id="mugTypeEnamel" style="min-height:36px;padding:7px 16px;font-size:14px">Enamel Mug</button>
+</div>
 </div>
 <div class="actions">
 <button id="downloadView" class="primary">Download view</button>
@@ -179,37 +183,67 @@ try{
 }
 r.setPixelRatio(Math.min(devicePixelRatio,2));r.shadowMap.enabled=true;r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;
 
-// ---- Context loss/restore ----
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();$('status').textContent='GPU context lost — please refresh the page'},false);
-canvas.addEventListener('webglcontextrestored',()=>{try{build();redraw();$('status').textContent='Context restored'}catch(_){}},false);
+canvas.addEventListener('webglcontextrestored',()=>{try{setupMug(mugType);build();redraw();$('status').textContent='Context restored'}catch(_){}},false);
 const s=new THREE.Scene();s.background=new THREE.Color(0xf3f0e9);
 const cam=new THREE.PerspectiveCamera(30,1,.1,50);let dist=6.55;cam.position.set(0,.18,dist);
 const mug=new THREE.Group();s.add(mug);
+
+// ---- Shared materials ----
 const ceramic=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.18,clearcoat:.86,clearcoatRoughness:.06,metalness:0});
 const innerMat=new THREE.MeshPhysicalMaterial({color:0xf6f6f4,roughness:.28,clearcoat:.62,clearcoatRoughness:.1,side:THREE.BackSide});
 const shadowMat=new THREE.MeshBasicMaterial({color:0xd5d2cc,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false});
-const R=1.06,H=2.45,IR=.995;
-const body=new THREE.Mesh(new THREE.CylinderGeometry(R,R,H,224,1,true),ceramic);mug.add(body);
-const bottom=new THREE.Mesh(new THREE.CircleGeometry(1.02,224),ceramic);bottom.rotation.x=-Math.PI/2;bottom.position.y=-H/2+.01;mug.add(bottom);
-const basePlug=new THREE.Mesh(new THREE.CylinderGeometry(R*.98,R*.965,.095,224,1,false),ceramic);basePlug.position.y=-H/2+.035;mug.add(basePlug);
-const iw=new THREE.Mesh(new THREE.CylinderGeometry(IR,IR,2.16,224,1,true),innerMat);iw.position.y=.08;mug.add(iw);
-const ib=new THREE.Mesh(new THREE.CircleGeometry(IR,224),innerMat);ib.rotation.x=-Math.PI/2;ib.position.y=-1;mug.add(ib);
-const rs=new THREE.Shape();rs.absarc(0,0,R,0,Math.PI*2,false);const rh=new THREE.Path();rh.absarc(0,0,IR,0,Math.PI*2,true);rs.holes.push(rh);
-const rim=new THREE.Mesh(new THREE.ShapeGeometry(rs,128),ceramic);rim.rotation.x=-Math.PI/2;rim.position.y=H/2;mug.add(rim);
-const rimLip=new THREE.Mesh(new THREE.TorusGeometry((R+IR)/2,(R-IR)*.36,24,224),ceramic);rimLip.rotation.x=Math.PI/2;rimLip.position.y=H/2+.01;mug.add(rimLip);
-const footLip=new THREE.Mesh(new THREE.TorusGeometry(R*.96,.044,22,224),ceramic);footLip.rotation.x=Math.PI/2;footLip.position.y=-H/2+.048;mug.add(footLip);
-const footShadow=new THREE.Mesh(new THREE.TorusGeometry(R*.9,.018,16,224),shadowMat);footShadow.rotation.x=Math.PI/2;footShadow.position.y=-H/2+.072;mug.add(footShadow);
+const enamelMat=new THREE.MeshPhysicalMaterial({color:0xfdfdfd,roughness:.20,metalness:.02,clearcoat:.55,clearcoatRoughness:.12});
+const enamelInner=new THREE.MeshPhysicalMaterial({color:0xf7f7f7,roughness:.23,side:THREE.BackSide});
+const steelMat=new THREE.MeshPhysicalMaterial({color:0xd4d6d8,metalness:.95,roughness:.17});
 
-const hp=[
-new THREE.Vector3(.99,.74,0),new THREE.Vector3(1.16,.75,0),new THREE.Vector3(1.36,.75,0),
-new THREE.Vector3(1.61,.67,0),new THREE.Vector3(1.84,.49,0),new THREE.Vector3(2.00,.24,0),
-new THREE.Vector3(2.06,0,0),new THREE.Vector3(2.00,-.25,0),new THREE.Vector3(1.84,-.51,0),
-new THREE.Vector3(1.61,-.69,0),new THREE.Vector3(1.35,-.76,0),new THREE.Vector3(1.16,-.75,0),
-new THREE.Vector3(.99,-.73,0)];
-const curve=new THREE.CatmullRomCurve3(hp,false,'centripetal',.45);
-const handle=new THREE.Mesh(new THREE.TubeGeometry(curve,240,.108,32,false),ceramic);mug.add(handle);
-function handleFillet(y){const fillet=new THREE.Mesh(new THREE.SphereGeometry(.13,40,24),ceramic);fillet.scale.set(.42,.9,.54);fillet.position.set(1.055,y,0);mug.add(fillet)}
-handleFillet(.74);handleFillet(-.73);
+// ---- Per-type constants (updated by setupMug) ----
+let MUG_R=1.06,MUG_H=2.45,PATCH_H=2.40,CIRC_MM=258;
+const HANDLE_ANGLE=Math.PI/2,LEFT_SIDE_ANGLE=Math.PI,RIGHT_SIDE_ANGLE=0,WIDE_WRAP_ANGLE=HANDLE_ANGLE+Math.PI;
+const LEFT_SIDE_VIEW_Y=Math.PI,RIGHT_SIDE_VIEW_Y=0,HANDLE_VIEW_Y=-Math.PI/2;
+let mugType='11oz';
+
+function clearMug(){while(mug.children.length){const c=mug.children[0];c.geometry?.dispose();mug.remove(c)}}
+
+function setupMug(type){
+  clearP();clearMug();mugType=type;
+  if(type==='11oz'){
+    MUG_R=1.06;MUG_H=2.45;PATCH_H=2.40;CIRC_MM=258;
+    const R=MUG_R,H=MUG_H,IR=.995;
+    mug.add(new THREE.Mesh(new THREE.CylinderGeometry(R,R,H,224,1,true),ceramic));
+    const bot=new THREE.Mesh(new THREE.CircleGeometry(1.02,224),ceramic);bot.rotation.x=-Math.PI/2;bot.position.y=-H/2+.01;mug.add(bot);
+    const plug=new THREE.Mesh(new THREE.CylinderGeometry(R*.98,R*.965,.095,224,1,false),ceramic);plug.position.y=-H/2+.035;mug.add(plug);
+    const iw=new THREE.Mesh(new THREE.CylinderGeometry(IR,IR,2.16,224,1,true),innerMat);iw.position.y=.08;mug.add(iw);
+    const ib=new THREE.Mesh(new THREE.CircleGeometry(IR,224),innerMat);ib.rotation.x=-Math.PI/2;ib.position.y=-1;mug.add(ib);
+    const rs=new THREE.Shape();rs.absarc(0,0,R,0,Math.PI*2,false);const rh=new THREE.Path();rh.absarc(0,0,IR,0,Math.PI*2,true);rs.holes.push(rh);
+    const rim=new THREE.Mesh(new THREE.ShapeGeometry(rs,128),ceramic);rim.rotation.x=-Math.PI/2;rim.position.y=H/2;mug.add(rim);
+    const rl=new THREE.Mesh(new THREE.TorusGeometry((R+IR)/2,(R-IR)*.36,24,224),ceramic);rl.rotation.x=Math.PI/2;rl.position.y=H/2+.01;mug.add(rl);
+    const fl=new THREE.Mesh(new THREE.TorusGeometry(R*.96,.044,22,224),ceramic);fl.rotation.x=Math.PI/2;fl.position.y=-H/2+.048;mug.add(fl);
+    const fs=new THREE.Mesh(new THREE.TorusGeometry(R*.9,.018,16,224),shadowMat);fs.rotation.x=Math.PI/2;fs.position.y=-H/2+.072;mug.add(fs);
+    const hp=[new THREE.Vector3(.99,.74,0),new THREE.Vector3(1.16,.75,0),new THREE.Vector3(1.36,.75,0),new THREE.Vector3(1.61,.67,0),new THREE.Vector3(1.84,.49,0),new THREE.Vector3(2.00,.24,0),new THREE.Vector3(2.06,0,0),new THREE.Vector3(2.00,-.25,0),new THREE.Vector3(1.84,-.51,0),new THREE.Vector3(1.61,-.69,0),new THREE.Vector3(1.35,-.76,0),new THREE.Vector3(1.16,-.75,0),new THREE.Vector3(.99,-.73,0)];
+    mug.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(hp,false,'centripetal',.45),240,.108,32,false),ceramic));
+    [[.74],[-.73]].forEach(([y])=>{const f=new THREE.Mesh(new THREE.SphereGeometry(.13,40,24),ceramic);f.scale.set(.42,.9,.54);f.position.set(1.055,y,0);mug.add(f)});
+    floor.position.y=-H/2-.04;
+  }else{
+    // enamel mug
+    MUG_R=1.08;MUG_H=2.02;PATCH_H=1.68;CIRC_MM=270;
+    const R=MUG_R,H=MUG_H,IR=.995;
+    const profile=[new THREE.Vector2(0,-H/2),new THREE.Vector2(.98,-H/2),new THREE.Vector2(1.035,-H/2+.025),new THREE.Vector2(1.07,-H/2+.07),new THREE.Vector2(R,-H/2+.14),new THREE.Vector2(R,H/2-.07),new THREE.Vector2(1.075,H/2-.03)];
+    mug.add(new THREE.Mesh(new THREE.LatheGeometry(profile,220),enamelMat));
+    const iw=new THREE.Mesh(new THREE.CylinderGeometry(IR,IR,1.78,220,1,true),enamelInner);iw.position.y=.06;mug.add(iw);
+    const ib=new THREE.Mesh(new THREE.CircleGeometry(IR,220),enamelInner);ib.rotation.x=-Math.PI/2;ib.position.y=-.83;mug.add(ib);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(1.115,.055,22,220),steelMat);rim.rotation.x=Math.PI/2;rim.position.y=H/2+.016;mug.add(rim);
+    const rim2=new THREE.Mesh(new THREE.TorusGeometry(1.022,.02,14,220),steelMat);rim2.rotation.x=Math.PI/2;rim2.position.y=H/2+.004;mug.add(rim2);
+    const eshadow=new THREE.Mesh(new THREE.TorusGeometry(R*.88,.014,14,220),shadowMat);eshadow.rotation.x=Math.PI/2;eshadow.position.y=-H/2+.04;mug.add(eshadow);
+    const sh=new THREE.Shape();
+    sh.moveTo(1.015,.60);sh.bezierCurveTo(1.31,.63,1.58,.58,1.78,.42);sh.bezierCurveTo(1.95,.28,2.03,.08,2.01,-.11);sh.bezierCurveTo(1.99,-.32,1.87,-.50,1.68,-.61);sh.bezierCurveTo(1.48,-.72,1.25,-.71,1.015,-.64);sh.lineTo(1.015,-.47);sh.bezierCurveTo(1.22,-.52,1.41,-.52,1.54,-.44);sh.bezierCurveTo(1.68,-.35,1.75,-.22,1.76,-.07);sh.bezierCurveTo(1.77,.10,1.70,.24,1.57,.33);sh.bezierCurveTo(1.43,.43,1.23,.46,1.015,.43);sh.closePath();
+    const hole=new THREE.Path();hole.moveTo(1.19,.40);hole.bezierCurveTo(1.35,.42,1.50,.38,1.60,.30);hole.bezierCurveTo(1.70,.22,1.74,.09,1.73,-.05);hole.bezierCurveTo(1.72,-.19,1.66,-.30,1.56,-.37);hole.bezierCurveTo(1.45,-.44,1.31,-.46,1.19,-.43);hole.lineTo(1.19,.40);sh.holes.push(hole);
+    const hg=new THREE.ExtrudeGeometry(sh,{depth:.05,bevelEnabled:true,bevelThickness:.016,bevelSize:.016,bevelSegments:4,curveSegments:64});hg.translate(0,0,-.025);
+    mug.add(new THREE.Mesh(hg,enamelMat));
+    floor.position.y=-H/2-.04;
+  }
+  build();
+}
 
 function tex(){const c=document.createElement('canvas');c.width=1800;c.height=1200;const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return{c,x:c.getContext('2d'),t}}
 const ft=tex(),bt=tex(),wt=tex();
@@ -217,16 +251,9 @@ const fm=new THREE.MeshBasicMaterial({map:ft.t,transparent:true,depthWrite:false
 const bm=new THREE.MeshBasicMaterial({map:bt.t,transparent:true,depthWrite:false});
 const wm=new THREE.MeshBasicMaterial({map:wt.t,transparent:true,depthWrite:false});
 let fimg=null,bimg=null,showGuide=false,patches=[],proofUrl='',productionFile=null;
-const mmToArc=mm=>(mm/258)*Math.PI*2;
-const HANDLE_ANGLE=Math.PI/2;
-const LEFT_SIDE_ANGLE=Math.PI;
-const RIGHT_SIDE_ANGLE=0;
-const WIDE_WRAP_ANGLE=HANDLE_ANGLE+Math.PI;
-const LEFT_SIDE_VIEW_Y=Math.PI;
-const RIGHT_SIDE_VIEW_Y=0;
-const HANDLE_VIEW_Y=-Math.PI/2;
+function mmToArc(mm){return(mm/CIRC_MM)*Math.PI*2}
 function clearP(){patches.forEach(m=>{m.geometry.dispose();mug.remove(m)});patches=[]}
-function patch(center,arc,mat){const m=new THREE.Mesh(new THREE.CylinderGeometry(R+.006,R+.006,2.40,220,1,true,center-arc/2,arc),mat);mug.add(m);patches.push(m)}
+function patch(center,arc,mat){const m=new THREE.Mesh(new THREE.CylinderGeometry(MUG_R+.006,MUG_R+.006,PATCH_H,220,1,true,center-arc/2,arc),mat);mug.add(m);patches.push(m)}
 function build(){clearP();const v=$('layout').value;if(v==='front'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);$('area').textContent='Left side print area, clear of the handle'}if(v==='frontBack'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);patch(RIGHT_SIDE_ANGLE,mmToArc(95),bm);$('area').textContent='Left and right side print areas; neither crosses the handle'}if(v==='wide'){patch(WIDE_WRAP_ANGLE,mmToArc(180),wm);$('area').textContent='Wide side wrap, about 180 mm, clear of the handle'}if(v==='max'){patch(WIDE_WRAP_ANGLE,mmToArc(232),wm);$('area').textContent='Maximum side wrap, about 232 mm, stretched closer to the handle with a no-print gap'}}
 function drawOne(o,img,size,xo,yo){o.x.clearRect(0,0,o.c.width,o.c.height);if(showGuide){o.x.save();o.x.strokeStyle='rgba(15,118,110,.55)';o.x.setLineDash([22,16]);o.x.lineWidth=6;o.x.strokeRect(8,8,o.c.width-16,o.c.height-16);o.x.restore()}if(img){const sc=size/100,fit=Math.min((1500*sc)/img.width,(1150*sc)/img.height),w=img.width*fit,h=img.height*fit;o.x.drawImage(img,o.c.width/2-w/2+xo,o.c.height/2-h/2+yo,w,h)}o.t.needsUpdate=true}
 function drawWrap(){wt.x.clearRect(0,0,wt.c.width,wt.c.height);if(showGuide){wt.x.save();wt.x.strokeStyle='rgba(15,118,110,.55)';wt.x.setLineDash([22,16]);wt.x.lineWidth=6;wt.x.strokeRect(8,8,wt.c.width-16,wt.c.height-16);wt.x.restore()}const draw=(img,left,size,xo,yo)=>{if(!img)return;const half=wt.c.width/2,sc=size/100,fit=Math.min((half*.92*sc)/img.width,(wt.c.height*.96*sc)/img.height),w=img.width*fit,h=img.height*fit,cx=left?half*.5:half*1.5;wt.x.drawImage(img,cx-w/2+xo*.45,wt.c.height/2-h/2+yo,w,h)};draw(fimg,true,+$('fs').value,+$('fx').value,+$('fy').value);draw(bimg,false,+$('bs').value,+$('bx').value,+$('by').value);wt.t.needsUpdate=true}
@@ -248,8 +275,20 @@ drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
 drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');setProductionFile(e.dataTransfer.files?.[0])});
 $('productionFile').addEventListener('change',e=>setProductionFile(e.target.files?.[0]));
 
+// ---- Mug type switcher ----
+function switchMugType(type){
+  mugType=type;
+  const is11=type==='11oz';
+  $('mugType11oz').classList.toggle('primary',is11);
+  $('mugTypeEnamel').classList.toggle('primary',!is11);
+  $('pageTitle').textContent=is11?'Custom Mugs 11oz Visualiser':'Custom Mugs Enamel Mug Visualiser';
+  setupMug(type);redraw();if(fimg||bimg)shots();
+}
+$('mugType11oz').addEventListener('click',()=>switchMugType('11oz'));
+$('mugTypeEnamel').addEventListener('click',()=>switchMugType('enamel'));
+
 s.add(new THREE.HemisphereLight(0xffffff,0xcfc8bc,2.05));const key=new THREE.DirectionalLight(0xffffff,4.4);key.position.set(-3.5,5.2,5);s.add(key);const fill=new THREE.DirectionalLight(0xffffff,1.35);fill.position.set(4,2,4);s.add(fill);const rimLight=new THREE.DirectionalLight(0xffffff,.9);rimLight.position.set(2.8,3,-4);s.add(rimLight);
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(15,15),new THREE.ShadowMaterial({opacity:.16}));floor.rotation.x=-Math.PI/2;floor.position.y=-H/2-.04;s.add(floor);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(15,15),new THREE.ShadowMaterial({opacity:.16}));floor.rotation.x=-Math.PI/2;floor.position.y=-MUG_H/2-.04;s.add(floor);
 function zoom(v){dist=Math.max(3.6,Math.min(9.4,v));cam.position.z=dist;cam.updateProjectionMatrix()}
 document.querySelector('.zoom').addEventListener('pointerdown',e=>e.stopPropagation());
 document.querySelector('.zoom').addEventListener('pointermove',e=>e.stopPropagation());
@@ -270,15 +309,16 @@ $('spin').onclick=()=>{spinning=!spinning;$('spin').setAttribute('aria-pressed',
 function download(url,name){const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove()}
 $('downloadView').onclick=()=>download(canvas.toDataURL('image/png'),'custom-mug-view.png');
 async function renderView(x,y){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam);await new Promise(requestAnimationFrame);return canvas.toDataURL('image/png')}
-async function saveProof(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y;const left=await renderView(-.08,LEFT_SIDE_VIEW_Y);const right=await renderView(-.08,RIGHT_SIDE_VIEW_Y);mug.rotation.x=sx;mug.rotation.y=sy;const proof=document.createElement('canvas');proof.width=1800;proof.height=1100;const x=proof.getContext('2d');x.fillStyle='#f8fafc';x.fillRect(0,0,proof.width,proof.height);x.fillStyle='#111827';x.font='700 54px Arial';x.fillText('Custom 11oz mug proof',70,90);x.font='28px Arial';x.fillStyle='#475467';x.fillText('Left and right side views only',70,132);x.fillText('Production file: '+(productionFile?.name||'not selected'),70,172);const li=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=left});const ri=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=right});x.fillStyle='#fff';x.strokeStyle='#d0d5dd';x.lineWidth=3;[[70,230],[930,230]].forEach(([px,py])=>{x.fillRect(px,py,800,720);x.strokeRect(px,py,800,720)});x.drawImage(li,100,260,740,560);x.drawImage(ri,960,260,740,560);x.fillStyle='#111827';x.font='700 34px Arial';x.fillText('Left side',100,900);x.fillText('Right side',960,900);x.font='24px Arial';x.fillStyle='#667085';x.fillText('Artwork can be scaled and moved inside the printable side area before saving.',100,970);proofUrl=proof.toDataURL('image/png');$('proofImg').src=proofUrl;$('proofWrap').classList.remove('hidden');download(proofUrl,'custom-mug-2d-proof.png')}
+async function saveProof(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y;const left=await renderView(-.08,LEFT_SIDE_VIEW_Y);const right=await renderView(-.08,RIGHT_SIDE_VIEW_Y);mug.rotation.x=sx;mug.rotation.y=sy;const proof=document.createElement('canvas');proof.width=1800;proof.height=1100;const x=proof.getContext('2d');x.fillStyle='#f8fafc';x.fillRect(0,0,proof.width,proof.height);x.fillStyle='#111827';x.font='700 54px Arial';x.fillText('Custom '+(mugType==='enamel'?'enamel':'11oz sublimation')+' mug proof',70,90);x.font='28px Arial';x.fillStyle='#475467';x.fillText('Left and right side views only',70,132);x.fillText('Production file: '+(productionFile?.name||'not selected'),70,172);const li=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=left});const ri=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=right});x.fillStyle='#fff';x.strokeStyle='#d0d5dd';x.lineWidth=3;[[70,230],[930,230]].forEach(([px,py])=>{x.fillRect(px,py,800,720);x.strokeRect(px,py,800,720)});x.drawImage(li,100,260,740,560);x.drawImage(ri,960,260,740,560);x.fillStyle='#111827';x.font='700 34px Arial';x.fillText('Left side',100,900);x.fillText('Right side',960,900);x.font='24px Arial';x.fillStyle='#667085';x.fillText('Artwork can be scaled and moved inside the printable side area before saving.',100,970);proofUrl=proof.toDataURL('image/png');$('proofImg').src=proofUrl;$('proofWrap').classList.remove('hidden');download(proofUrl,'custom-mug-2d-proof.png')}
 $('saveProof').onclick=saveProof;
 $('downloadProof').onclick=()=>{if(proofUrl)download(proofUrl,'custom-mug-2d-proof.png')};
-function shots(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y,views=[['Left side',-.08,LEFT_SIDE_VIEW_Y],['Right side',-.08,RIGHT_SIDE_VIEW_Y],['Handle side',-.07,HANDLE_VIEW_Y],['Top',.68,LEFT_SIDE_VIEW_Y]];$('shots').innerHTML='';for(const [n,x,y] of views){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam);const box=document.createElement('div');box.className='shot';const im=document.createElement('img');const url=canvas.toDataURL('image/jpeg',.92);im.src=url;const d=document.createElement('div');const span=document.createElement('span');span.textContent=n;const btn=document.createElement('button');btn.textContent='Save';btn.onclick=()=>download(url,'custom-mug-'+n.toLowerCase().replaceAll(' ','-')+'.jpg');d.append(span,btn);box.append(im,d);$('shots').append(box)}mug.rotation.x=sx;mug.rotation.y=sy}
+const TOP_TILT=.68;
+function shots(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y,oa=cam.aspect,of=cam.fov;cam.aspect=4/3;cam.fov=32;cam.updateProjectionMatrix();r.setSize(800,600,false);const views=[['Left side',-.08,LEFT_SIDE_VIEW_Y],['Right side',-.08,RIGHT_SIDE_VIEW_Y],['Handle side',-.07,HANDLE_VIEW_Y],['Top',TOP_TILT,LEFT_SIDE_VIEW_Y]];$('shots').innerHTML='';for(const [n,x,y] of views){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam);const box=document.createElement('div');box.className='shot';const im=document.createElement('img');const url=canvas.toDataURL('image/jpeg',.92);im.src=url;const d=document.createElement('div');const span=document.createElement('span');span.textContent=n;const btn=document.createElement('button');btn.textContent='Save';btn.onclick=()=>download(url,'custom-mug-'+n.toLowerCase().replaceAll(' ','-')+'.jpg');d.append(span,btn);box.append(im,d);$('shots').append(box)}mug.rotation.x=sx;mug.rotation.y=sy;cam.aspect=oa;cam.fov=of;cam.updateProjectionMatrix();resize()}
 $('refresh').onclick=shots;
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
 new ResizeObserver(resize).observe(stage);resize();
 function loop(){requestAnimationFrame(loop);if(document.hidden)return;if(spinning)ty+=.011;mug.rotation.y+=(ty-mug.rotation.y)*.14;mug.rotation.x+=(tx-mug.rotation.x)*.14;try{r.render(s,cam)}catch(_){}}
-build();redraw();loop();
+setupMug('11oz');redraw();loop();
 </script>
 </body>
 </html>
