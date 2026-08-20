@@ -339,11 +339,11 @@ function setupMug(type){
     const rim=new THREE.Mesh(new THREE.TorusGeometry(1.115,.055,22,220),steelMat);rim.rotation.x=Math.PI/2;rim.position.y=H/2+.016;mug.add(rim);
     const rim2=new THREE.Mesh(new THREE.TorusGeometry(1.022,.02,14,220),steelMat);rim2.rotation.x=Math.PI/2;rim2.position.y=H/2+.004;mug.add(rim2);
     const eshadow=new THREE.Mesh(new THREE.TorusGeometry(R*.88,.014,14,220),shadowMat);eshadow.rotation.x=Math.PI/2;eshadow.position.y=-H/2+.04;mug.add(eshadow);
-    const sh=new THREE.Shape();
-    sh.moveTo(1.015,.60);sh.bezierCurveTo(1.31,.63,1.58,.58,1.78,.42);sh.bezierCurveTo(1.95,.28,2.03,.08,2.01,-.11);sh.bezierCurveTo(1.99,-.32,1.87,-.50,1.68,-.61);sh.bezierCurveTo(1.48,-.72,1.25,-.71,1.015,-.64);sh.lineTo(1.015,-.47);sh.bezierCurveTo(1.22,-.52,1.41,-.52,1.54,-.44);sh.bezierCurveTo(1.68,-.35,1.75,-.22,1.76,-.07);sh.bezierCurveTo(1.77,.10,1.70,.24,1.57,.33);sh.bezierCurveTo(1.43,.43,1.23,.46,1.015,.43);sh.closePath();
-    const hole=new THREE.Path();hole.moveTo(1.19,.40);hole.bezierCurveTo(1.35,.42,1.50,.38,1.60,.30);hole.bezierCurveTo(1.70,.22,1.74,.09,1.73,-.05);hole.bezierCurveTo(1.72,-.19,1.66,-.30,1.56,-.37);hole.bezierCurveTo(1.45,-.44,1.31,-.46,1.19,-.43);hole.lineTo(1.19,.40);sh.holes.push(hole);
-    const hg=new THREE.ExtrudeGeometry(sh,{depth:.05,bevelEnabled:true,bevelThickness:.016,bevelSize:.016,bevelSegments:4,curveSegments:64});hg.translate(0,0,-.025);
-    mug.add(new THREE.Mesh(hg,enamelMat));
+    // Round wire D-handle — JG Electronics sublimation enamel mug style
+    const ehp=[new THREE.Vector3(R,.54,0),new THREE.Vector3(1.13,.60,0),new THREE.Vector3(1.42,.66,0),new THREE.Vector3(1.70,.52,0),new THREE.Vector3(1.88,.27,0),new THREE.Vector3(1.94,0,0),new THREE.Vector3(1.88,-.27,0),new THREE.Vector3(1.70,-.52,0),new THREE.Vector3(1.42,-.66,0),new THREE.Vector3(1.13,-.60,0),new THREE.Vector3(R,-.54,0)];
+    mug.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(ehp,false,'centripetal',.5),120,.055,14,false),enamelMat));
+    // Small rivets where wire meets body
+    [[.54],[-.54]].forEach(([y])=>{const rv=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.035,16),enamelMat);rv.rotation.z=Math.PI/2;rv.position.set(R+.018,y,0);mug.add(rv)});
   }
   floor.position.y=-MUG_H/2-.04;
   build();
