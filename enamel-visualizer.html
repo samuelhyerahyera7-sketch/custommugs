@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Custom Mugs Enamel Mug Visualiser</title>
+<link rel="icon" href="data:,">
+<style>
+:root{color-scheme:light;--ink:#18212f;--muted:#667085;--line:#d9dee8;--panel:#ffffff;--paper:#f5f3ee;--green:#0f766e;--coral:#c2410c;--gold:#b7791f;--shadow:0 18px 45px rgba(24,33,47,.12)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#fbfaf7 0%,#eef2f6 100%);letter-spacing:0}
+button,label.upload,select,input{font:inherit}
+button,label.upload,select{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+button{min-height:40px;padding:9px 11px;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+button:hover,label.upload:hover{border-color:#8da0b8;transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+button.primary,label.upload.primary{background:var(--green);border-color:var(--green);color:#fff}
+button.accent{background:var(--coral);border-color:var(--coral);color:#fff}
+select{min-height:38px;padding:7px 10px;width:100%}
+.shell{width:min(1300px,calc(100vw - 24px));margin:0 auto;padding:14px 0 32px}
+
+/* ── Top bar ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.back-link{display:inline-flex;align-items:center;gap:5px;text-decoration:none;color:var(--muted);font-size:13px;white-space:nowrap}
+.back-link:hover{color:var(--ink)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* ── Controls bar above stage ── */
+.ctrl-bar{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;box-shadow:0 4px 14px rgba(24,33,47,.06)}
+.ctrl-upload-group{display:flex;flex-direction:column;gap:4px}
+.ctrl-upload-btn{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:7px 12px;cursor:pointer;white-space:nowrap;border-radius:8px}
+.fname{font-size:12px;color:var(--muted);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctrl-layout-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px;max-width:260px}
+.ctrl-layout-group label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.ctrl-guide{display:flex;align-items:center;gap:7px;font-size:14px;color:#344054;white-space:nowrap;padding-bottom:6px}
+.ctrl-guide input{width:16px;height:16px;accent-color:var(--green)}
+#area{font-size:12px;color:var(--muted);line-height:1.3;min-height:16px}
+
+/* ── Stage ── */
+.stage-wrap{position:relative}
+.stage{height:min(68dvh,640px);min-height:400px;border:1px solid var(--line);border-radius:10px;overflow:hidden;position:relative;background:var(--paper);touch-action:none;box-shadow:var(--shadow)}
+canvas{width:100%;height:100%;display:block}
+.hud{position:absolute;left:12px;right:12px;top:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:7px 10px;border:1px solid rgba(24,33,47,.12);border-radius:8px;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);font-size:13px;color:#344054}
+.zoom{display:flex;gap:8px;pointer-events:auto}
+.icon-btn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-weight:700}
+
+/* ── View strip ── */
+.view-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.view-thumb{border:1px solid var(--line);border-radius:8px;cursor:pointer;background:#fff;transition:border-color .15s,background .15s;user-select:none;display:flex;flex-direction:column;align-items:center;overflow:hidden;font-size:12px;color:var(--ink);text-align:center;line-height:1.2}
+.view-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#f5f3ee;flex-shrink:0}
+.view-thumb span{padding:5px 4px;display:block}
+.view-thumb:hover{border-color:#8da0b8;transform:translateY(-1px)}
+.view-thumb.active{border-color:var(--green);background:#e7f3f1;color:#0b5f59;font-weight:600}
+
+/* ── Positioning strip ── */
+.pos-strip{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:8px;box-shadow:0 4px 14px rgba(24,33,47,.06)}
+.pos-col-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pos-col-head b{font-size:14px}
+.pos-quick{display:flex;gap:6px}
+.pos-quick button{min-height:32px;padding:5px 10px;font-size:13px}
+.range{margin:6px 0}
+.range label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;font-size:13px;color:#344054}
+.range output{font-variant-numeric:tabular-nums;color:var(--muted)}
+.range input[type=range]{width:100%;accent-color:var(--green)}
+
+/* ── Production file ── */
+.prod-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:8px}
+.dropzone{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border:1px dashed #9aa8ba;border-radius:8px;background:#fafafa;color:#344054;padding:10px 14px;cursor:pointer;font-size:13px}
+.dropzone.drag{border-color:var(--green);background:#e7f3f1}
+.muted{color:var(--muted);font-size:13px;line-height:1.35}
+
+/* ── Shots & proof ── */
+.shots-panel{margin-top:14px}
+.shots-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.shots-head b{font-size:15px}
+.shots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.shot{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#f4f4f4}
+.shot div{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 8px;font-size:13px}
+.shot button{min-height:30px;padding:4px 8px}
+.proof img{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
+.status-dot{width:8px;height:8px;border-radius:99px;background:var(--gold);display:inline-block}
+.hud-btm{position:absolute;bottom:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.art-toggle{pointer-events:auto;min-height:34px;padding:6px 13px;font-size:13px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid rgba(24,33,47,.14);border-radius:8px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:#344054;transition:background .15s,border-color .15s,color .15s}
+.art-toggle:hover{border-color:#8da0b8}
+.art-toggle.on{background:var(--green);border-color:var(--green);color:#fff}
+.side-sel{display:inline-flex;gap:5px;pointer-events:auto}
+.side-sel button{min-height:32px;padding:5px 13px;font-size:13px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-color:rgba(24,33,47,.14);color:#344054}
+.side-sel button.on{background:var(--green);border-color:var(--green);color:#fff}
+.hidden{display:none!important}
+
+/* ── Responsive ── */
+@media(max-width:860px){
+  .ctrl-bar{gap:8px}
+  .ctrl-layout-group{max-width:none;flex:1 1 100%;order:3}
+  .ctrl-guide{order:4}
+  .pos-strip{grid-template-columns:1fr}
+  .view-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .prod-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .shell{width:min(100% - 16px,1300px);padding-top:10px}
+  .stage{height:min(60dvh,520px);min-height:340px}
+  .topbar{gap:8px}
+  .actions button{padding:8px 10px;font-size:14px}
+  .toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hud{left:10px;right:10px;top:10px}
+  .chip{font-size:12px}
+  .icon-btn{width:38px;height:38px}
+  .zoom{gap:6px}
+  .fname{max-width:110px}
+  .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:400px){
+  .actions{width:100%}
+  .actions button{flex:1}
+  .ctrl-upload-group{flex:1}
+  .ctrl-upload-btn{width:100%;justify-content:center}
+}
+@media(max-height:560px) and (orientation:landscape){
+  .stage{height:72dvh;min-height:280px}
+  .shell{padding-top:6px}
+}
+</style>
+</head>
+<body>
+<main class="shell">
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="back-link">&#8592; Back to site</a>
+  </div>
+</header>
+<div style="margin-bottom:10px">
+  <h1 style="margin:0;font-size:clamp(22px,4vw,38px);line-height:1.05;font-weight:780">Enamel Mug Visualiser</h1>
+  <p style="margin:5px 0 0;color:var(--muted);font-size:14px;line-height:1.4">Upload left and right side artwork, position it on the enamel mug, then export angled previews for approval.</p>
+</div>
+
+<!-- ── Upload + layout controls ── -->
+<div class="ctrl-bar">
+  <div class="ctrl-upload-group">
+    <label class="upload primary ctrl-upload-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Left side photo
+      <input id="frontFile" type="file" accept="image/*" hidden>
+    </label>
+    <div id="frontName" class="fname">No left side photo selected</div>
+  </div>
+  <div class="ctrl-upload-group">
+    <label class="upload ctrl-upload-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Right side photo
+      <input id="backFile" type="file" accept="image/*" hidden>
+    </label>
+    <div id="backName" class="fname">No right side photo selected</div>
+  </div>
+  <div class="ctrl-layout-group">
+    <label for="layout">Print layout</label>
+    <select id="layout">
+      <option value="front">Left side only</option>
+      <option value="frontBack" selected>Left and right sides</option>
+      <option value="wide">Wide wrap</option>
+      <option value="max">Maximum wrap, clear of handle</option>
+    </select>
+    <div id="area"></div>
+  </div>
+  <label class="ctrl-guide">
+    <input id="guide" type="checkbox"> Show printable area
+  </label>
+</div>
+
+<!-- ── 3D Stage ── -->
+<section class="stage-wrap" aria-label="3D mug preview">
+  <div id="stage" class="stage">
+    <canvas id="c"></canvas>
+    <div class="hud">
+      <div class="chip"><span class="status-dot"></span><span id="status">Ready for artwork</span></div>
+      <div class="zoom" aria-label="Zoom controls">
+        <button id="zi" class="icon-btn" title="Zoom in" aria-label="Zoom in">+</button>
+        <button id="zo" class="icon-btn" title="Zoom out" aria-label="Zoom out">-</button>
+        <button id="zr" class="icon-btn" title="Reset zoom" aria-label="Reset zoom">1:1</button>
+      </div>
+    </div>
+    <div class="hud-btm">
+      <button id="artModeBtn" class="art-toggle" title="Drag artwork to reposition instead of rotating">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
+        Move artwork
+      </button>
+      <div class="side-sel hidden" id="artSideSel">
+        <button id="artSideL" class="on">Left side</button>
+        <button id="artSideR">Right side</button>
+      </div>
+    </div>
+  </div>
+  <div class="view-strip" aria-label="View controls">
+    <div class="view-thumb active" data-view="front" role="button" tabindex="0"><img id="vt-front" src="" alt="Left side view"><span>Left side</span></div>
+    <div class="view-thumb" data-view="back" role="button" tabindex="0"><img id="vt-back" src="" alt="Right side view"><span>Right side</span></div>
+    <div class="view-thumb" data-view="handle" role="button" tabindex="0"><img id="vt-handle" src="" alt="Handle side view"><span>Handle side</span></div>
+    <div class="view-thumb" data-view="top" role="button" tabindex="0"><img id="vt-top" src="" alt="Top view"><span>Top</span></div>
+    <div class="view-thumb" id="spin" data-view="spin360" role="button" tabindex="0" aria-pressed="false"><span style="padding:14px 4px">360 ↻</span></div>
+  </div>
+  <div class="actions" style="margin-top:8px">
+    <button id="downloadView" class="primary">Download view</button>
+    <button id="saveProof" class="accent">Save 2D proof</button>
+    <button id="resetArt">Reset art</button>
+  </div>
+</section>
+
+<!-- ── Positioning sliders (shown after upload) ── -->
+<div id="controls" class="pos-strip hidden">
+  <div class="pos-col">
+    <div class="pos-col-head">
+      <b>Left side positioning</b>
+      <div class="pos-quick">
+        <button id="fitLeft" type="button">Fit</button>
+        <button id="fillLeft" type="button">Fill width</button>
+        <button id="centerLeft" type="button">Center</button>
+      </div>
+    </div>
+    <div class="range"><label for="fs">Scale <output id="fsv">90%</output></label><input id="fs" type="range" min="10" max="300" value="90"></div>
+    <div class="range"><label for="fw">Width stretch <output id="fwv">100%</output></label><input id="fw" type="range" min="20" max="400" value="100"></div>
+    <div class="range"><label for="fx">Left / right <output id="fxv">0</output></label><input id="fx" type="range" min="-700" max="700" value="0"></div>
+    <div class="range"><label for="fy">Up / down <output id="fyv">0</output></label><input id="fy" type="range" min="-440" max="440" value="0"></div>
+    <div class="range"><label for="fcl">Crop left <output id="fclv">0%</output></label><input id="fcl" type="range" min="0" max="49" value="0"></div>
+    <div class="range"><label for="fcr">Crop right <output id="fcrv">0%</output></label><input id="fcr" type="range" min="0" max="49" value="0"></div>
+    <button id="dlLeft" type="button" class="primary" style="width:100%;margin-top:10px;font-size:13px">&#8595; Download left artwork</button>
+  </div>
+  <div id="backControls" class="pos-col hidden">
+    <div class="pos-col-head">
+      <b>Right side positioning</b>
+      <div class="pos-quick">
+        <button id="fitRight" type="button">Fit</button>
+        <button id="fillRight" type="button">Fill width</button>
+        <button id="centerRight" type="button">Center</button>
+      </div>
+    </div>
+    <div class="range"><label for="bs">Scale <output id="bsv">90%</output></label><input id="bs" type="range" min="10" max="300" value="90"></div>
+    <div class="range"><label for="bw">Width stretch <output id="bwv">100%</output></label><input id="bw" type="range" min="20" max="400" value="100"></div>
+    <div class="range"><label for="bx">Left / right <output id="bxv">0</output></label><input id="bx" type="range" min="-700" max="700" value="0"></div>
+    <div class="range"><label for="by">Up / down <output id="byv">0</output></label><input id="by" type="range" min="-440" max="440" value="0"></div>
+    <div class="range"><label for="bcl">Crop left <output id="bclv">0%</output></label><input id="bcl" type="range" min="0" max="49" value="0"></div>
+    <div class="range"><label for="bcr">Crop right <output id="bcrv">0%</output></label><input id="bcr" type="range" min="0" max="49" value="0"></div>
+    <button id="dlRight" type="button" class="primary" style="width:100%;margin-top:10px;font-size:13px">&#8595; Download right artwork</button>
+  </div>
+</div>
+
+<!-- ── Production file ── -->
+<div class="prod-row">
+  <label id="productionDrop" class="dropzone">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    Drop high-resolution production file here (or click)
+    <input id="productionFile" type="file" accept="image/*,.pdf,.ai,.psd,.tif,.tiff,.svg" hidden>
+  </label>
+  <div id="productionName" class="muted">No production file selected</div>
+</div>
+
+<!-- ── 2D preview angles ── -->
+<div id="previewWrap" class="shots-panel hidden">
+  <div class="shots-head"><b>2D preview angles</b><button id="refresh">Refresh angles</button></div>
+  <div id="shots" class="shots"></div>
+</div>
+
+<!-- ── Customer proof ── -->
+<div id="proofWrap" class="shots-panel proof hidden">
+  <div class="shots-head"><b>Customer 2D proof</b><button id="downloadProof">Download proof</button></div>
+  <img id="proofImg" alt="Left and right side mug proof">
+</div>
+
+</main>
+
+<script type="module">
+import * as THREE from './vendor/three.module.js';
+const $=id=>document.getElementById(id),stage=$('stage'),canvas=$('c');
+
+// ---- WebGL capability check ----
+let r;
+try{
+  r=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+}catch(err){
+  stage.innerHTML='<div style="display:grid;place-items:center;height:100%;text-align:center;padding:24px;color:#c2410c;font-size:15px;line-height:1.5">WebGL is not available on this device or browser.<br>Try Chrome or Firefox on a desktop for the best experience.</div>';
+  throw err;
+}
+r.setPixelRatio(Math.min(devicePixelRatio,2));r.shadowMap.enabled=true;r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;
+
+// ---- Context loss/restore ----
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();$('status').textContent='GPU context lost — please refresh the page'},false);
+canvas.addEventListener('webglcontextrestored',()=>{try{build();redraw();$('status').textContent='Context restored'}catch(_){}},false);
+const s=new THREE.Scene();s.background=new THREE.Color(0xf3f0e9);
+const cam=new THREE.PerspectiveCamera(30,1,.1,50);let dist=7.8;cam.position.set(0,.14,dist);
+const mug=new THREE.Group();s.add(mug);
+// ---- Enamel mug materials ----
+const enamel=new THREE.MeshPhysicalMaterial({color:0xfdfdfd,roughness:.20,metalness:.02,clearcoat:.55,clearcoatRoughness:.12});
+const steel=new THREE.MeshPhysicalMaterial({color:0xd4d6d8,metalness:.95,roughness:.17});
+const innerMat=new THREE.MeshPhysicalMaterial({color:0xf7f7f7,roughness:.23,side:THREE.BackSide});
+const shadowMat=new THREE.MeshBasicMaterial({color:0xd5d2cc,transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false});
+const ceramic=enamel; // alias so colour-swatch handler still works
+const R=1.08,H=2.00,IR=.976;
+// Straight cylindrical body with base chamfer — white enamel over steel
+const profile=[new THREE.Vector2(0,-H/2),new THREE.Vector2(.86,-H/2),new THREE.Vector2(.96,-H/2+.04),new THREE.Vector2(R,-H/2+.15),new THREE.Vector2(R,H/2-.06),new THREE.Vector2(1.06,H/2-.01)];
+const body=new THREE.Mesh(new THREE.LatheGeometry(profile,220),enamel);mug.add(body);
+// Inner wall and bottom
+const iw=new THREE.Mesh(new THREE.CylinderGeometry(IR,IR,1.68,220,1,true),innerMat);iw.position.y=.03;mug.add(iw);
+const ib=new THREE.Mesh(new THREE.CircleGeometry(IR,220),innerMat);ib.rotation.x=-Math.PI/2;ib.position.y=-H/2+.16;mug.add(ib);
+// Rolled steel rim at top (signature feature of enamel mugs)
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.105,.056,24,220),steel);rim.rotation.x=Math.PI/2;rim.position.y=H/2+.012;mug.add(rim);
+// Rolled steel foot ring at bottom (real enamel mugs have this)
+const foot=new THREE.Mesh(new THREE.TorusGeometry(.952,.044,20,220),steel);foot.rotation.x=Math.PI/2;foot.position.y=-H/2+.032;mug.add(foot);
+// Steel bottom disc
+const botDisc=new THREE.Mesh(new THREE.CircleGeometry(.908,220),steel);botDisc.rotation.x=-Math.PI/2;botDisc.position.y=-H/2+.005;mug.add(botDisc);
+// Contact shadow ring
+const footShadow=new THREE.Mesh(new THREE.TorusGeometry(.90,.012,14,220),shadowMat);footShadow.rotation.x=Math.PI/2;footShadow.position.y=-H/2+.052;mug.add(footShadow);
+// Steel wire D-handle — endpoints embedded in mug wall, exits perpendicular
+const ehp=[new THREE.Vector3(R-.12,.52,0),new THREE.Vector3(R+.00,.52,0),new THREE.Vector3(R+.28,.54,0),new THREE.Vector3(1.54,.62,0),new THREE.Vector3(1.80,.42,0),new THREE.Vector3(1.94,.14,0),new THREE.Vector3(1.97,0,0),new THREE.Vector3(1.94,-.14,0),new THREE.Vector3(1.80,-.42,0),new THREE.Vector3(1.54,-.62,0),new THREE.Vector3(R+.28,-.54,0),new THREE.Vector3(R+.00,-.52,0),new THREE.Vector3(R-.12,-.52,0)];
+mug.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(ehp,false,'centripetal',.5),180,.108,32,false),steel));
+// Steel washer rings at handle attachment points
+[.52,-.52].forEach(y=>{const ws=new THREE.Shape();ws.absarc(0,0,.20,0,Math.PI*2,false);const wh=new THREE.Path();wh.absarc(0,0,.115,0,Math.PI*2,true);ws.holes.push(wh);const wMesh=new THREE.Mesh(new THREE.ShapeGeometry(ws,32),steel);wMesh.rotation.y=Math.PI/2;wMesh.position.set(R+.003,y,0);mug.add(wMesh)});
+
+function tex(){const c=document.createElement('canvas');c.width=1800;c.height=1200;const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return{c,x:c.getContext('2d'),t}}
+const ft=tex(),bt=tex(),wt=tex();
+const artOpts={transparent:true,depthWrite:false,roughness:.18,metalness:0,clearcoat:.7,clearcoatRoughness:.06};
+const fm=new THREE.MeshPhysicalMaterial({...artOpts,map:ft.t});
+const bm=new THREE.MeshPhysicalMaterial({...artOpts,map:bt.t});
+const wm=new THREE.MeshPhysicalMaterial({...artOpts,map:wt.t});
+let fimg=null,bimg=null,showGuide=false,patches=[],proofUrl='',productionFile=null;
+const mmToArc=mm=>(mm/258)*Math.PI*2;// enamel mug circumference ~258mm
+const HANDLE_ANGLE=Math.PI/2;
+const LEFT_SIDE_ANGLE=Math.PI;
+const RIGHT_SIDE_ANGLE=0;
+const WIDE_WRAP_ANGLE=HANDLE_ANGLE+Math.PI;
+const LEFT_SIDE_VIEW_Y=Math.PI;
+const RIGHT_SIDE_VIEW_Y=0;
+const HANDLE_VIEW_Y=-Math.PI/2;
+function clearP(){patches.forEach(m=>{m.geometry.dispose();mug.remove(m)});patches=[]}
+function patch(center,arc,mat){const m=new THREE.Mesh(new THREE.CylinderGeometry(R+.006,R+.006,1.68,220,1,true,center-arc/2,arc),mat);mug.add(m);patches.push(m)}
+function build(){clearP();const v=$('layout').value;if(v==='front'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);$('area').textContent='Left print area · enamel mug'}if(v==='frontBack'){patch(LEFT_SIDE_ANGLE,mmToArc(95),fm);patch(RIGHT_SIDE_ANGLE,mmToArc(95),bm);$('area').textContent='Left + right print areas · enamel mug'}if(v==='wide'){patch(WIDE_WRAP_ANGLE,mmToArc(180),wm);$('area').textContent='Wide wrap ~180 mm · enamel mug'}if(v==='max'){patch(WIDE_WRAP_ANGLE,mmToArc(232),wm);$('area').textContent='Maximum wrap ~232 mm · enamel mug'}}
+function drawOne(o,img,scale,widthPct,xo,yo,cropL,cropR){o.x.clearRect(0,0,o.c.width,o.c.height);if(showGuide){o.x.save();o.x.strokeStyle='rgba(15,118,110,.55)';o.x.setLineDash([22,16]);o.x.lineWidth=6;o.x.strokeRect(8,8,o.c.width-16,o.c.height-16);o.x.restore()}if(img){const cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(o.c.height*.96*(scale/100))/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100);o.x.drawImage(img,sx,0,sw,sh,o.c.width/2-drawW/2+xo,o.c.height/2-drawH/2+yo,drawW,drawH)}o.t.needsUpdate=true}
+function drawWrap(){wt.x.clearRect(0,0,wt.c.width,wt.c.height);if(showGuide){wt.x.save();wt.x.strokeStyle='rgba(15,118,110,.55)';wt.x.setLineDash([22,16]);wt.x.lineWidth=6;wt.x.strokeRect(8,8,wt.c.width-16,wt.c.height-16);wt.x.restore()}const draw=(img,left,scale,widthPct,xo,yo,cropL,cropR)=>{if(!img)return;const half=wt.c.width/2,cl=(cropL||0)/100,cr=(cropR||0)/100,sx=img.width*cl,sw=img.width*(1-cl-cr),sh=img.height,hFit=(wt.c.height*.96*(scale/100))/sh,drawH=sh*hFit,drawW=sw*hFit*(widthPct/100),cx=left?half*.5:half*1.5;wt.x.drawImage(img,sx,0,sw,sh,cx-drawW/2+xo*.45,wt.c.height/2-drawH/2+yo,drawW,drawH)};draw(fimg,true,+$('fs').value,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);draw(bimg,false,+$('bs').value,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);wt.t.needsUpdate=true}
+function updateValues(){['fs','fw','fx','fy','fcl','fcr','bs','bw','bx','by','bcl','bcr'].forEach(id=>{const o=$(id+'v');if(o)o.textContent=(id.endsWith('x')||id.endsWith('y'))?$(id).value:$(id).value+'%'})}
+function redraw(){updateValues();drawOne(ft,fimg,+$('fs').value,+$('fw').value,+$('fx').value,+$('fy').value,+$('fcl').value,+$('fcr').value);drawOne(bt,bimg,+$('bs').value,+$('bw').value,+$('bx').value,+$('by').value,+$('bcl').value,+$('bcr').value);drawWrap();$('status').textContent=fimg||bimg?'Artwork loaded':'Ready for artwork'}
+function load(input,isFront){input.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Please select an image file (JPG, PNG, WEBP, etc.)');return}const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{if(isFront){fimg=im;$('frontName').textContent=file.name}else{bimg=im;$('backName').textContent=file.name;$('backControls').classList.remove('hidden')}$('controls').classList.remove('hidden');$('previewWrap').classList.remove('hidden');redraw();shots();updateViewThumbs()};im.onerror=()=>{alert('Could not load image. The file may be corrupt or an unsupported format.')};im.src=fr.result};fr.onerror=()=>{alert('Could not read file. Please try again.')};fr.readAsDataURL(file)})}
+load($('frontFile'),true);load($('backFile'),false);
+['fs','fw','fx','fy','fcl','fcr','bs','bw','bx','by','bcl','bcr'].forEach(id=>$(id).addEventListener('input',redraw));
+function setSide(side,mode){const sId=side==='left'?'fs':'bs',wId=side==='left'?'fw':'bw',xId=side==='left'?'fx':'bx',yId=side==='left'?'fy':'by',clId=side==='left'?'fcl':'bcl',crId=side==='left'?'fcr':'bcr',img=side==='left'?fimg:bimg;if(mode==='fit'){$(sId).value=90;$(wId).value=100}if(mode==='fill'&&img){const sc=parseFloat($(sId).value)/100,cl=parseFloat($(clId).value)/100,cr=parseFloat($(crId).value)/100,sw=img.width*(1-cl-cr),sh=img.height,hFit=(ft.c.height*.96*sc)/sh,fillW=Math.round((ft.c.width/(sw*hFit))*100);$(wId).value=Math.max(20,Math.min(400,fillW))}else if(mode==='fill'){$(wId).value=150}if(mode==='center'){$(xId).value=0;$(yId).value=0;$(clId).value=0;$(crId).value=0}redraw();shots()}
+$('fitLeft').onclick=()=>setSide('left','fit');$('fillLeft').onclick=()=>setSide('left','fill');$('centerLeft').onclick=()=>setSide('left','center');
+$('fitRight').onclick=()=>setSide('right','fit');$('fillRight').onclick=()=>setSide('right','fill');$('centerRight').onclick=()=>setSide('right','center');
+$('dlLeft').onclick=()=>{if(!fimg)return;download(ft.c.toDataURL('image/png'),'left-artwork.png')};
+$('dlRight').onclick=()=>{if(!bimg)return;download(bt.c.toDataURL('image/png'),'right-artwork.png')};
+$('layout').addEventListener('change',()=>{build();redraw();shots()});
+$('guide').addEventListener('change',e=>{showGuide=e.target.checked;redraw();shots()});
+$('resetArt').onclick=()=>{setArtMode(false);fimg=null;bimg=null;productionFile=null;['frontFile','backFile','productionFile'].forEach(id=>$(id).value='');$('frontName').textContent='No left side photo selected';$('backName').textContent='No right side photo selected';$('productionName').textContent='No production file selected';$('backControls').classList.add('hidden');$('controls').classList.add('hidden');$('previewWrap').classList.add('hidden');$('proofWrap').classList.add('hidden');['fs','bs'].forEach(id=>{const el=$(id);if(el)el.value=90});['fw','bw'].forEach(id=>{const el=$(id);if(el)el.value=100});['fx','fy','bx','by','fcl','fcr','bcl','bcr'].forEach(id=>{const el=$(id);if(el)el.value=0});redraw()};
+function setProductionFile(file){if(!file)return;productionFile=file;$('productionName').textContent=file.name+' ('+Math.round(file.size/1024)+' KB)'}
+const drop=$('productionDrop');
+drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});
+drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
+drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');setProductionFile(e.dataTransfer.files?.[0])});
+$('productionFile').addEventListener('change',e=>setProductionFile(e.target.files?.[0]));
+
+s.add(new THREE.HemisphereLight(0xffffff,0xcfc8bc,2.05));const key=new THREE.DirectionalLight(0xffffff,4.4);key.position.set(-3.5,5.2,5);s.add(key);const fill=new THREE.DirectionalLight(0xffffff,1.35);fill.position.set(4,2,4);s.add(fill);const rimLight=new THREE.DirectionalLight(0xffffff,.9);rimLight.position.set(2.8,3,-4);s.add(rimLight);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(15,15),new THREE.ShadowMaterial({opacity:.16}));floor.rotation.x=-Math.PI/2;floor.position.y=-H/2-.04;s.add(floor);
+function zoom(v){dist=Math.max(3.6,Math.min(9.4,v));cam.position.z=dist;cam.updateProjectionMatrix()}
+document.querySelector('.zoom').addEventListener('pointerdown',e=>e.stopPropagation());
+document.querySelector('.zoom').addEventListener('pointermove',e=>e.stopPropagation());
+document.querySelector('.zoom').addEventListener('click',e=>e.stopPropagation());
+$('zi').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist-.9)});
+$('zo').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(dist+.9)});
+$('zr').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();zoom(8.2)});
+stage.addEventListener('wheel',e=>{e.preventDefault();if(artMode&&(fimg||bimg)){const sid=artSide==='left'?'fs':'bs';$(sid).value=Math.max(10,Math.min(300,parseFloat($(sid).value)+(e.deltaY>0?-5:5)));redraw()}else{zoom(dist+(e.deltaY>0?.55:-.55))}},{passive:false});
+window.__mugZoom=()=>dist;
+let ty=LEFT_SIDE_VIEW_Y,tx=-.08,drag=false,ox=0,oy=0,spinning=false;const p=new Map();let ps=0,pz=8.2;
+let artMode=false,artSide='left',artScaleStart=90;
+function setArtMode(on){artMode=on;$('artModeBtn').classList.toggle('on',on);$('artSideSel').classList.toggle('hidden',!on);if(on){spinning=false;$('spin').setAttribute('aria-pressed','false')}}
+$('artModeBtn').addEventListener('click',e=>{e.stopPropagation();if(!fimg&&!bimg)return;setArtMode(!artMode);if(artMode){const ry=((mug.rotation.y%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);artSide=(ry>Math.PI/2&&ry<3*Math.PI/2)?'left':'right';$('artSideL').classList.toggle('on',artSide==='left');$('artSideR').classList.toggle('on',artSide==='right')}});
+$('artSideL').addEventListener('click',e=>{e.stopPropagation();artSide='left';$('artSideL').classList.add('on');$('artSideR').classList.remove('on')});
+$('artSideR').addEventListener('click',e=>{e.stopPropagation();artSide='right';$('artSideR').classList.add('on');$('artSideL').classList.remove('on')});
+document.querySelector('.hud-btm').addEventListener('pointerdown',e=>e.stopPropagation());
+document.querySelector('.hud-btm').addEventListener('pointermove',e=>e.stopPropagation());
+function pd(){const a=[...p.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
+stage.addEventListener('pointerdown',e=>{p.set(e.pointerId,{x:e.clientX,y:e.clientY});try{stage.setPointerCapture(e.pointerId)}catch(_){}spinning=false;$('spin').setAttribute('aria-pressed','false');if(p.size===1){drag=true;ox=e.clientX;oy=e.clientY}if(p.size===2){ps=pd();pz=dist;drag=false;if(artMode&&(fimg||bimg))artScaleStart=parseFloat($(artSide==='left'?'fs':'bs').value)}});
+stage.addEventListener('pointermove',e=>{if(!p.has(e.pointerId))return;p.set(e.pointerId,{x:e.clientX,y:e.clientY});if(p.size===2){const d=pd();if(ps){if(artMode&&(fimg||bimg)){const sid=artSide==='left'?'fs':'bs';$(sid).value=Math.max(10,Math.min(300,artScaleStart*(d/ps)));redraw()}else{zoom(pz*(ps/d))}}return}if(!drag)return;const dx=e.clientX-ox,dy=e.clientY-oy;if(artMode&&(fimg||bimg)){const xId=artSide==='left'?'fx':'bx',yId=artSide==='left'?'fy':'by';$(xId).value=Math.max(-700,Math.min(700,parseFloat($(xId).value)+dx*4.2));$(yId).value=Math.max(-440,Math.min(440,parseFloat($(yId).value)+dy*3.8));redraw()}else{ty+=dx*.012;tx+=dy*.009;tx=Math.max(-.82,Math.min(.82,tx))}ox=e.clientX;oy=e.clientY});
+function end(e){p.delete(e.pointerId);if(!p.size)drag=false}stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
+function setActiveThumb(el){document.querySelectorAll('.view-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.view;if(v==='spin360'){spinning=!spinning;$('spin').setAttribute('aria-pressed',String(spinning));if(spinning)setActiveThumb(b);return}spinning=false;$('spin').setAttribute('aria-pressed','false');setActiveThumb(b);if(v==='front'){ty=LEFT_SIDE_VIEW_Y;tx=-.08}if(v==='back'){ty=RIGHT_SIDE_VIEW_Y;tx=-.08}if(v==='handle'){ty=HANDLE_VIEW_Y;tx=-.07}if(v==='top'){ty=LEFT_SIDE_VIEW_Y;tx=.68}}));
+function download(url,name){const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove()}
+$('downloadView').onclick=()=>download(canvas.toDataURL('image/png'),'custom-mug-view.png');
+async function renderView(x,y){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam);await new Promise(requestAnimationFrame);return canvas.toDataURL('image/png')}
+async function saveProof(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y;const left=await renderView(-.08,LEFT_SIDE_VIEW_Y);const right=await renderView(-.08,RIGHT_SIDE_VIEW_Y);mug.rotation.x=sx;mug.rotation.y=sy;const proof=document.createElement('canvas');proof.width=1800;proof.height=1100;const x=proof.getContext('2d');x.fillStyle='#f8fafc';x.fillRect(0,0,proof.width,proof.height);x.fillStyle='#111827';x.font='700 54px Arial';x.fillText('Custom enamel mug proof',70,90);x.font='28px Arial';x.fillStyle='#475467';x.fillText('Left and right side views only',70,132);x.fillText('Production file: '+(productionFile?.name||'not selected'),70,172);const li=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=left});const ri=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.src=right});x.fillStyle='#fff';x.strokeStyle='#d0d5dd';x.lineWidth=3;[[70,230],[930,230]].forEach(([px,py])=>{x.fillRect(px,py,800,720);x.strokeRect(px,py,800,720)});x.drawImage(li,100,260,740,560);x.drawImage(ri,960,260,740,560);x.fillStyle='#111827';x.font='700 34px Arial';x.fillText('Left side',100,900);x.fillText('Right side',960,900);x.font='24px Arial';x.fillStyle='#667085';x.fillText('Artwork can be scaled and moved inside the printable side area before saving.',100,970);proofUrl=proof.toDataURL('image/png');$('proofImg').src=proofUrl;$('proofWrap').classList.remove('hidden');download(proofUrl,'custom-mug-2d-proof.png')}
+$('saveProof').onclick=saveProof;
+$('downloadProof').onclick=()=>{if(proofUrl)download(proofUrl,'custom-mug-2d-proof.png')};
+function shots(){if(!fimg&&!bimg)return;const sx=mug.rotation.x,sy=mug.rotation.y;const oa=cam.aspect,of=cam.fov;cam.aspect=4/3;cam.fov=32;cam.updateProjectionMatrix();r.setSize(800,600,false);const views=[['Left side',-.08,LEFT_SIDE_VIEW_Y],['Right side',-.08,RIGHT_SIDE_VIEW_Y],['Handle side',-.07,HANDLE_VIEW_Y],['Top',.38,LEFT_SIDE_VIEW_Y]];$('shots').innerHTML='';for(const [n,x,y] of views){mug.rotation.x=x;mug.rotation.y=y;r.render(s,cam);const box=document.createElement('div');box.className='shot';const im=document.createElement('img');const url=canvas.toDataURL('image/jpeg',.92);im.src=url;const d=document.createElement('div');const span=document.createElement('span');span.textContent=n;const btn=document.createElement('button');btn.textContent='Save';btn.onclick=()=>download(url,'custom-mug-'+n.toLowerCase().replaceAll(' ','-')+'.jpg');d.append(span,btn);box.append(im,d);$('shots').append(box)}mug.rotation.x=sx;mug.rotation.y=sy;cam.aspect=oa;cam.fov=of;cam.updateProjectionMatrix();resize()}
+function updateViewThumbs(){const sx=mug.rotation.x,sy=mug.rotation.y,st=spinning;spinning=false;const oa=cam.aspect,of=cam.fov;cam.aspect=4/3;cam.fov=34;cam.updateProjectionMatrix();r.setSize(480,360,false);const vt=[['vt-front',-.08,LEFT_SIDE_VIEW_Y+.28],['vt-back',-.08,RIGHT_SIDE_VIEW_Y-.28],['vt-handle',-.07,HANDLE_VIEW_Y-.28],['vt-top',.38,LEFT_SIDE_VIEW_Y+.28]];for(const[id,rx,ry]of vt){mug.rotation.x=rx;mug.rotation.y=ry;r.render(s,cam);const img=$(id);if(img)img.src=canvas.toDataURL('image/jpeg',.88)}mug.rotation.x=sx;mug.rotation.y=sy;spinning=st;cam.aspect=oa;cam.fov=of;cam.updateProjectionMatrix();resize()}
+$('refresh').onclick=()=>{shots();updateViewThumbs()};
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(stage);resize();
+function loop(){requestAnimationFrame(loop);if(document.hidden)return;if(spinning)ty+=.011;mug.rotation.y+=(ty-mug.rotation.y)*.14;mug.rotation.x+=(tx-mug.rotation.x)*.14;// Shift lookAt so the handle (at local x=2.06) stays in frame at all rotations
+cam.lookAt(0,.05,0);try{r.render(s,cam)}catch(_){}}
+build();redraw();loop();setTimeout(updateViewThumbs,300);
+</script>
+</body>
+</html>
