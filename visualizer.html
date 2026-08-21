@@ -330,25 +330,18 @@ function setupMug(type){
     mug.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(hp,false,'centripetal',.45),240,.108,32,false),ceramic));
     [[.74],[-.73]].forEach(([y])=>{const f=new THREE.Mesh(new THREE.SphereGeometry(.13,40,24),ceramic);f.scale.set(.42,.9,.54);f.position.set(1.055,y,0);mug.add(f)});
   }else{
-    MUG_R=1.08;MUG_H=2.00;PATCH_H=1.65;CIRC_MM=270;
-    const R=MUG_R,H=MUG_H,IR=.976;
-    // Straight cylindrical body with base chamfer — white enamel over steel
-    const profile=[new THREE.Vector2(0,-H/2),new THREE.Vector2(.86,-H/2),new THREE.Vector2(.96,-H/2+.04),new THREE.Vector2(R,-H/2+.15),new THREE.Vector2(R,H/2-.06),new THREE.Vector2(1.06,H/2-.01)];
+    MUG_R=1.08;MUG_H=2.02;PATCH_H=1.68;CIRC_MM=270;
+    const R=MUG_R,H=MUG_H,IR=.995;
+    const profile=[new THREE.Vector2(0,-H/2),new THREE.Vector2(.98,-H/2),new THREE.Vector2(1.035,-H/2+.025),new THREE.Vector2(1.07,-H/2+.07),new THREE.Vector2(R,-H/2+.14),new THREE.Vector2(R,H/2-.07),new THREE.Vector2(1.075,H/2-.03)];
     mug.add(new THREE.Mesh(new THREE.LatheGeometry(profile,220),enamelMat));
-    // Inner wall and bottom
-    const iw=new THREE.Mesh(new THREE.CylinderGeometry(IR,IR,1.68,220,1,true),enamelInner);iw.position.y=.03;mug.add(iw);
-    const ib=new THREE.Mesh(new THREE.CircleGeometry(IR,220),enamelInner);ib.rotation.x=-Math.PI/2;ib.position.y=-H/2+.16;mug.add(ib);
-    // Rolled steel rim at top (signature feature of enamel mugs)
-    const rim=new THREE.Mesh(new THREE.TorusGeometry(1.105,.056,24,220),steelMat);rim.rotation.x=Math.PI/2;rim.position.y=H/2+.012;mug.add(rim);
-    // Rolled steel foot ring at bottom (real enamel mugs have this)
-    const foot=new THREE.Mesh(new THREE.TorusGeometry(.952,.044,20,220),steelMat);foot.rotation.x=Math.PI/2;foot.position.y=-H/2+.032;mug.add(foot);
-    // Steel bottom disc
-    const botDisc=new THREE.Mesh(new THREE.CircleGeometry(.908,220),steelMat);botDisc.rotation.x=-Math.PI/2;botDisc.position.y=-H/2+.005;mug.add(botDisc);
-    // Contact shadow ring
-    const eshadow=new THREE.Mesh(new THREE.TorusGeometry(.90,.012,14,220),shadowMat);eshadow.rotation.x=Math.PI/2;eshadow.position.y=-H/2+.052;mug.add(eshadow);
-    // Steel wire D-handle — endpoints embedded in mug wall, exits perpendicular
-    const ehp=[new THREE.Vector3(R-.12,.52,0),new THREE.Vector3(R+.00,.52,0),new THREE.Vector3(R+.28,.54,0),new THREE.Vector3(1.54,.62,0),new THREE.Vector3(1.80,.42,0),new THREE.Vector3(1.94,.14,0),new THREE.Vector3(1.97,0,0),new THREE.Vector3(1.94,-.14,0),new THREE.Vector3(1.80,-.42,0),new THREE.Vector3(1.54,-.62,0),new THREE.Vector3(R+.28,-.54,0),new THREE.Vector3(R+.00,-.52,0),new THREE.Vector3(R-.12,-.52,0)];
-    mug.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(ehp,false,'centripetal',.5),180,.108,32,false),steelMat));
+    const iw=new THREE.Mesh(new THREE.CylinderGeometry(IR,IR,1.78,220,1,true),enamelInner);iw.position.y=.06;mug.add(iw);
+    const ib=new THREE.Mesh(new THREE.CircleGeometry(IR,220),enamelInner);ib.rotation.x=-Math.PI/2;ib.position.y=-.83;mug.add(ib);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(1.115,.055,22,220),steelMat);rim.rotation.x=Math.PI/2;rim.position.y=H/2+.016;mug.add(rim);
+    const rim2=new THREE.Mesh(new THREE.TorusGeometry(1.022,.02,14,220),steelMat);rim2.rotation.x=Math.PI/2;rim2.position.y=H/2+.004;mug.add(rim2);
+    const eshadow=new THREE.Mesh(new THREE.TorusGeometry(R*.88,.014,14,220),shadowMat);eshadow.rotation.x=Math.PI/2;eshadow.position.y=-H/2+.04;mug.add(eshadow);
+    const ehp=[new THREE.Vector3(R,.54,0),new THREE.Vector3(1.13,.60,0),new THREE.Vector3(1.42,.66,0),new THREE.Vector3(1.70,.52,0),new THREE.Vector3(1.88,.27,0),new THREE.Vector3(1.94,0,0),new THREE.Vector3(1.88,-.27,0),new THREE.Vector3(1.70,-.52,0),new THREE.Vector3(1.42,-.66,0),new THREE.Vector3(1.13,-.60,0),new THREE.Vector3(R,-.54,0)];
+    mug.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(ehp,false,'centripetal',.5),120,.108,32,false),enamelMat));
+    [[.54],[-.54]].forEach(([y])=>{const rv=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.06,16),enamelMat);rv.rotation.z=Math.PI/2;rv.position.set(R+.054,y,0);mug.add(rv)});
   }
   floor.position.y=-MUG_H/2-.04;
   build();
