@@ -2138,7 +2138,7 @@ function renderCart() {
   const total = cartItems.reduce((s,i) => s+i.price, 0);
   bd.innerHTML = cartItems.map(item => `
     <div class="ci">
-      <div class="ci-img"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="14" height="16" rx="2" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.2"/><path d="M16 7 C22 7 22 15 16 15" stroke="#D4D0C8" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M16 7 C20 7 20 15 16 15" stroke="#F4F2EF" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div>
+      <div class="ci-img">${item.img ? `<img src="${item.img}" alt="${item.name}" style="width:44px;height:44px;object-fit:contain;border-radius:6px;background:${item.bg||'#f5f3ee'}">` : `<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="14" height="16" rx="2" fill="#F8F7F4" stroke="#D8D4CE" stroke-width="1.2"/><path d="M16 7 C22 7 22 15 16 15" stroke="#D4D0C8" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M16 7 C20 7 20 15 16 15" stroke="#F4F2EF" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`}</div>
       <div class="ci-info"><div class="ci-name">${item.name}</div><div class="ci-price">R${item.price.toFixed(2)}</div></div>
       <button class="ci-rm" onclick="removeItem(${item.id})" aria-label="Remove">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -2160,7 +2160,11 @@ document.querySelectorAll('.pc-atc').forEach(btn => {
     const name = card.querySelector('.pc-name').textContent;
     const priceEl = card.querySelector('[data-p]');
     const price = parseFloat(priceEl ? priceEl.dataset.p : '90');
-    cartItems.push({name, price, id: Date.now()});
+    const imgEl = card.querySelector('.pc-img img');
+    const imgDiv = card.querySelector('.pc-img');
+    const img = imgEl ? imgEl.src : '';
+    const bg = imgDiv ? (imgDiv.style.background || '#f5f3ee') : '#f5f3ee';
+    cartItems.push({name, price, img, bg, id: Date.now()});
     renderCart();
     showToast(name + ' added to cart');
   });
