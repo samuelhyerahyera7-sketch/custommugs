@@ -349,10 +349,6 @@ function setupMug(type){
     // Steel wire D-handle — endpoints embedded in mug wall, exits perpendicular
     const ehp=[new THREE.Vector3(R-.12,.52,0),new THREE.Vector3(R+.00,.52,0),new THREE.Vector3(R+.28,.54,0),new THREE.Vector3(1.54,.62,0),new THREE.Vector3(1.80,.42,0),new THREE.Vector3(1.94,.14,0),new THREE.Vector3(1.97,0,0),new THREE.Vector3(1.94,-.14,0),new THREE.Vector3(1.80,-.42,0),new THREE.Vector3(1.54,-.62,0),new THREE.Vector3(R+.28,-.54,0),new THREE.Vector3(R+.00,-.52,0),new THREE.Vector3(R-.12,-.52,0)];
     mug.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(ehp,false,'centripetal',.5),180,.108,32,false),steelMat));
-    // Fillet blends — seal gap where wire meets mug body
-    [.52,-.52].forEach(y=>{const f=new THREE.Mesh(new THREE.SphereGeometry(.155,40,24),enamelMat);f.scale.set(.38,1.05,.58);f.position.set(1.03,y,0);mug.add(f)});
-    // Steel washer rings at handle attachment points
-    [.52,-.52].forEach(y=>{const ws=new THREE.Shape();ws.absarc(0,0,.20,0,Math.PI*2,false);const wh=new THREE.Path();wh.absarc(0,0,.115,0,Math.PI*2,true);ws.holes.push(wh);const wMesh=new THREE.Mesh(new THREE.ShapeGeometry(ws,32),steelMat);wMesh.rotation.y=Math.PI/2;wMesh.position.set(R+.003,y,0);mug.add(wMesh)});
   }
   floor.position.y=-MUG_H/2-.04;
   build();
